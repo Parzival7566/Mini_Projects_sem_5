@@ -1,42 +1,109 @@
+<!--To store text data in db<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Form</title>
+</head>
+<body>
+    <h1>Student Information</h1>
+    <form method="POST" action="/submit">
+        <label for="name">Name:</label>
+        <input type="text" name="name" required><br><br>
+
+        <label for="rollno">Roll No:</label>
+        <input type="text" name="rollno" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" name="email" required><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>FlaskApp</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload, Webcam Capture, and Preview</title>
     <style>
-        .todo {
-            padding: 20px;
-            margin: 10px;
-            background-color: #eee;
-        }
+        /* Add your CSS styles here */
     </style>
 </head>
 <body>
-    <h1>FlaskTODO</h1>
-    <hr>
-    <div class="content">
-    <form method="post">
-        <p>
-            <b><label for="content">Todo content</label></b>
-        </p>
-        <p>
-            <input type="text" name="content"
-                placeholder="Todo Content"></input>
-        </p>
+    <h1>Image Upload, Webcam Capture, and Preview</h1>
 
-        <p>
-            <b><label for="degree">Degree</label></b>
-        </p>
-        <p>
-            <input id="degree-0" name="degree" required type="radio" value="Important">
-            <label for="degree-0">Important</label>
-        </p>
-        <p>
-            <input id="degree-1" name="degree" required type="radio" value="Unimportant">
-            <label for="degree-1">Unimportant</label>
-        </p>
-        <button type="submit">Submit</button>
+    <!-- Image Upload Option -->
+    <h2>Upload Image</h2>
+    <form method="POST" action="/upload" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/*" required>
+        <input type="submit" value="Upload">
     </form>
+
+    <!-- Webcam Capture Option -->
+    <h2>Webcam Capture</h2>
+    <div id="webcam-container">
+        <video id="webcam" autoplay></video>
+        <button id="capture-button">Capture</button>
     </div>
+    <canvas id="canvas" style="display: none;"></canvas>
+    <button id="save-webcam-button" style="display: none;">Save Webcam Capture</button>
+
+    <!-- Image Preview Container -->
+    <div id="image-preview" style="display: none;">
+        <img id="preview-image" src="#" alt="Preview">
+        <button id="save-image">Save Image</button>
+    </div>
+
+    <script>
+        // Webcam Capture Script
+        const video = document.getElementById('webcam');
+        const canvas = document.getElementById('canvas');
+        const captureButton = document.getElementById('capture-button');
+        const saveWebcamButton = document.getElementById('save-webcam-button');
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((stream) => {
+                video.srcObject = stream;
+            })
+            .catch((error) => {
+                console.error('Error accessing webcam:', error);
+            });
+
+        captureButton.addEventListener('click', () => {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            saveWebcamButton.style.display = 'block';
+
+            // Display the preview image
+            const previewImage = document.getElementById('preview-image');
+            previewImage.src = canvas.toDataURL('image/png');
+            const imagePreview = document.getElementById('image-preview');
+            imagePreview.style.display = 'block';
+        });
+
+        saveWebcamButton.addEventListener('click', () => {
+            const imageBlob = canvas.toBlob((blob) => {
+                const formData = new FormData();
+                formData.append('webcam_image', blob, 'webcam_capture.png');
+
+                fetch('/upload_webcam', {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data.message);
+                })
+                .catch((error) => {
+                    console.error('Error saving webcam capture:', error);
+                });
+            }, 'image/png');
+        });
+    </script>
 </body>
 </html>
+
+
+

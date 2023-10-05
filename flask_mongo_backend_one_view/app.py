@@ -28,7 +28,7 @@ def upload_image():
             collection.insert_one(image_data)
 
             return jsonify(message='Image uploaded successfully.')
-        
+            
 
 
     return jsonify(message='No image uploaded.')

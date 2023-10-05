@@ -1,28 +1,60 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const imageInput = document.querySelector('#webcam_image');
-    const imagePreview = document.querySelector('#image-preview');
-    const previewImage = document.querySelector('#preview-image');
-    const saveImageBtn = document.querySelector('#save-image');
+    const video = document.getElementById('webcam');
+    const canvas = document.getElementById('canvas');
+    const captureButton = document.getElementById('capture-button');
+    const saveButton = document.getElementById('save-button');
+    const imagePreview = document.getElementById('image-preview');
 
-    imageInput.addEventListener('change', function () {
-        const file = imageInput.files[0];
+    let stream; // Store the webcam stream for stopping it later
 
-        if (file) {
-            const reader = new FileReader();
+    function startCamera() {
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((streamObj) => {
+                stream = streamObj; // Store the stream
+                video.srcObject = stream;
+            })
+            .catch((error) => {
+                console.error('Error accessing webcam:', error);
+            });
+    }
 
-            reader.onload = function (e) {
-                previewImage.src = e.target.result;
-                imagePreview.style.display = 'block';
-            };
-
-            reader.readAsDataURL(file);
+    function stopCamera() {
+        if (stream) {
+            stream.getTracks().forEach((track) => {
+                track.stop();
+            });
         }
+    }
+
+    captureButton.addEventListener('click', () => {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        // Hide the webcam and capture button
+        video.style.display = 'none';
+        captureButton.style.display = 'none';
+
+        // Show the single save button
+        saveButton.style.display = 'block';
     });
 
-    saveImageBtn.addEventListener('click', function () {
-        // Save the image here (you can use AJAX to send it to the server).
-        // Then, close the preview and reset the input field.
+    saveButton.addEventListener('click', () => {
+        // Handle saving the image here (you can use AJAX to send it to the server).
+        // Then, reset the canvas, hide the image preview, and stop the webcam stream.
+        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
         imagePreview.style.display = 'none';
-        imageInput.value = '';
+        saveButton.style.display = 'none';
+
+        stopCamera(); // Stop the webcam stream
+
+        // Show the webcam and capture button
+        video.style.display = 'block';
+        captureButton.style.display = 'block';
+
+        startCamera(); // Restart the camera
     });
+
+    // Start the camera when the page loads
+    startCamera();
 });

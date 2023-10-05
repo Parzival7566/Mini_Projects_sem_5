@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient
 import os
+import time
 
 app = Flask(__name__)
 client = MongoClient("mongodb://localhost:27017/")  # MongoDB connection URL
@@ -35,10 +36,14 @@ def upload_webcam_capture():
     if 'webcam_image' in request.files:
         webcam_image = request.files['webcam_image']
         if webcam_image.filename != '':
-            # Save the webcam capture to the 'uploads' folder
+            # Generate a unique filename using a timestamp
+            timestamp = int(time.time())
+            image_filename = f'webcam_capture_{timestamp}.png'
+
+            # Save the webcam capture to the 'uploads' folder with the unique filename
             upload_folder = 'uploads'
             os.makedirs(upload_folder, exist_ok=True)
-            image_path = os.path.join(upload_folder, webcam_image.filename)
+            image_path = os.path.join(upload_folder, image_filename)
             webcam_image.save(image_path)
 
             # Insert the webcam capture into MongoDB as a binary file

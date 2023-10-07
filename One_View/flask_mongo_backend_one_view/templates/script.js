@@ -30,29 +30,32 @@ document.addEventListener('DOMContentLoaded', function () {
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-
+    
         // Hide the webcam and capture button
         video.style.display = 'none';
         captureButton.style.display = 'none';
-
+    
         // Show the single save button
         saveButton.style.display = 'block';
-    });
-
-    saveButton.addEventListener('click', () => {
-        // Handle saving the image here (you can use AJAX to send it to the server).
-        // Then, reset the canvas, hide the image preview, and stop the webcam stream.
-        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-        imagePreview.style.display = 'none';
-        saveButton.style.display = 'none';
-
-        stopCamera(); // Stop the webcam stream
-
-        // Show the webcam and capture button
-        video.style.display = 'block';
-        captureButton.style.display = 'block';
-
-        startCamera(); // Restart the camera
+    
+        saveButton.addEventListener('click', () => {
+            // Handle saving the image here (you can use AJAX to send it to the server).
+            // Then, reset the canvas, hide the image preview, and stop the webcam stream.
+            canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+            imagePreview.style.display = 'none';
+            saveButton.style.display = 'none';
+    
+            stopCamera(); // Stop the webcam stream
+    
+            // Open the camera preview in a new tab
+            const cameraPreviewUrl = 'camera_preview.html';
+            const newTab = window.open(cameraPreviewUrl, '_blank');
+    
+            // Close the new tab and return to the original tab after a delay
+            setTimeout(() => {
+                newTab.close();
+            }, 2000);
+        });
     });
 
     // Start the camera when the page loads

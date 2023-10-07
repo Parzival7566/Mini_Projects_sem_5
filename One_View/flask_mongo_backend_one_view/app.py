@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient
 import os
 import time
+import webbrowser
 
 app = Flask(__name__)
 client = MongoClient("mongodb://localhost:27017/")  # MongoDB connection URL
@@ -59,4 +60,5 @@ def upload_webcam_capture():
 
 
 if __name__ == '__main__':
-    app.run()
+    webbrowser.open('http://127.0.0.1:5000/')
+    app.run(debug=True)

@@ -4,7 +4,7 @@ import os
 import time
 import webbrowser
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 client = MongoClient("mongodb://localhost:27017/")
 db = client['image_db']
 collection = db['images']

@@ -1,16 +1,185 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/admin_page.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Project One View</title>
 </head>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Background and typography */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #007bff, #00bfff); /* Gradient background */
+            color: #fff;
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            background-color: rgba(0, 0, 0, 0.7); /* Slightly transparent black background */
+            color: #fff;
+            width: 250px;
+            height: 100%;
+            position: fixed;
+            overflow: auto;
+            box-shadow: 1px 0px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 30px;
+        }
+
+        .nav-links li {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .nav-links a.active {
+            background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent white background */
+            border-right: 5px solid #fff; /* White right border for active link */
+            padding-right: 10px;
+        }
+
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-right: 5px solid #fff;
+            padding-right: 10px;
+        }
+
+        /* Content styles */
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px; /* Rounded corners */
+        }
+
+        header {
+            text-align: center;
+            color: #007bff; /* Accent color */
+        }
+
+        #upload-button:hover {
+            background-color: #00bfff; /* Lighter blue on hover */
+        }
+
+        #image-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        /* Add your provided code below */
+        /* Image gallery styles */
+        #image-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .image-card {
+            max-width: 300px;
+            background-color: #fff;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .image-card img {
+            width: 100%;
+            height: auto;
+        }
+
+        /* Action buttons styles */
+        .action-buttons {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .secondary-btn {
+            background-color: transparent;
+            color: #007bff;
+            border: 2px solid #007bff;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .secondary-btn:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+        /* End of your provided code */
+
+        /* Button styles */
+        .primary-btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .primary-btn:hover {
+            background-color: #00bfff;
+        }
+
+    </style>
 <body>
     <div class="sidebar">
-        <a href="{{ url_for('admin_page') }}">New Event</a>
-        <a href="{{ url_for('past_event') }}">Past Event</a>
-        <a href="{{ url_for('ongoing_event') }}">Ongoing Event</a>
+        <div class="sidebar-header">
+            <h1>Project One View</h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#" class="active">New Event</a></li>
+            <li><a href="#">Past Event</a></li>
+            <li><a href="#">Ongoing Events</a></li>
+        </ul>
     </div>
     <div class="content">
+        <header>
+            <div class="header-title">
+                <h2>Your Events</h2>
+                <p>One place to view your memories</p>
+            </div>
+        </header>
+        <main>
+            <div id="image-gallery">
+                <!-- Display uploaded images here -->
+            </div>
+            <div class="action-buttons">
+                <button id="view-images-button" class="secondary-btn">View Images</button>
+                <button id="manage-pictures-button" class="secondary-btn">Manage Pictures</button>
+            </div>
+        </main>
     </div>
 </body>
 </html>

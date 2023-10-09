@@ -11,7 +11,7 @@ collection = db['images']  # Use or create a collection called 'images'
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('camera_main.html')
 
 @app.route('/upload', methods=['POST'])
 def upload_image():

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Event</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
+</head>
+
+<style>
+    body, h1, form, button {
+    margin: 20;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 40px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #6B5B95; /* Lavender */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    margin-left: 0;
+}
+
+button:hover {
+    background-color: #CFC0C0; /* Light Lavender */
+}
+
+#qrCodeDiv {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+}
+
+#qrCodeImg {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+#disableQRButton {
+    background-color: #FF6B6B; /* Red */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+#disableQRButton:hover {
+    background-color: #FF9191; 
+}
+
+#generateInviteButton {
+    background-color: #6B5B95; 
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+#generateInviteButton:hover {
+    background-color: #CFC0C0; 
+}
+
+</style>
+
+<body>
+    <h1>New Event</h1>
+    <form id="eventForm">
+        <label for="eventName">Name of the event:</label>
+        <input type="text" id="eventName" required><br>
+
+        <label for="storage">Storage required in MB:</label>
+        <input type="number" id="storage" required><br>
+
+        <label for="duration">Duration of the event in hours:</label>
+        <input type="number" id="duration" required><br>
+
+        <button type="button" id="generateQR">Generate QR</button>
+    </form>
+
+    <div id="qrCodeDiv" class="hidden">
+        <img id="qrCodeImg" alt="QR Code">
+        <button id="disableQR">Disable QR</button>
+    </div>    
+
+    <button id="generateInvite">Generate Invite</button>
+    
+
+
+    <script>
+    // JavaScript functions to handle button actions
+    function generateQR() {
+    // Get event details
+    const eventName = document.getElementById("eventName").value;
+    const storage = document.getElementById("storage").value;
+    const duration = document.getElementById("duration").value;
+
+    // Generate QR code data (combine event details)
+    const qrCodeData = `${eventName} | Storage: ${storage}MB | Duration: ${duration} hours`;
+
+    // Generate the QR code using a QR code generation library (replace with the actual library)
+    const qrCodeImg = generateQRCode(qrCodeData); 
+
+    // Set the source of the QR code image
+    qrCodeImg.src = qrCodeData;
+
+    // Show the QR code and the disable button
+    const qrCodeDiv = document.getElementById("qrCodeDiv");
+    qrCodeDiv.style.display = "block";
+
+    const generateQRButton = document.getElementById("generateQRButton");
+    generateQRButton.style.display = "none";
+    }
+
+    // Function to generate a QR code using a library (replace with your library code)
+    function generateQRCode(data) {
+        // Implement code to generate a QR code with the provided data
+        const qrCodeImg = new Image();
+        qrCodeImg.src = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(data)}&size=200x200`;
+
+        return qrCodeImg;
+        }
+
+
+    function disableQR() {
+        const confirmation = confirm("Are you sure you want to disable the QR code?");
+        if (confirmation) {
+            // Redirect to the Dashboard page
+            window.location.href = "dashboard.html";
+        }
+    }
+
+    function generateInvite() {
+        // Get event details
+        const eventName = document.getElementById("eventName").value;
+        const storage = document.getElementById("storage").value;
+        const duration = document.getElementById("duration").value;
+
+    // Construct the invite link
+    const inviteLink = `https://yourwebsite.com/event?name=${eventName}&storage=${storage}&duration=${duration}`;
+
+    // Generate the QR code for the invite link (You'll need a QR code generation library)
+    const inviteQRCode = generateQRCode(inviteLink);
+
+    // Display the invite link and QR code (You can customize how you want to display them)
+    const inviteLinkElement = document.createElement("p");
+    inviteLinkElement.textContent = `Invite Link: ${inviteLink}`;
+
+    const inviteQRCodeElement = document.createElement("img");
+    inviteQRCodeElement.src = inviteQRCode; // Set the QR code image source
+
+    const inviteContainer = document.createElement("div");
+    inviteContainer.appendChild(inviteLinkElement);
+    inviteContainer.appendChild(inviteQRCodeElement);
+
+    document.body.appendChild(inviteContainer);
+    }
+
+    document.getElementById('generateQR').addEventListener('click', generateQR);
+    document.getElementById('disableQR').addEventListener('click', disableQR);
+    document.getElementById('generateInvite').addEventListener('click', generateInvite);
+    </script>
+</body>
+</html>

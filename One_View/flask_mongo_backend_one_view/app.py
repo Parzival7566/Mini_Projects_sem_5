@@ -5,13 +5,28 @@ import time
 import webbrowser
 
 app = Flask(__name__)
-client = MongoClient("mongodb://localhost:27017/")  # MongoDB connection URL
-db = client['image_db']  # Use or create a database called 'image_db'
-collection = db['images']  # Use or create a collection called 'images'
+client = MongoClient("mongodb://localhost:27017/")
+db = client['image_db']
+collection = db['images']
+
+@app.route('/admin')
+def admin_page():
+    return render_template('admin_page.html')
 
 @app.route('/')
 def index():
-    return render_template('camera_main.html')
+    return admin_page()
+
+@app.route('/past_event')
+def past_event():
+    # Add your logic for the past_event endpoint here
+    return render_template('past_event.html')
+
+@app.route('/ongoing_event')
+def ongoing_event():
+    # Add your logic for the ongoing_event endpoint here
+    return render_template('ongoing_event.html')
+
 
 @app.route('/upload', methods=['POST'])
 def upload_image():
@@ -61,4 +76,4 @@ def upload_webcam_capture():
 
 if __name__ == '__main__':
     webbrowser.open('http://127.0.0.1:5000/')
-    app.run(debug=True)
+    app.run()

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/admin_page.css') }}">
+</head>
+<body>
+    <div class="sidebar">
+        <a href="{{ url_for('admin_page') }}">New Event</a>
+        <a href="{{ url_for('past_event') }}">Past Event</a>
+        <a href="{{ url_for('ongoing_event') }}">Ongoing Event</a>
+    </div>
+    <div class="content">
+    </div>
+</body>
+</html>

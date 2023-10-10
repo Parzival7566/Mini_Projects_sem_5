@@ -3,14 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Event</title>
+    <title>New Event - Project One View</title>
 </head>
 
 <style>
-    body, h1, form, button {
-    margin: 20;
-    padding: 0;
-}
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(to right, #007bff, #00bfff);
+        color: #fff;
+    }
+
+    .sidebar {
+        background-color: rgba(0, 0, 0, 0.7);
+        color: #fff;
+        width: 250px;
+        height: 100%;
+        position: fixed;
+        overflow: auto;
+        box-shadow: 1px 0px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .sidebar-header {
+        padding: 20px;
+        text-align: center;
+        font-size: 1.5rem;
+    }
+
+    .nav-links {
+        list-style-type: none;
+        padding: 0;
+        margin-top: 30px;
+    }
+
+    .nav-links li {
+        padding: 15px;
+        text-align: center;
+    }
+
+    .nav-links a {
+        color: #fff;
+        text-decoration: none;
+        display: block;
+        transition: 0.3s;
+    }
+
+    .nav-links a.active {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-right: 5px solid #fff;
+        padding-right: 10px;
+    }
+
+    .nav-links a:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-right: 5px solid #fff;
+        padding-right: 10px;
+    }
+
+    .content {
+        margin-left: 250px;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.9);
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+
+    header {
+        text-align: center;
+        color: #007bff;
+    }
+
+    .primary-btn {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
 
     .primary-btn:hover {
         background-color: #00bfff;
@@ -36,14 +109,14 @@
         color: #333;
     }
 
-input[type="text"],
-input[type="number"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
+    input[type="text"],
+    input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
 
     button {
         padding: 10px 20px;
@@ -103,31 +176,51 @@ input[type="number"] {
 </style>
 
 <body>
-    <h1>New Event</h1>
-    <form id="eventForm">
-        <label for="eventName">Name of the event:</label>
-        <input type="text" id="eventName" required><br>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h1>Project One View</h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/new_event" class="active">New Event</a></li>
+            <li><a href="/past_event">Past Event</a></li>
+            <li><a href="/ongoing_event">Ongoing Events</a></li>
+        </ul>
+    </div>
+    <div class="content">
+        <header>
+            <div class="header-title">
+                <h2>New Event</h2>
+                <p>Create a new event</p>
+            </div>
+        </header>
+        <main>
+            <div class="container">
+                <form id="eventForm">
+                    <label for="eventName">Name of the event:</label>
+                    <input type="text" id="eventName" required><br>
 
-        <label for="storage">Storage required in MB:</label>
-        <input type="number" id="storage" required><br>
+                    <label for="storage">Storage required in MB:</label>
+                    <input type="number" id="storage" required><br>
 
-        <label for="duration">Duration of the event in hours:</label>
-        <input type="number" id="duration" required><br>
+                    <label for="duration">Duration of the event in hours:</label>
+                    <input type="number" id="duration" required><br>
 
-        <button type="button" id="generateQR">Generate QR</button>
-    </form>
+                    <button type="button" id="generateQR" class="primary-btn">Generate QR</button>
+                </form>
 
-    <div id="qrCodeDiv" class="hidden">
-        <img id="qrCodeImg" alt="QR Code">
-        <button id="disableQR">Disable QR</button>
-    </div>    
+                <div id="qrCodeDiv" class="hidden">
+                    <img id="qrCodeImg" alt="QR Code">
+                    <button id="disableQR" class="secondary-btn">Disable QR</button>
+                </div>
 
-    <button id="generateInvite">Generate Invite</button>
-    
-
+                <button id="generateInvite" class="primary-btn">Generate Invite</button>
+            </div>
+        </main>
+    </div>
 
     <script>
-    // JavaScript functions to handle button actions
+        // JavaScript functions (keep these as they are)
+        // JavaScript functions to handle button actions
     function generateQR() {
     // Get event details
     const eventName = document.getElementById("eventName").value;

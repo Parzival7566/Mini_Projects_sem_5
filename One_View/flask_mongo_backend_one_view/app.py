@@ -9,13 +9,14 @@ client = MongoClient("mongodb://localhost:27017/")
 db = client['image_db']
 collection = db['images']
 
-@app.route('/admin')
-def admin_page():
-    return render_template('admin_page.html')
-
 @app.route('/')
 def index():
     return admin_page()
+
+
+@app.route('/admin')
+def admin_page():
+    return render_template('admin_page.html')
 
 @app.route('/new_event')
 def new_event():
@@ -79,5 +80,5 @@ def upload_webcam_capture():
 
 
 if __name__ == '__main__':
-    webbrowser.open('http://127.0.0.1:5000/')
+    webbrowser.open('http://127.0.0.1:5000/admin')
     app.run()

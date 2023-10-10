@@ -25,12 +25,16 @@
         <img id="preview-image" src="#" alt="Preview">
     </div>
 
+    <!-- Back to ongoing event button -->
+    <button id="back-button">Back to ongoing event</button>
+
     <script>
         // Webcam Capture Script
         const video = document.getElementById('webcam');
         const canvas = document.getElementById('canvas');
         const captureButton = document.getElementById('capture-button');
         const saveWebcamButton = document.getElementById('save-webcam-button');
+        const backButton = document.getElementById('back-button');
 
         navigator.mediaDevices.getUserMedia({ video: true })
             .then((stream) => {
@@ -71,7 +75,11 @@
                 });
             }, 'image/png');
         });
+
+        // Back button event listener
+        backButton.addEventListener('click', () => {
+            window.location.href = "/ongoing_event";
+        });
     </script>
 </body>
 </html>
-

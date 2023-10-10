@@ -13,7 +13,6 @@ collection = db['images']
 def index():
     return admin_page()
 
-
 @app.route('/admin')
 def admin_page():
     return render_template('admin_page.html')
@@ -30,6 +29,9 @@ def past_event():
 def ongoing_event():
     return render_template('ongoing_event.html')
 
+@app.route('/camera_main')
+def camera_main():
+    return render_template('camera_main.html')
 
 @app.route('/upload', methods=['POST'])
 def upload_image():

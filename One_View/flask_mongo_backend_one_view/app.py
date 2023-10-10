@@ -17,6 +17,10 @@ def admin_page():
 def index():
     return admin_page()
 
+@app.route('/new_event')
+def new_event():
+    return render_template('new_event.html')
+
 @app.route('/past_event')
 def past_event():
     # Add your logic for the past_event endpoint here

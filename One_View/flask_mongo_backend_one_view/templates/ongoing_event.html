@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ongoing Event</title>
+</head>
+
+<style>
+    body, h1, h2, p {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 40px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .sub-heading {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .admin-details {
+        margin-bottom: 20px;
+    }
+
+    .admin-details p {
+        margin-bottom: 5px;
+    }
+
+    .open-gallery-button {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .open-gallery-button a {
+        padding: 10px 20px;
+        background-color: #6B5B95; /* Lavender */
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .open-gallery-button a:hover {
+        background-color: #CFC0C0; /* Light Lavender */
+    }
+</style>
+
+<body>
+    <div class="container">
+        <h1 class="header">{{ event_name }}</h1>
+        <h2 class="sub-heading">Duration: {{ duration }} hours | Storage: {{ storage }}MB</h2>
+        
+        <div class="admin-details">
+            <p>Admin: {{ admin_name }}</p>
+            <p>Date of Creation: {{ creation_date }}</p>
+            <p>Time: {{ creation_time }}</p>
+        </div>
+
+        <img src="{{ qr_code }}" alt="QR Code">
+
+        <div class="open-gallery-button">
+            <a href="open_gallery.html">Open Gallery</a>
+        </div>
+        <button id="click-pictures-button">Click Pictures!</button>
+    </div>
+</body>
+</html>
+
+<script>
+    // Click Pictures Button Script
+    const clickPicturesButton = document.getElementById('click-pictures-button');
+    clickPicturesButton.addEventListener('click', () => {
+        window.location.href = "camera_main.html";
+    });
+</script>

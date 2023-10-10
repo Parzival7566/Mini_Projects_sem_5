@@ -24,12 +24,10 @@ def new_event():
 
 @app.route('/past_event')
 def past_event():
-    # Add your logic for the past_event endpoint here
     return render_template('past_event.html')
 
 @app.route('/ongoing_event')
 def ongoing_event():
-    # Add your logic for the ongoing_event endpoint here
     return render_template('ongoing_event.html')
 
 

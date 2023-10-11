@@ -195,102 +195,20 @@
         </header>
         <main>
             <div class="container">
-                <form id="eventForm">
+                <form id="eventForm" action="/ongoing_event" method="get">
                     <label for="eventName">Name of the event:</label>
-                    <input type="text" id="eventName" required><br>
+                    <input type="text" id="eventName" name="eventName" required><br>
 
                     <label for="photos">Total number of photographs for the event (max 100):</label>
-                    <input type="number" id="photos" required max="100"><br>
+                    <input type="number" id="photos" name="photos" required max="100"><br>
 
                     <label for="duration">Duration of the event in hours:</label>
-                    <input type="number" id="duration" required><br>
+                    <input type="number" id="duration" name="duration" required><br>
 
-                    <button type="button" id="generateQR" class="primary-btn">Generate QR</button>
+                    <button type="submit" class="primary-btn">Create Event</button>
                 </form>
-
-                <div id="qrCodeDiv" class="hidden">
-                    <img id="qrCodeImg" alt="QR Code">
-                    <button id="disableQR" class="secondary-btn">Disable QR</button>
-                </div>
-
-                <button id="generateInvite" class="primary-btn">Generate Invite</button>
             </div>
         </main>
     </div>
-
-    <script>
-        // JavaScript functions (keep these as they are)
-        // JavaScript functions to handle button actions
-    function generateQR() {
-    // Get event details
-    const eventName = document.getElementById("eventName").value;
-    const photos = document.getElementById("photos").value;
-    const duration = document.getElementById("duration").value;
-
-    // Generate QR code data (combine event details)
-    const qrCodeData = `${eventName} | Photos: ${photos} | Duration: ${duration} hours`;
-
-    // Generate the QR code using a QR code generation library (replace with the actual library)
-    const qrCodeImg = generateQRCode(qrCodeData); 
-
-    // Set the source of the QR code image
-    qrCodeImg.src = qrCodeData;
-
-    // Show the QR code and the disable button
-    const qrCodeDiv = document.getElementById("qrCodeDiv");
-    qrCodeDiv.style.display = "block";
-
-    const generateQRButton = document.getElementById("generateQRButton");
-    generateQRButton.style.display = "none";
-    }
-
-    // Function to generate a QR code using a library (replace with your library code)
-    function generateQRCode(data) {
-        // Implement code to generate a QR code with the provided data
-        const qrCodeImg = new Image();
-        qrCodeImg.src = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(data)}&size=200x200`;
-
-        return qrCodeImg;
-        }
-
-
-    function disableQR() {
-        const confirmation = confirm("Are you sure you want to disable the QR code?");
-        if (confirmation) {
-            // Redirect to the Dashboard page
-            window.location.href = "/admin";
-        }
-    }
-
-    function generateInvite() {
-        // Get event details
-        const eventName = document.getElementById("eventName").value;
-        const storage = document.getElementById("storage").value;
-        const duration = document.getElementById("duration").value;
-
-    // Construct the invite link
-    const inviteLink = `https://yourwebsite.com/event?name=${eventName}&storage=${storage}&duration=${duration}`;
-
-    // Generate the QR code for the invite link (You'll need a QR code generation library)
-    const inviteQRCode = generateQRCode(inviteLink);
-
-    // Display the invite link and QR code (You can customize how you want to display them)
-    const inviteLinkElement = document.createElement("p");
-    inviteLinkElement.textContent = `Invite Link: ${inviteLink}`;
-
-    const inviteQRCodeElement = document.createElement("img");
-    inviteQRCodeElement.src = inviteQRCode; // Set the QR code image source
-
-    const inviteContainer = document.createElement("div");
-    inviteContainer.appendChild(inviteLinkElement);
-    inviteContainer.appendChild(inviteQRCodeElement);
-
-    document.body.appendChild(inviteContainer);
-    }
-
-    document.getElementById('generateQR').addEventListener('click', generateQR);
-    document.getElementById('disableQR').addEventListener('click', disableQR);
-    document.getElementById('generateInvite').addEventListener('click', generateInvite);
-    </script>
 </body>
 </html>

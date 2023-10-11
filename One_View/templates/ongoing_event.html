@@ -134,8 +134,9 @@
         </ul>
     </div>
     <div class="content">
-        <h1 class="header-title">{{ event_name }}</h1>
-        <h2 class="sub-heading">Duration: {{ duration }} hours | Photo Limit: {{ photos }}MB</h2>
+    {% if event_data %}
+        <h1 class="header-title">{{ event_data.event_name }}</h1>
+        <h2 class="sub-heading">Duration: {{ event_data.duration }} hours | Photo Limit: {{ event_data.photos }}MB</h2>
          
         <div class="admin-details">
             <p>Admin: {{ admin_name }}</p>
@@ -143,12 +144,15 @@
             <p>Time: {{ creation_time }}</p>
         </div>
 
-        <img src="{{ qr_code }}" alt="QR Code">
+        <img src="{{ event_data.qr_code }}" alt="QR Code">
 
         <div class="open-gallery-button">
             <a href="open_gallery.html" class="primary-btn">Open Gallery</a>
         </div>
         <button id="click-pictures-button" class="primary-btn">Click Pictures!</button>
+    {% else %}
+        <p>No event data available.</p>
+    {% endif %}
     </div>
 </body>
 </html>

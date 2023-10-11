@@ -15,6 +15,19 @@
         color: #fff;
     }
 
+    header {
+        text-align: center;
+        color: #007bff;
+    }
+
+    .header-title-container {
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
     .sidebar {
         background-color: rgba(0, 0, 0, 0.7);
         color: #fff;
@@ -54,6 +67,16 @@
         background-color: rgba(255, 255, 255, 0.1);
         border-right: 5px solid #fff;
         padding-right: 10px;
+    }
+
+    .content {
+        margin-left: 250px;
+        padding: 20px;
+        text-align: center;
+        color: #007bff;
+        background-color: rgba(255, 255, 255, 0.9);
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
     }
 
     .container {
@@ -108,8 +131,8 @@
             <li><a href="/ongoing_event" class="active">Ongoing Events</a></li>
         </ul>
     </div>
-    <div class="container">
-        <h1 class="header">{{ event_name }}</h1>
+    <div class="content">
+        <h1 class="header-title">{{ event_name }}</h1>
         <h2 class="sub-heading">Duration: {{ duration }} hours | Storage: {{ storage }}MB</h2>
         
         <div class="admin-details">

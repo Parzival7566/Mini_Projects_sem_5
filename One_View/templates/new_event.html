@@ -199,8 +199,8 @@
                     <label for="eventName">Name of the event:</label>
                     <input type="text" id="eventName" required><br>
 
-                    <label for="storage">Storage required in MB:</label>
-                    <input type="number" id="storage" required><br>
+                    <label for="photos">Total number of photographs for the event (max 100):</label>
+                    <input type="number" id="photos" required max="100"><br>
 
                     <label for="duration">Duration of the event in hours:</label>
                     <input type="number" id="duration" required><br>
@@ -224,11 +224,11 @@
     function generateQR() {
     // Get event details
     const eventName = document.getElementById("eventName").value;
-    const storage = document.getElementById("storage").value;
+    const photos = document.getElementById("photos").value;
     const duration = document.getElementById("duration").value;
 
     // Generate QR code data (combine event details)
-    const qrCodeData = `${eventName} | Storage: ${storage}MB | Duration: ${duration} hours`;
+    const qrCodeData = `${eventName} | Photos: ${photos} | Duration: ${duration} hours`;
 
     // Generate the QR code using a QR code generation library (replace with the actual library)
     const qrCodeImg = generateQRCode(qrCodeData); 

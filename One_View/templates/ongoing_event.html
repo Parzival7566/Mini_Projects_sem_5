@@ -97,10 +97,12 @@
         border-radius: 5px;
         font-weight: bold;
         transition: background-color 0.3s ease;
+        margin-top: 20px;
+        margin-left: 0;
     }
 
     .primary-btn:hover {
-        background-color: #00bfff;
+        background-color: #CFC0C0;
     }
 
     button {
@@ -133,8 +135,8 @@
     </div>
     <div class="content">
         <h1 class="header-title">{{ event_name }}</h1>
-        <h2 class="sub-heading">Duration: {{ duration }} hours | Storage: {{ storage }}MB</h2>
-        
+        <h2 class="sub-heading">Duration: {{ duration }} hours | Photo Limit: {{ photos }}MB</h2>
+         
         <div class="admin-details">
             <p>Admin: {{ admin_name }}</p>
             <p>Date of Creation: {{ creation_date }}</p>
@@ -146,7 +148,7 @@
         <div class="open-gallery-button">
             <a href="open_gallery.html" class="primary-btn">Open Gallery</a>
         </div>
-        <button id="click-pictures-button">Click Pictures!</button>
+        <button id="click-pictures-button" class="primary-btn">Click Pictures!</button>
     </div>
 </body>
 </html>
@@ -155,6 +157,13 @@
     // Click Pictures Button Script
     const clickPicturesButton = document.getElementById('click-pictures-button');
     clickPicturesButton.addEventListener('click', () => {
-        window.location.href = "/camera_main";
+        const photoLimit = 100; // Maximum number of photographs allowed
+        const currentPhotos = parseInt("{{ photos }}"); // Get the current number of photographs
+
+        if (currentPhotos >= photoLimit) {
+            alert(`You have reached the maximum limit of ${photoLimit} photographs.`);
+        } else {
+            window.location.href = "/camera_main";
+        }
     });
 </script>

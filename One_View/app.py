@@ -1,13 +1,30 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, session
 from pymongo import MongoClient
 import os
 import time
 import webbrowser
+import qrcode
+
 
 app = Flask(__name__, static_url_path='/static')
 client = MongoClient("mongodb://localhost:27017/")
 db = client['image_db']
 collection = db['images']
+app.secret_key = 'your_secret_key'
+event_data={}
+
+def generate_qr_code(data):
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(data)
+    qr.make(fit=True)
+
+    img = qr.make_image(fill='black', back_color='white')
+    return img
 
 @app.route('/')
 def index():
@@ -17,17 +34,33 @@ def index():
 def admin_page():
     return render_template('admin_page.html')
 
-@app.route('/new_event')
-def new_event():
-    return render_template('new_event.html')
-
 @app.route('/past_event')
 def past_event():
     return render_template('past_event.html')
 
+@app.route('/new_event', methods=['GET', 'POST'])
+def new_event():
+    if request.method == 'POST':
+        # Get form data
+        event_name = request.form.get('eventName')
+        photos = request.form.get('photos')
+        duration = request.form.get('duration')
+
+        # Store data in the session
+        session['event_data'] = {
+            'event_name': event_name,
+            'photos': photos,
+            'duration': duration,
+        }
+
+        return redirect('/ongoing_event')
+    else:
+        return render_template('new_event.html')
+
 @app.route('/ongoing_event')
 def ongoing_event():
-    return render_template('ongoing_event.html')
+    event_data = session.get('event_data', {})
+    return render_template('ongoing_event.html', event_data=event_data)
 
 @app.route('/camera_main')
 def camera_main():

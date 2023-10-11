@@ -4,6 +4,7 @@ import os
 import time
 import webbrowser
 import qrcode
+import csv
 
 
 app = Flask(__name__, static_url_path='/static')
@@ -46,12 +47,13 @@ def new_event():
         photos = request.form.get('photos')
         duration = request.form.get('duration')
 
-        # Store data in the session
-        session['event_data'] = {
-            'event_name': event_name,
-            'photos': photos,
-            'duration': duration,
-        }
+        # Store data in a CSV file
+        with open('event_data.csv', 'w', newline='') as csvfile:
+            fieldnames = ['event_name', 'photos', 'duration']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+            writer.writeheader()
+            writer.writerow({'event_name': event_name, 'photos': photos, 'duration': duration})
 
         return redirect('/ongoing_event')
     else:
@@ -59,7 +61,13 @@ def new_event():
 
 @app.route('/ongoing_event')
 def ongoing_event():
-    event_data = session.get('event_data', {})
+    # Retrieve data from the CSV file
+    event_data = {}
+    with open('event_data.csv', 'r') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            event_data = row
+
     return render_template('ongoing_event.html', event_data=event_data)
 
 @app.route('/camera_main')

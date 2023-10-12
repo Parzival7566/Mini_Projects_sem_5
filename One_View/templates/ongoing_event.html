@@ -135,13 +135,12 @@
     </div>
     <div class="content">
     {% if event_data %}
-        <h1 class="header-title">{{ event_data.event_name }}</h1>
-        <h2 class="sub-heading">Duration: {{ event_data.duration }} hours | Photo Limit: {{ event_data.photos }}MB</h2>
+        <h1 class="header-title">{{ event_data.eventName }}</h1>
+        <h2 class="sub-heading">Duration: {{ event_data.duration }} hours | Photo Limit: {{ event_data.photos }}</h2>
          
         <div class="admin-details">
-            <p>Admin: {{ admin_name }}</p>
-            <p>Date of Creation: {{ creation_date }}</p>
-            <p>Time: {{ creation_time }}</p>
+            <p>Admin: {{ event_data.adminName }}</p>
+            <p>Date and Time of Creation: {{ event_data.createdOn }}</p>
         </div>
 
         <img src="{{ event_data.qr_code }}" alt="QR Code">

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, redirect, session
+from flask import Flask, render_template, request, jsonify, redirect
 from pymongo import MongoClient
 import os
 import time
@@ -61,14 +61,13 @@ def new_event():
 
 @app.route('/ongoing_event')
 def ongoing_event():
-    # Retrieve data from the CSV file
-    event_data = {}
+    event_data1={}
     with open('event_data.csv', 'r') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            event_data = row
-
-    return render_template('ongoing_event.html', event_data=event_data)
+            event_data1 = row
+    
+    return render_template('ongoing_event.html', event_data=event_data1)
 
 @app.route('/camera_main')
 def camera_main():

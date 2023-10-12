@@ -73,26 +73,6 @@ def ongoing_event():
 def camera_main():
     return render_template('camera_main.html')
 
-@app.route('/upload', methods=['POST'])
-def upload_image():
-    if 'image' in request.files:
-        image_file = request.files['image']
-        if image_file.filename != '':
-            # Save the uploaded image to a folder (optional)
-            upload_folder = 'uploads'
-            os.makedirs(upload_folder, exist_ok=True)
-            image_path = os.path.join(upload_folder, image_file.filename)
-            image_file.save(image_path)
-
-            # Insert the image file path into MongoDB
-            image_data = {'path': image_path}
-            collection.insert_one(image_data)
-
-            return jsonify(message='Image uploaded successfully.')
-            
-
-
-    return jsonify(message='No image uploaded.')
 
 @app.route('/upload_webcam', methods=['POST'])
 def upload_webcam_capture():

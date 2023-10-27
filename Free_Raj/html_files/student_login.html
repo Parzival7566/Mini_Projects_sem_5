@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Login</title>
+</head>
+<body>
+    <h1>Student Login</h1>
+    
+    <form action="/" method="post">
+        PRN Number: <input type="text" name="prn" required>
+        <br><br>
+        <input type="submit" value="Login">
+    </form>
+
+    {% if error %}
+    <p>{{ error }}</p>
+    {% endif %}
+</body>
+</html>

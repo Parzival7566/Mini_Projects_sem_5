@@ -43,56 +43,47 @@ def past_event():
 def new_event():
     if request.method == 'POST':
         # Get form data
+        admin_name = request.form.get('adminName')
         event_name = request.form.get('eventName')
         photos = request.form.get('photos')
         duration = request.form.get('duration')
 
-        # Store data in a CSV file
-        with open('event_data.csv', 'w', newline='') as csvfile:
-            fieldnames = ['event_name', 'photos', 'duration']
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-
-            writer.writeheader()
-            writer.writerow({'event_name': event_name, 'photos': photos, 'duration': duration})
+        # Store data in a text file along with date and time
+        with open('event_data.txt', 'w') as txtfile:
+            current_time = time.strftime("%Y-%m-%d %H:%M:%S")
+            txtfile.write(f"{admin_name}\n{event_name}\n{photos}\n{duration}\n{current_time}")
 
         return redirect('/ongoing_event')
     else:
         return render_template('new_event.html')
 
+
+
 @app.route('/ongoing_event')
 def ongoing_event():
-    event_data1={}
-    with open('event_data.csv', 'r') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            event_data1 = row
-    
+    event_data1 = {}
+    try:
+        with open('event_data.txt', 'r') as txtfile:
+            data = txtfile.read()
+            # Parse the data from the txt file
+            lines = data.split('\n')
+            if len(lines) == 5:
+                event_data1['adminName'] = lines[0]
+                event_data1['eventName'] = lines[1]
+                event_data1['photos'] = lines[2]
+                event_data1['duration'] = lines[3]
+                event_data1['createdOn'] = lines[4]
+    except FileNotFoundError:
+        # If the file doesn't exist, create an empty one
+        with open('event_data.txt', 'w') as txtfile:
+            pass
+
     return render_template('ongoing_event.html', event_data=event_data1)
 
 @app.route('/camera_main')
 def camera_main():
     return render_template('camera_main.html')
 
-@app.route('/upload', methods=['POST'])
-def upload_image():
-    if 'image' in request.files:
-        image_file = request.files['image']
-        if image_file.filename != '':
-            # Save the uploaded image to a folder (optional)
-            upload_folder = 'uploads'
-            os.makedirs(upload_folder, exist_ok=True)
-            image_path = os.path.join(upload_folder, image_file.filename)
-            image_file.save(image_path)
-
-            # Insert the image file path into MongoDB
-            image_data = {'path': image_path}
-            collection.insert_one(image_data)
-
-            return jsonify(message='Image uploaded successfully.')
-            
-
-
-    return jsonify(message='No image uploaded.')
 
 @app.route('/upload_webcam', methods=['POST'])
 def upload_webcam_capture():

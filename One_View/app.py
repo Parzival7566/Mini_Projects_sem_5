@@ -4,7 +4,7 @@ import os
 import time
 import webbrowser
 import qrcode
-import csv
+from bson import ObjectId
 
 
 app = Flask(__name__, static_url_path='/static')
@@ -82,8 +82,11 @@ def ongoing_event():
 
 @app.route('/open_gallery')
 def gallery():
-     # Add your code to render the gallery page here
-     return render_template('open_gallery.html')
+    # Fetch all images from MongoDB
+    images = db['images'].find()
+    
+    # Pass the images to the template
+    return render_template('open_gallery.html',images=images)
 
 @app.route('/camera_main')
 def camera_main():

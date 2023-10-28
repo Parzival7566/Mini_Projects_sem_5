@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Cart</title>
+</head>
+<body>
+    <h1>Cart</h1>
+    <ul>
+        {% for item, quantity, preparation_time in zip(items, quantities, preparation_times) %}
+        <li>
+            <span>Item: {{ item }}</span>
+            <span>Quantity: {{ quantity }}</span>
+            <span>Approx Preparation Time: {{ preparation_time }}</span>
+        </li>
+        {% endfor %}
+    </ul>
+    <button id="checkout" onclick="checkout()">Checkout</button>
+</body>
+</html>

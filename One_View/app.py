@@ -83,6 +83,11 @@ def ongoing_event():
 
     return render_template('ongoing_event.html', event_data=event_data1)
 
+@app.route('/open_gallery')
+def gallery():
+     # Add your code to render the gallery page here
+     return render_template('open_gallery.html')
+
 @app.route('/camera_main')
 def camera_main():
     return render_template('camera_main.html')

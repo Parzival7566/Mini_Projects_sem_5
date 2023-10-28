@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gallery</title>
+</head>
+<body>
+    <h1>Gallery</h1>
+    <ul>
+        {% for image in image_data %}
+            <li>
+                <a href="{{ image.image_url }}">
+                    <img src="{{ image.image_url }}" alt="Image">
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

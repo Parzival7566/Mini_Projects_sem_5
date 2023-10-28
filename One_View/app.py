@@ -1,10 +1,12 @@
-from flask import Flask, render_template, request, jsonify, redirect
+from flask import Flask, render_template, request,send_file, jsonify, redirect
 from pymongo import MongoClient
 import os
 import time
 import webbrowser
 import qrcode
 import csv
+from bson import ObjectId
+from gridfs import GridFS
 
 
 app = Flask(__name__, static_url_path='/static')
@@ -13,6 +15,7 @@ db = client['image_db']
 collection = db['images']
 app.secret_key = 'your_secret_key'
 event_data={}
+fs = GridFS(db)
 
 def generate_qr_code(data):
     qr = qrcode.QRCode(
@@ -114,6 +117,28 @@ def upload_webcam_capture():
 
     return jsonify(message='No webcam capture available.')
 
+
+
+@app.route('/gallery')
+def gallery():
+    image_data = []
+    for file in fs.find():
+        image_data.append({
+            'image_id': str(file._id),
+            'image_url': f"/image/{file._id}"
+        })
+    return render_template('gallery.html', image_data=image_data)
+
+
+@app.route('/image/<image_id>')
+def serve_image(image_id):
+    try:
+        image = fs.get(ObjectId(image_id))
+        response = send_file(image, mimetype='image/jpeg')  # Adjust mimetype as per your image type
+        response.headers["Cache-Control"] = "no-store"
+        return response
+    except Exception as e:
+        return str(e), 404
 
 if __name__ == '__main__':
     webbrowser.open('http://127.0.0.1:5000/admin')

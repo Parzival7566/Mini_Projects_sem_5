@@ -1,17 +1,31 @@
 from flask import Flask, render_template, request, jsonify, redirect
-from pymongo import MongoClient
+from flask_pymongo import PyMongo
+from werkzeug.utils import secure_filename
+from flask import *
+from flask_bootstrap import Bootstrap
+from bson.objectid import ObjectId
 import os
 import time
 import webbrowser
 import qrcode
-from bson import ObjectId
 
+app = Flask(__name__, static_url_path='/static')
+app.config["SECRET_KEY"] = "SECRET_KEY"
+app.config["UPLOAD_FOLDER"] = "static/uploads/"
+app.config["MONGO_DBNAME"] = "one_view"
+app.config["MONGO_URI"] = "mongodb://localhost:27017/one_view"
 
+mongo = PyMongo(app)
+ALLOWED_EXTENSIONS = ["png", "jpg", "jpeg"]
+
+Bootstrap(app)
+'''
 app = Flask(__name__, static_url_path='/static')
 client = MongoClient("mongodb://localhost:27017/")
 db = client['image_db']
 collection = db['images']
 app.secret_key = 'your_secret_key'
+'''
 event_data={}
 
 def generate_qr_code(data):
@@ -80,44 +94,57 @@ def ongoing_event():
 
     return render_template('ongoing_event.html', event_data=event_data1)
 
-@app.route('/open_gallery')
+@app.route("/gallery/")
 def gallery():
-    # Fetch all images from MongoDB
-    images = db['images'].find()
-    
-    # Pass the images to the template
-    return render_template('open_gallery.html',images=images)
+    images = mongo.db.one_view.find()
+    return render_template("gallery.html", gallery=images)
 
 @app.route('/camera_main')
 def camera_main():
     return render_template('camera_main.html')
 
 
-@app.route('/upload_webcam', methods=['POST'])
+@app.route('/upload_webcam',methods=["GET", "POST"])
 def upload_webcam_capture():
     if 'webcam_image' in request.files:
         webcam_image = request.files['webcam_image']
         if webcam_image.filename != '':
             # Generate a unique filename using a timestamp
             timestamp = int(time.time())
-            image_filename = f'webcam_capture_{timestamp}.png'
+            image_filename = f'webcam_capture_{timestamp}.jpeg'
 
-            # Save the webcam capture to the 'uploads' folder with the unique filename
-            upload_folder = 'uploads'
-            os.makedirs(upload_folder, exist_ok=True)
-            image_path = os.path.join(upload_folder, image_filename)
-            webcam_image.save(image_path)
+        if image_filename.split(".")[-1].lower() in ALLOWED_EXTENSIONS:
+            filename = secure_filename(image_filename)
+            webcam_image.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
 
-            # Insert the webcam capture into MongoDB as a binary file
-            with open(image_path, 'rb') as image_file:
-                image_data = {'webcam_capture': image_file.read()}
-                collection.insert_one(image_data)
+            mongo.db.one_view.insert_one({
+                "filename": filename,
+            })
 
-            return jsonify(message='Webcam capture saved successfully.')
+            flash("Successfully uploaded image to gallery!", "success")
+            return redirect(url_for("upload_webcam_capture"))
+        else:
+            flash("An error occurred while uploading the image!", "danger")
+            return redirect(url_for("upload_webcam_capture"))
+    return render_template("camera_main.html")
 
-    return jsonify(message='No webcam capture available.')
+@app.route('/delete_image/<image_id>', methods=['DELETE'])
+def delete_image(image_id):
+    # Fetch the image document from the MongoDB database
+    image = mongo.db.one_view.find_one({'_id': ObjectId(image_id)})
+
+    if image:
+        # Delete the image from the uploads directory
+        os.remove(os.path.join(app.config["UPLOAD_FOLDER"], image["filename"]))
+
+        # Delete the image document from the MongoDB database
+        mongo.db.one_view.delete_one({'_id': ObjectId(image_id)})
+
+        return jsonify({'message': 'Image deleted successfully'})
+    else:
+        return jsonify({'message': 'Image not found'}), 404
 
 
 if __name__ == '__main__':
     webbrowser.open('http://127.0.0.1:5000/admin')
-    app.run()
+    app.run(debug=True)

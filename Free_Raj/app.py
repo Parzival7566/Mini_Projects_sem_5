@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_pymongo import PyMongo
+import webbrowser
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "SECRET_KEY"
@@ -41,7 +42,7 @@ def login():
         if student:
             return redirect(url_for("dashboard", prn=prn))
         else:
-            error_message = "Invalid PRN. Please try again."
+            error_message = "Invalid PRN or Password. Please try again."
             return render_template("student_login.html", error=error_message)
     return render_template("student_login.html")
 
@@ -93,4 +94,5 @@ def place_order():
     return redirect(url_for("dashboard", prn=prn))
 
 if __name__ == "__main__":
-    app.run()
+    webbrowser.open('http://127.0.0.1:5000/')
+    app.run(debug=True)

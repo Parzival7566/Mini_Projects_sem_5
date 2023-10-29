@@ -139,7 +139,6 @@
         }
 
 
-
         .delete-button {
             background-color: #ff0000;
             color: #fff;
@@ -167,16 +166,21 @@
             <li><a href="/ongoing_event" class="active">Ongoing Events</a></li>
         </ul>
     </div>
-    <button id="back-button">Back to ongoing events</button>
     <div class="content">
+    <button id="back-button">Back to ongoing events</button>
         <div class="container">
             <div id="image-gallery">
-                {% for image in gallery %}
-                <div class="image-card">
-                    <img src="{{ url_for('static', filename='uploads/' + image.filename) }}" alt="Image">
-                    <button class="delete-button" data-image-id="{{ image._id }}">Delete</button>
-                </div>
-                {% endfor %}
+            {% for image in gallery %}
+                {% if image %}
+                    <div class="image-card">
+                        <img src="{{ url_for('static', filename='uploads/' + image.filename) }}" alt="Image">
+                        <button class="delete-button" data-image-id="{{ image._id }}">Delete</button>
+                    </div>
+                {% else %}
+                    <p>No images clicked yet! Click some photos before you can view them.</p>
+                {% endif %}
+            {% endfor %}
+        </div>
             </div>
         </div>
     </div>

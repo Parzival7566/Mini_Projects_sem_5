@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, jsonify, redirect
 from flask_pymongo import PyMongo
 from werkzeug.utils import secure_filename
 from flask import *
-from flask_bootstrap import Bootstrap
 from bson.objectid import ObjectId
 import os
 import time
@@ -18,14 +17,6 @@ app.config["MONGO_URI"] = "mongodb://localhost:27017/one_view"
 mongo = PyMongo(app)
 ALLOWED_EXTENSIONS = ["png", "jpg", "jpeg"]
 
-Bootstrap(app)
-'''
-app = Flask(__name__, static_url_path='/static')
-client = MongoClient("mongodb://localhost:27017/")
-db = client['image_db']
-collection = db['images']
-app.secret_key = 'your_secret_key'
-'''
 event_data={}
 
 def generate_qr_code(data):
@@ -91,7 +82,7 @@ def ongoing_event():
         # If the file doesn't exist, create an empty one
         with open('event_data.txt', 'w') as txtfile:
             pass
-
+    generate_qr_code("http://127.0.0.1:5000/ongoing_event")
     return render_template('ongoing_event.html', event_data=event_data1)
 
 @app.route("/gallery/")
@@ -127,6 +118,7 @@ def upload_webcam_capture():
             flash("An error occurred while uploading the image!", "danger")
             return redirect(url_for("upload_webcam_capture"))
     return render_template("camera_main.html")
+
 
 @app.route('/delete_image/<image_id>', methods=['DELETE'])
 def delete_image(image_id):

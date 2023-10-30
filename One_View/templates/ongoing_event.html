@@ -143,8 +143,24 @@
             <p>Date and Time of Creation: {{ event_data.createdOn }}</p>
         </div>
 
-        <img src="{{ event_data.qr_code }}" alt="QR Code">
-
+        <div>
+            <canvas id="qrcode"></canvas>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/qrious"></script>
+        <script>
+            var canvas = document.getElementById("qrcode");
+            var fixedLink = "https://www.google.com"; // Your fixed link
+        
+            var qr = new QRious({
+                element: canvas,
+                value: fixedLink,
+                size: 128,
+                background: "white",    // Set the foreground color (blue)
+                foreground: "navy" // Set the background color (light blue)
+            });
+        </script>
+        <br>
+        
         <div class="open-gallery-button">
                 <a href="/gallery" class="primary-btn">Open Gallery</a>
         </div>

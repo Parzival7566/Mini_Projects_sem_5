@@ -19,6 +19,10 @@ ALLOWED_EXTENSIONS = ["png", "jpg", "jpeg"]
 
 event_data={}
 
+with open('event_data.txt', 'w') as txtfile:
+    txtfile.write('')
+
+
 def generate_qr_code(data):
     qr = qrcode.QRCode(
         version=1,

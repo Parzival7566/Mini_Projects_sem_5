@@ -9,11 +9,16 @@
     <form action="/" method="post">
         PRN Number: <input type="text" name="prn" required>
         <br><br>
+        Password: <input type="password" name="password" required>
+        <br><br>
         <input type="submit" value="Login">
     </form>
 
     {% if error %}
     <p>{{ error }}</p>
     {% endif %}
+
+    <br>
+    <a href="/create_account">Create Account</a>
 </body>
 </html>

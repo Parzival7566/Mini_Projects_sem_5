@@ -149,6 +149,7 @@
         <script src="https://cdn.jsdelivr.net/npm/qrious"></script>
         <script>
             var canvas = document.getElementById("qrcode");
+          
             var fixedLink = "http://127.0.0.1:5000/{{ username }}/ongoing_event"; // Your fixed link
         
             var qr = new QRious({
@@ -159,7 +160,7 @@
                 foreground: "navy" // Set the background color (light blue)
             });
         </script>
-
+      
         <div class="open-gallery-button">
                 <a href="/{{ username }}/gallery" class="primary-btn">Open Gallery</a>
         </div>

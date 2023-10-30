@@ -179,13 +179,13 @@
 <body>
     <div class="sidebar">
         <div class="sidebar-header">
-            <h1><a href="/admin" style="text-decoration: none; color: inherit;">Project One View</a></h1>
+            <h1><a href="/{{ username }}/admin" style="text-decoration: none; color: inherit;">Project One View</a></h1>
         </div>
         <ul class="nav-links">
-            <li><a href="/new_event" class="active">New Event</a></li>
-            <li><a href="/past_event">Past Events</a></li>
-            <li><a href="/ongoing_event">Ongoing Events</a></li>
-        </ul>
+        <li><a href="/{{ username }}/new_event">New Event</a></li>
+        <li><a href="/{{ username }}/past_event">Past Events</a></li>
+        <li><a href="/{{ username }}/ongoing_event">Ongoing Events</a></li>
+    </ul>
     </div>
     <div class="content">
         <header>
@@ -196,7 +196,7 @@
         </header>
         <main>
             <div class="container">
-                <form id="eventForm" action="/new_event" method="post">
+                <form id="eventForm" action="/{{ username }}/new_event" method="post">
                     <label for="adminName">Host Name:</label>
                     <input type="text" id="adminName" name="adminName" required><br>
 

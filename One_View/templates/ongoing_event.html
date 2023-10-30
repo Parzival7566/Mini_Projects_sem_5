@@ -125,13 +125,13 @@
 <body>
     <div class="sidebar">
         <div class="sidebar-header">
-            <h1><a href="/admin" style="text-decoration: none; color: inherit;">Project One View</a></h1>
+            <h1><a href="/{{ username }}/admin" style="text-decoration: none; color: inherit;">Project One View</a></h1>
         </div>
         <ul class="nav-links">
-            <li><a href="/new_event">New Event</a></li>
-            <li><a href="/past_event">Past Events</a></li>
-            <li><a href="/ongoing_event" class="active">Ongoing Events</a></li>
-        </ul>
+        <li><a href="/{{ username }}/new_event">New Event</a></li>
+        <li><a href="/{{ username }}/past_event">Past Events</a></li>
+        <li><a href="/{{ username }}/ongoing_event">Ongoing Events</a></li>
+    </ul>
     </div>
     <div class="content">
     {% if event_data %}
@@ -149,7 +149,8 @@
         <script src="https://cdn.jsdelivr.net/npm/qrious"></script>
         <script>
             var canvas = document.getElementById("qrcode");
-            var fixedLink = "https://www.google.com"; // Your fixed link
+          
+            var fixedLink = "http://127.0.0.1:5000/{{ username }}/ongoing_event"; // Your fixed link
         
             var qr = new QRious({
                 element: canvas,
@@ -159,10 +160,9 @@
                 foreground: "navy" // Set the background color (light blue)
             });
         </script>
-        <br>
-        
+      
         <div class="open-gallery-button">
-                <a href="/gallery" class="primary-btn">Open Gallery</a>
+                <a href="/{{ username }}/gallery" class="primary-btn">Open Gallery</a>
         </div>
         <button id="click-pictures-button" class="primary-btn">Click Pictures!</button>
     {% else %}
@@ -182,7 +182,7 @@
         if (currentPhotos >= photoLimit) {
             alert(`You have reached the maximum limit of ${photoLimit} photographs.`);
         } else {
-            window.location.href = "/camera_main";
+            window.location.href = "/camera_main" ;
         }
     });
 </script>

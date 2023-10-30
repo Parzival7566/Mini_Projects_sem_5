@@ -158,13 +158,13 @@
 <body>
     <div class="sidebar">
         <div class="sidebar-header">
-            <h1><a href="/admin" style="text-decoration: none; color: inherit;">Project One View</a></h1>
+            <h1><a href="/{{ username }}/admin" style="text-decoration: none; color: inherit;">Project One View</a></h1>
         </div>
-        <ul class="nav-links">
-            <li><a href="/new_event">New Event</a></li>
-            <li><a href="/past_event">Past Events</a></li>
-            <li><a href="/ongoing_event" class="active">Ongoing Events</a></li>
-        </ul>
+       <ul class="nav-links">
+        <li><a href="/{{ username }}/new_event">New Event</a></li>
+        <li><a href="/{{ username }}/past_event">Past Events</a></li>
+        <li><a href="/{{ username }}/ongoing_event">Ongoing Events</a></li>
+    </ul>
     </div>
     <div class="content">
     <button id="back-button">Back to ongoing events</button>
@@ -188,7 +188,7 @@
     <script>
         const backButton = document.getElementById('back-button');
         backButton.addEventListener('click', () => {
-            window.location.href = "/ongoing_event";
+            window.location.href = "/{{ username }}/ongoing_event";
         });
 
         document.querySelectorAll('.delete-button').forEach((button) => {

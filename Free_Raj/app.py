@@ -79,9 +79,15 @@ def place_order():
     prn = request.form["prn"]
     student = students_collection.find_one({"prn": prn})
     if student:
-        items = request.form.getlist("item")
-        quantities = request.form.getlist("quantity")
-        preparation_times = request.form.getlist("preparation_time")
+        items = []
+        quantities = []
+        preparation_times = []
+
+        for item, quantity, preparation_time in zip(request.form.getlist("item"), request.form.getlist("quantity"), request.form.getlist("preparation_time")):
+            if int(quantity) > 0:
+                items.append(item)
+                quantities.append(quantity)
+                preparation_times.append(preparation_time)
 
         order_data = {
             "student_prn": prn,
@@ -92,6 +98,21 @@ def place_order():
         orders_collection.insert_one(order_data)
 
     return redirect(url_for("dashboard", prn=prn))
+
+@app.route("/view_cart", methods=["GET"])
+def view_cart():
+    prn = request.args.get("prn")
+    student = students_collection.find_one({"prn": prn})
+    if student:
+        # Fetch cart items from MongoDB based on student's PRN
+        cart_items = list(orders_collection.find({"student_prn": prn}))  # Convert cursor to list
+        items = [item["items"] for item in cart_items]
+        quantities = [item["quantities"] for item in cart_items]
+        preparation_times = [item["preparation_times"] for item in cart_items]
+        return render_template("view_cart.html", student=student, items=items, quantities=quantities, preparation_times=preparation_times)
+    else:
+        error_message = "Student data not found."
+        return render_template("student_login.html", error=error_message)
 
 if __name__ == "__main__":
     webbrowser.open('http://127.0.0.1:5000/')

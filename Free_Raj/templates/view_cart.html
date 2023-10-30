@@ -4,16 +4,20 @@
     <title>View Cart</title>
 </head>
 <body>
-    <h1>Cart</h1>
-    <ul>
-        {% for item, quantity, preparation_time in zip(items, quantities, preparation_times) %}
-        <li>
-            <span>Item: {{ item }}</span>
-            <span>Quantity: {{ quantity }}</span>
-            <span>Approx Preparation Time: {{ preparation_time }}</span>
-        </li>
+    <h1>Cart Items</h1>
+    <table>
+        <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Preparation Time</th>
+        </tr>
+        {% for i in range(items|length) %}
+        <tr>
+            <td>{{ items[i] }}</td>
+            <td>{{ quantities[i] }}</td>
+            <td>{{ preparation_times[i] }}</td>
+        </tr>
         {% endfor %}
-    </ul>
-    <button id="checkout" onclick="checkout()">Checkout</button>
+    </table>
 </body>
 </html>

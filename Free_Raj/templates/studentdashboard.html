@@ -4,7 +4,7 @@
     <title>Student Dashboard</title>
 </head>
 <body>
-    <h1>Welcome, {{ student["name"] }}!</h1>
+    <h1>Welcome, {{ student["prn"] }}!</h1>
     <h2>Menu</h2>
 
     <form action="/place_order" method="post">
@@ -17,9 +17,9 @@
             <input type="number" name="quantity" value="0" min="0">
             <input type="hidden" name="preparation_time" value="{{ item["preparation_time"] }}">
             <span>Approx Preparation Time: {{ item["preparation_time"] }}</span>
-            <button type="submit">Add to Cart</button>
         </li>
         {% endfor %}
+        <button type="submit">Add to Cart</button>
     </ul>
 </form>
 

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-image: url('https://i.pinimg.com/736x/49/4d/8a/494d8ad19f442c3d05c0c6f30ca9da85.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        div {
+            text-align: center;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px black;
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            width: 100%;
+            max-width: 380px;
+            animation: fadeIn 2s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        h1 {
+            color: black;
+            text-shadow: 2px 0.5px DarkGrey;
+            font-family: Lucida Handwriting, cursive;
+        }
+
+        button {
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block; /* Change from 'none' to 'inline-block' to make the buttons visible */
+}
+
+        button:hover {
+            background-color: LavenderBlush;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 5px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+        }
+
+        a {
+            text-decoration: none;
+            color: blue;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            color: black;
+            text-shadow: 2px 0.5px DarkGrey;
+        }
+    </style>
+</head>
+<body>
+
+<div id="initialDiv">
+    <h1>ONE VIEW</h1>
+</div>
+
+<!-- Host and Attendee Options (Initially Hidden) -->
+<div id="optionsDiv" style="display: none;">
+    <p>Are you an attendee or a host?</p>
+    <button onclick="showHostLogin()">Host</button>
+    <button onclick="redirectToScanQR()">Attendee</button>
+</div>
+
+<!-- Host Login Form (Initially Hidden) -->
+<div id="hostLoginForm" style="display: none;">
+    <h2>HOST LOGIN</h2>
+    <form onsubmit="return hostLogin()">
+        <label for="hostEmail">Email:</label>
+        <input type="email" id="hostEmail" required><br>
+        <label for="hostPassword">Password:</label>
+        <input type="password" id="hostPassword" required><br>
+        <button type="submit">Login</button>
+    </form>
+    <p><a href="#" onclick="showHostRegister()">Register as a Host</a></p>
+</div>
+
+<!-- Host Registration Form (Initially Hidden) -->
+<div id="hostRegisterForm" style="display: none;">
+    <h2>Host Registration</h2>
+    <form onsubmit="return hostRegister()">
+        <label for="hostName">Name:</label>
+        <input type="text" id="hostName" required><br>
+        <label for="hostRegEmail">Email:</label>
+        <input type="email" id="hostRegEmail" required><br>
+        <label for="hostRegPassword">Password:</label>
+        <input type="password" id="hostRegPassword" required><br>
+        <label for="hostConfirmPassword">Confirm Password:</label>
+        <input type="password" id="hostConfirmPassword" required><br>
+        <button type="submit">Register</button>
+    </form>
+</div>
+
+<script>
+    setTimeout(function () {
+        var initialDiv = document.getElementById("initialDiv");
+        var optionsDiv = document.getElementById("optionsDiv");
+
+        if (initialDiv && optionsDiv) {
+            initialDiv.style.display = "none";
+            optionsDiv.style.display = "block";
+        }
+    }, 2000); // Adjust the delay as needed
+
+    function showHostLogin() {
+        document.getElementById("optionsDiv").style.display = "none";
+        document.getElementById("hostLoginForm").style.display = "block";
+    }
+
+    function showHostRegister() {
+        document.getElementById("hostLoginForm").style.display = "none";
+        document.getElementById("hostRegisterForm").style.display = "block";
+    }
+
+    function hostLogin() {
+        // Implement host login logic here
+        alert("Host login logic will go here");
+        return false; // Prevent form submission for this example
+    }
+
+    function hostRegister() {
+        // Implement host registration logic here
+        alert("Host registration logic will go here");
+        return false; // Prevent form submission for this example
+    }
+
+    function redirectToScanQR() {
+        // Implement attendee redirection logic here
+        alert("Redirecting to Scan QR page for Attendees");
+        // Replace the alert with actual redirection code
+    }
+</script>
+</body>
+</html>

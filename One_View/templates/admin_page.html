@@ -15,7 +15,7 @@
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(to right, #007bff, #00bfff); /* Gradient background */
-            color: #fff;
+            color: #007bff;
         }
 
         /* Sidebar styles */
@@ -146,10 +146,32 @@
             border-radius: 5px;
             font-weight: bold;
             transition: background-color 0.3s ease;
+            position: absolute;
+            top: 20px;
+            right: 20px;
         }
 
         .primary-btn:hover {
             background-color: #00bfff;
+        }
+        .user-box {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .username {
+            font-weight: bold;
+        }
+
+        .logout-link {
+            margin-left: 10px;
+            color: #007bff;
+            text-decoration: none;
         }
 
     </style>
@@ -163,6 +185,10 @@
         <li><a href="/{{ username }}/past_event">Past Events</a></li>
         <li><a href="/{{ username }}/ongoing_event">Ongoing Events</a></li>
     </ul>
+    </div>
+    <div class="user-box">
+        Logged in as <span class="username">{{ username }}</span>
+        <a href="/logout" class="logout-link" class="primary-btn">Logout</a>
     </div>
     <div class="content">
         <header>

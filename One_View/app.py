@@ -82,6 +82,11 @@ def attendee_page():
     # Add your code here
     pass
 
+@app.route('/logout')
+def logout():
+    session['username'] = None
+    return redirect('/')
+
 
 @app.route('/<username>/past_event')
 def past_event(username):

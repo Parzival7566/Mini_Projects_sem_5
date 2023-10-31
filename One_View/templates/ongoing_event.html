@@ -135,14 +135,14 @@
     </div>
     <div class="content">
     {% if event_data %}
-        <h1 class="header-title">{{ event_data.eventName }}</h1>
-        <h2 class="sub-heading">Duration: {{ event_data.duration }} hours | Photo Limit: {{ event_data.photos }}</h2>
+        {% for event in event_data %}
+        <h1 class="header-title">{{ event.eventName }}</h1>
+        <h2 class="sub-heading">Duration: {{ event.duration }} hours | Photo Limit: {{ event.photos }}</h2>
          
         <div class="admin-details">
-            <p>Admin: {{ event_data.adminName }}</p>
-            <p>Date and Time of Creation: {{ event_data.createdOn }}</p>
+            <p>Host: {{ event.hostName }}</p>
+            <p>Date and Time of Creation: {{ event.createdOn }}</p>
         </div>
-
         <div>
             <canvas id="qrcode"></canvas>
         </div>
@@ -162,9 +162,10 @@
         </script>
       
         <div class="open-gallery-button">
-                <a href="/{{ username }}/gallery" class="primary-btn">Open Gallery</a>
+                <a href="/{{ username }}/gallery/" class="primary-btn">Open Gallery</a>
         </div>
         <button id="click-pictures-button" class="primary-btn">Click Pictures!</button>
+        {% endfor %}
     {% else %}
         <p>No event data available.</p>
     {% endif %}

@@ -8,11 +8,18 @@ import os
 import time
 import webbrowser
 
+UPLOAD_FOLDER = "static/uploads/"
+
+# Check if the directory exists, create it if necessary
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
 app = Flask(__name__, static_url_path='/static')
 app.config["SECRET_KEY"] = "SECRET_KEY"
 app.config["UPLOAD_FOLDER"] = "static/uploads/"
 app.config["MONGO_DBNAME"] = "one_view"
 app.config["MONGO_URI"] = "mongodb://localhost:27017/one_view"
+
 
 mongo = PyMongo(app)
 ALLOWED_EXTENSIONS = ["png", "jpg", "jpeg"]

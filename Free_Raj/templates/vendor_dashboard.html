@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vendor Dashboard</title>
+</head>
+<body>
+    <h1>Welcome, Vendor!</h1>
+    
+    <!-- Analytics Section -->
+    <div id="analytics">
+        <h2>Analytics</h2>
+        <p>Total Orders: {{ total_orders }}</p>
+        #<p>Most Frequently Ordered Item: {{ most_ordered_item }}</p>
+        <!-- Add more analytics data as needed -->
+    </div>
+    
+    <!-- Current and Completed Orders Section -->
+    <div id="orders">
+        <div id="current-orders">
+            <h2>Current Orders</h2>
+            <div class="order-list">
+                {% for order in current_orders %}
+                    <p>{{ order }}</p>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div id="completed-orders">
+            <h2>Completed Orders</h2>
+            <div class="order-list">
+                {% for order in completed_orders %}
+                    <p>{{ order }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Earnings Section -->
+    <div id="earnings">
+        <h2>Earnings</h2>
+        <p>Total Earnings: ${{ total_earnings }}</p>
+        <!-- Add more earnings data as needed -->
+    </div>
+</body>
+</html>

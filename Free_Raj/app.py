@@ -62,6 +62,24 @@ def vendor_login():
     
     return render_template("vendor_login.html")
 
+@app.route("/vendor_dashboard")
+def vendor_dashboard():
+    # Retrieve analytics data
+    total_orders = orders_collection.count_documents({})
+    # You can calculate 'most_ordered_item' here
+
+    # Retrieve current and completed orders
+    current_orders = orders_collection.find({"status": "open"})
+    completed_orders = orders_collection.find({"status": "completed"})
+
+    # Calculate earnings
+    # You can calculate 'total_earnings' here
+
+    return render_template("vendor_dashboard.html", total_orders=total_orders,
+                          # most_ordered_item=most_ordered_item, current_orders=current_orders,
+                           #completed_orders=completed_orders, total_earnings=total_earnings)
+    )
+
 @app.route("/", methods=["GET", "POST"])
 def login():
     if request.method == "POST":

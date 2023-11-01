@@ -154,59 +154,58 @@
             background-color: #ff6666;
         }
     </style>
-</head>
-<body>
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <h1><a href="/admin" style="text-decoration: none; color: inherit;">Project One View</a></h1>
+    </head>
+    <body>
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h1><a href="/{{ username }}/admin" style="text-decoration: none; color: inherit;">Project One View</a></h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/{{ username }}/new_event">New Event</a></li>
+                <li><a href="/{{ username }}/past_event">Past Events</a></li>
+                <li><a href="/{{ username }}/ongoing_event">Ongoing Events</a></li>
+            </ul>
         </div>
-        <ul class="nav-links">
-            <li><a href="/new_event">New Event</a></li>
-            <li><a href="/past_event">Past Events</a></li>
-            <li><a href="/ongoing_event" class="active">Ongoing Events</a></li>
-        </ul>
-    </div>
-    <div class="content">
-    <button id="back-button">Back to ongoing events</button>
-        <div class="container">
-            <div id="image-gallery">
-            {% for image in gallery %}
-                {% if image %}
-                    <div class="image-card">
-                        <img src="{{ url_for('static', filename='uploads/' + image.filename) }}" alt="Image">
-                        <button class="delete-button" data-image-id="{{ image._id }}">Delete</button>
-                    </div>
-                {% else %}
-                    <p>No images clicked yet! Click some photos before you can view them.</p>
-                {% endif %}
-            {% endfor %}
-        </div>
+        <div class="content">
+            <button id="back-button">Back to ongoing events</button>
+            <div class="container">
+                <div id="image-gallery">
+                    {% for image in gallery %}
+                        {% if image %}
+                            <div class="image-card">
+                                <img src="{{ url_for('static', filename='uploads/' + image.filename) }}" alt="Image">
+                                <button class="delete-button" data-image-id="{{ image._id }}">Delete</button>
+                            </div>
+                        {% else %}
+                            <p>No images clicked yet! Click some photos before you can view them.</p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
-    </div>
 
-    <script>
-        const backButton = document.getElementById('back-button');
-        backButton.addEventListener('click', () => {
-            window.location.href = "/ongoing_event";
-        });
+        <script>
+            const backButton = document.getElementById('back-button');
+            backButton.addEventListener('click', () => {
+                window.location.href = "/{{ username }}/ongoing_event";
+            });
 
-        document.querySelectorAll('.delete-button').forEach((button) => {
-            button.addEventListener('click', () => {
-                const imageId = button.getAttribute('data-image-id');
-                fetch(`/delete_image/${imageId}`, {
-                    method: 'DELETE',
-                })
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log(data.message);
-                    button.parentElement.remove();
-                })
-                .catch((error) => {
-                    console.error('Error deleting image:', error);
+            document.querySelectorAll('.delete-button').forEach((button) => {
+                button.addEventListener('click', () => {
+                    const imageId = button.getAttribute('data-image-id');
+                    fetch(`/delete_image/${imageId}`, {
+                        method: 'DELETE',
+                    })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log(data.message);
+                        button.parentElement.remove();
+                    })
+                    .catch((error) => {
+                        console.error('Error deleting image:', error);
+                    });
                 });
             });
-        });
-    </script>
-</body>
+        </script>
+    </body>
 </html>

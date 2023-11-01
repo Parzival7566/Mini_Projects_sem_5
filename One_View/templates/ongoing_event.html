@@ -125,30 +125,47 @@
 <body>
     <div class="sidebar">
         <div class="sidebar-header">
-            <h1><a href="/admin" style="text-decoration: none; color: inherit;">Project One View</a></h1>
+            <h1><a href="/{{ username }}/admin" style="text-decoration: none; color: inherit;">Project One View</a></h1>
         </div>
         <ul class="nav-links">
-            <li><a href="/new_event">New Event</a></li>
-            <li><a href="/past_event">Past Events</a></li>
-            <li><a href="/ongoing_event" class="active">Ongoing Events</a></li>
-        </ul>
+        <li><a href="/{{ username }}/new_event">New Event</a></li>
+        <li><a href="/{{ username }}/past_event">Past Events</a></li>
+        <li><a href="/{{ username }}/ongoing_event">Ongoing Events</a></li>
+    </ul>
     </div>
     <div class="content">
     {% if event_data %}
-        <h1 class="header-title">{{ event_data.eventName }}</h1>
-        <h2 class="sub-heading">Duration: {{ event_data.duration }} hours | Photo Limit: {{ event_data.photos }}</h2>
+        {% for event in event_data %}
+        <h1 class="header-title">{{ event.eventName }}</h1>
+        <h2 class="sub-heading">Duration: {{ event.duration }} hours | Photo Limit: {{ event.photos }}</h2>
          
         <div class="admin-details">
-            <p>Admin: {{ event_data.adminName }}</p>
-            <p>Date and Time of Creation: {{ event_data.createdOn }}</p>
+            <p>Host: {{ event.hostName }}</p>
+            <p>Date and Time of Creation: {{ event.createdOn }}</p>
         </div>
-
-        <img src="{{ event_data.qr_code }}" alt="QR Code">
-
+        <div>
+            <canvas id="qrcode"></canvas>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/qrious"></script>
+        <script>
+            var canvas = document.getElementById("qrcode");
+          
+            var fixedLink = "http://127.0.0.1:5000/{{ username }}/ongoing_event"; // Your fixed link
+        
+            var qr = new QRious({
+                element: canvas,
+                value: fixedLink,
+                size: 128,
+                background: "white",    // Set the foreground color (blue)
+                foreground: "navy" // Set the background color (light blue)
+            });
+        </script>
+      
         <div class="open-gallery-button">
-                <a href="/gallery" class="primary-btn">Open Gallery</a>
+                <a href="/{{ username }}/gallery/" class="primary-btn">Open Gallery</a>
         </div>
         <button id="click-pictures-button" class="primary-btn">Click Pictures!</button>
+        {% endfor %}
     {% else %}
         <p>No event data available.</p>
     {% endif %}
@@ -166,7 +183,7 @@
         if (currentPhotos >= photoLimit) {
             alert(`You have reached the maximum limit of ${photoLimit} photographs.`);
         } else {
-            window.location.href = "/camera_main";
+            window.location.href = "/camera_main" ;
         }
     });
 </script>

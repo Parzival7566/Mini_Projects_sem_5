@@ -13,7 +13,15 @@ students_collection = mongo.db["students"]
 menu_collection = mongo.db["menu"]
 orders_collection = mongo.db["orders"]
 cart=mongo.db["cart"]
-vendor_colection=mongo.db["vendor"]
+vendor_collection=mongo.db["vendor"]
+
+vendor_collection.drop()
+
+vendor_data = [
+    {"username": "freeraj", "password": "1234"}
+]
+
+vendor_collection.insert_many(vendor_data)
 
 # Sample menu data
 sample_menu = [
@@ -35,6 +43,24 @@ if menu_collection.count_documents({}) == 0:
     menu_collection.delete_many({})
     # Populate the menu data
     menu_collection.insert_many(sample_menu)
+
+@app.route("/vendor_login", methods=["GET", "POST"])
+def vendor_login():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+        
+        # Check the provided username and password against data in the "vendors" collection
+        vendor = vendor_collection.find_one({"username": username, "password": password})
+        
+        if vendor:
+            # Redirect to the vendor dashboard upon successful login
+            return redirect(url_for("vendor_dashboard"))
+        else:
+            error_message = "Invalid username or password. Please try again."
+            return render_template("vendor_login.html", error=error_message)
+    
+    return render_template("vendor_login.html")
 
 @app.route("/", methods=["GET", "POST"])
 def login():

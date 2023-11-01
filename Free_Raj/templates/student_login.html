@@ -11,7 +11,12 @@
         <br><br>
         Password: <input type="password" name="password" required>
         <br><br>
-        <input type="submit" value="Login">
+        <input type="submit" value="Login as Student">
+    </form>
+
+    <!-- Button to login as a vendor -->
+    <form action="/vendor_login" method="get">
+        <input type="submit" value="Login as Vendor">
     </form>
 
     {% if error %}

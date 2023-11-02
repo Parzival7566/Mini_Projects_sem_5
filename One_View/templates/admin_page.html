@@ -3,183 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Project One View</title>
-</head>
+    <title>Home - Project One View</title>
     <style>
         body, html {
             margin: 0;
             padding: 0;
-        }
-
-        /* Background and typography */
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(to right, #007bff, #00bfff); /* Gradient background */
-            color: #fff;
-        }
-
-        /* Sidebar styles */
-        .sidebar {
-            background-color: rgba(0, 0, 0, 0.7); /* Slightly transparent black background */
-            color: #fff;
-            width: 250px;
             height: 100%;
-            position: fixed;
-            overflow: auto;
-            box-shadow: 1px 0px 3px rgba(0, 0, 0, 0.2);
+            background: url('https://wallpapercave.com/wp/wp2222403.jpg') center/cover no-repeat; /* Use your own blurred image */
+            font-family: 'Arial', sans-serif;
         }
 
-        .sidebar-header {
-            padding: 20px;
-            text-align: center;
-            font-size: 1.5rem;
-        }
-
-        .nav-links {
-            list-style-type: none;
-            padding: 0;
-            margin-top: 30px;
-        }
-
-        .nav-links li {
-            padding: 15px;
-            text-align: center;
-        }
-
-        .nav-links a {
-            color: #fff;
-            text-decoration: none;
-            display: block;
-            transition: 0.3s;
-        }
-
-        .nav-links a.active {
-            background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent white background */
-            border-right: 5px solid #fff; /* White right border for active link */
-            padding-right: 10px;
-        }
-
-        .nav-links a:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-right: 5px solid #fff;
-            padding-right: 10px;
-        }
-
-        /* Content styles */
-        .content {
-            margin-left: 250px;
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px; /* Rounded corners */
-        }
-
-        header {
-            text-align: center;
-            color: #007bff; /* Accent color */
-        }
-
-        #upload-button:hover {
-            background-color: #00bfff; /* Lighter blue on hover */
-        }
-
-        #image-gallery {
+        .container {
             display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
+            height: 100vh;
         }
 
-        /* Add your provided code below */
-        /* Image gallery styles */
-        #image-gallery {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        .image-card {
-            max-width: 300px;
-            background-color: #fff;
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        .header-title {
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            padding: 20px;
             border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .image-card img {
-            width: 100%;
-            height: auto;
-        }
-
-        /* Action buttons styles */
-        .action-buttons {
+            backdrop-filter: blur(10px); /* Adds a blur effect */
             text-align: center;
-            margin-top: 30px;
         }
 
-        .secondary-btn {
-            background-color: transparent;
-            color: #007bff;
-            border: 2px solid #007bff;
-            padding: 10px 20px;
-            margin: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .secondary-btn:hover {
-            background-color: #007bff;
+        .header-title h2 {
+            font-size: 36px;
+            margin: 0;
             color: #fff;
         }
-        /* End of your provided code */
 
-        /* Button styles */
+        .header-title p {
+            font-size: 18px;
+            margin: 0;
+            color: #ccc;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
         .primary-btn {
-            background-color: #007bff;
+            background-color: black;
             color: #fff;
             border: none;
             padding: 10px 20px;
             cursor: pointer;
             border-radius: 5px;
             font-weight: bold;
-            transition: background-color 0.3s ease;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            margin: 10px;
+            display: inline-block;
         }
 
         .primary-btn:hover {
             background-color: #00bfff;
         }
 
+        .box {
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            padding: 5px;
+            text-align: center;
+            margin: 10px;
+        }
+
+        .user-box {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        .username {
+            font-weight: bold;
+        }
+
+        .logout-button {
+            position: absolute;
+            top: 70px;
+            right: 20px;
+            background-color: #f00;
+        }
+
+        .how-to-use-box {
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .how-to-use-title {
+            font-size: 24px;
+            color: #fff;
+            font-family: Bradley Hand, cursive;
+        }
+
+        .how-to-use-steps {
+            font-size: 15px;
+            color: #ccc;
+            line-height: 1.5;
+        }
     </style>
+</head>
 <body>
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <h1><a href="/admin" style="text-decoration: none; color: inherit;">Project One View</a></h1>
+    <div class="container">
+        <a href="/logout" class="primary-btn logout-button">Logout</a>
+        <div class="user-box">
+            Logged in as <span class="username">{{ username }}</span>
         </div>
-        <ul class="nav-links">
-            <li><a href="/new_event">New Event</a></li>
-            <li><a href="/past_event">Past Events</a></li>
-            <li><a href="/ongoing_event">Ongoing Events</a></li>
-        </ul>
-    </div>
-    <div class="content">
-        <header>
-            <div class="header-title">
-                <h2>Your Events</h2>
-                <p>One place to view your memories</p>
+        <div class="header-title">
+            <h2>ONE VIEW</h2>
+            <p>- One place to view your memories -</p>
+        </div>
+        <div class="button-container">
+            <div class="box">
+                <a href="/ongoing_event" class="primary-btn">Ongoing Event</a>
             </div>
-        </header>
-        <main>
-            <div id="image-gallery">
-                <!-- Display uploaded images here -->
+            <div class="box">
+                <a href="/new_event" class="primary-btn">New Event</a>
             </div>
-            <div class="action-buttons">
-                <button id="view-images-button" class="secondary-btn">View Images</button>
-                <button id="manage-pictures-button" class="secondary-btn">Manage Pictures</button>
+            <div class="box">
+                <a href="/past_event" class="primary-btn">Past Event</a>
             </div>
-        </main>
+        </div>
+        <div class="how-to-use-box">
+            <div class="how-to-use-title">How to Use?</div>
+            <div class="how-to-use-steps">
+                Step 1: Create a new Event.
+                <br>
+                Step 2: Share your Event details with friends.
+                <br>
+                Step 3: Upload pictures and create memories together :)
+            </div>
+        </div>
     </div>
 </body>
 </html>

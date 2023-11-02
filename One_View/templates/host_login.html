@@ -3,17 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Host Login - Project One View</title>
+    <title>Host Login</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-image: url('https://i.pinimg.com/originals/05/04/64/050464f8af825ac6db61d50a971fd449.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        div {
+            text-align: center;
+            padding: 50px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px black;
+            backdrop-filter: blur(15px); /* Reduced opacity of blur */
+            background-color: rgba(255, 255, 255, 0.6); /* Semi-transparent white background */
+            width: 100%;
+            max-width: 380px;
+            animation: fadeIn 2s;
+        }
+
+        h1 {
+            color: black;
+            text-shadow: 2px 0.5px DarkGrey;
+            font-family: Lucida Handwriting, cursive;
+            font-size: 50px;
+        }
+
+        button#loginButton {
+            background-color: white;
+            color: black;
+            border: none;
+            padding: 10px 30px; /* Increase button padding */
+            margin: 20px 0; /* Add margin below the button */
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 18px;
+        }
+
+        button#loginButton:hover {
+            background-color: LavenderBlush;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            font-size: 20px; /* Increased font size */
+            margin-top: 20px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px; /* Increased input box size */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 20px; /* Increased font size */
+        }
+
+        a {
+            text-decoration: none;
+            color: blue;
+            font-family: Arial, sans-serif;
+            font-size: 20px;
+        }
+
+        h2 {
+            color: black;
+            text-shadow: 2px 0.5px DarkGrey;
+            font-size: 30px;
+        }
+
+        p {
+            color: black;
+            text-shadow: 2px 0.5px DarkGrey;
+            font-size: 22px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Host Login</h1>
-    <form action="/host_login" method="post">
-        <label for="username">Username:</label><br>
-        <input type="text" id="username" name="username"><br>
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password"><br>
-        <input type="submit" value="Login">
-    </form>
-    <p>Or <a href="/host_signup">Sign Up</a></p>
+    <div id="hostLoginForm" style="display: block;">
+        <h2>HOST LOGIN</h2>
+        <form action="/host_login" method="post">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button id="loginButton" type="submit">Login</button> <!-- Adjusted button -->
+        </form>
+        <p>Or <a href="/host_signup">Sign Up</a></p>
+    </div>
 </body>
 </html>

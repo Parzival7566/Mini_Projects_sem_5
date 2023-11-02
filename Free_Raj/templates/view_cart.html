@@ -5,20 +5,42 @@
 </head>
 <body>
     <h1>Cart Items</h1>
+    {% if cart_items %}
     <table>
         <tr>
             <th>Item</th>
             <th>Quantity</th>
             <th>Preparation Time</th>
+            <th>Action</th>
         </tr>
-        {% for i in range(items|length) %}
+        {% for cart_item in cart_items %}
+        {% for index in range(cart_item["items"]|length) %}
         <tr>
-            <td>{{ items[i] }}</td>
-            <td>{{ quantities[i] }}</td>
-            <td>{{ preparation_times[i] }}</td>
+            <td>{{ cart_item["items"][index] }}</td>
+            <td>{{ cart_item["quantities"][index] }}</td>
+            <td>{{ cart_item["preparation_times"][index] }}</td>
+            <td>
+                <form method="POST" action="{{ url_for('view_cart', prn=student.prn) }}">
+                    <input type="hidden" name="item_id" value="{{ cart_item['_id'] }}">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
         </tr>
+        {% endfor %}
         {% endfor %}
     </table>
     <a href="{{ url_for('payment_gateway', prn=student.prn) }}">Checkout</a>
+    <a href="{{ url_for('dashboard', prn=student.prn) }}">Go back to dashboard</a>
+    
+    {% else %}
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="flash-message">
+        {{ messages[0] }}
+        </div>
+        {% endif %}
+        {% endwith %}
+        <a href="{{ url_for('dashboard', prn=student.prn) }}">Go back to dashboard</a>
+    {% endif %}
 </body>
 </html>

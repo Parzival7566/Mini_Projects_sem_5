@@ -1,26 +1,28 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Payment Gateway</title>
-</head>
-<body>
-    <h1>Cart Items</h1>
-    <table>
-        <tr>
+    <head>
+        <title>Payment Gateway</title>
+    </head>
+    <body>
+        <h1>Cart Items</h1>
+        <table>
+            <tr>
             <th>Item</th>
             <th>Quantity</th>
             <th>Preparation Time</th>
-        </tr>
-        {% for i in range(items|length) %}
-        <tr>
-            <td>{{ items[i] }}</td>
-            <td>{{ quantities[i] }}</td>
-            <td>{{ preparation_times[i] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    <form method="POST">
+            </tr>
+            {% for cart_item in cart_items %}
+                {% for index in range(cart_item["items"]|length) %}
+                <tr>
+                <td>{{ cart_item["items"][index] }}</td>
+                <td>{{ cart_item["quantities"][index] }}</td>
+                <td>{{ cart_item["preparation_times"][index] }}</td>
+                </tr>
+                {% endfor %}
+            {% endfor %}
+        </table>
+        <form method="POST">
         <input type="submit" value="Pay">
-    </form>
-</body>
+        </form>
+    </body>
 </html>

@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_pymongo import PyMongo
+from bson.objectid import ObjectId
 import webbrowser
 
 app = Flask(__name__)
@@ -77,6 +78,7 @@ def login():
 @app.route("/create_account", methods=["GET", "POST"])
 def create_account():
     if request.method == "POST":
+        uname=request.form["uname"]
         prn = request.form["prn"]
         password = request.form["password"]
         student = students_collection.find_one({"prn": prn})
@@ -85,6 +87,7 @@ def create_account():
             return render_template("create_account.html", error=error_message)
         else:
             student_data = {
+                "uname": uname, 
                 "prn": prn,
                 "password": password
             }
@@ -127,17 +130,18 @@ def place_order():
 
     return redirect(url_for("dashboard", prn=prn))
 
-@app.route("/view_cart", methods=["GET"])
+@app.route("/view_cart", methods=["GET", "POST"])
 def view_cart():
     prn = request.args.get("prn")
     student = students_collection.find_one({"prn": prn})
     if student:
-        # Fetch cart items from MongoDB based on student's PRN
-        cart_items = list(cart.find({"student_prn": prn}))  # Convert cursor to list
-        items = [item["items"] for item in cart_items]
-        quantities = [item["quantities"] for item in cart_items]
-        preparation_times = [item["preparation_times"] for item in cart_items]
-        return render_template("view_cart.html", student=student, items=items, quantities=quantities, preparation_times=preparation_times)
+        if request.method == "POST":
+            item_id = request.form.get("item_id")
+            cart.delete_one({"_id": ObjectId(item_id)})
+            return redirect(url_for("view_cart", prn=prn))
+        else:
+            cart_items = list(cart.find({"student_prn": prn}))
+            return render_template("view_cart.html", student=student, cart_items=cart_items)
     else:
         error_message = "Student data not found."
         return render_template("student_login.html", error=error_message)
@@ -146,22 +150,28 @@ def view_cart():
 def payment_gateway():
     prn = request.args.get("prn")
     student = students_collection.find_one({"prn": prn})
+    cart_items = list(cart.find({"student_prn": prn}))
     if student:
         if request.method == "POST":
-            # Fetch cart items from MongoDB based on student's PRN
-            cart_items = list(cart.find({"student_prn": prn}))  # Convert cursor to list
+            if not cart_items:
+                flash("Cannot checkout an empty cart!")
+                return redirect(url_for("dashboard", prn=prn))
+            
             for item in cart_items:
                 item["status"] = "open"
                 orders_collection.insert_one(item)
             cart.delete_many({"student_prn": prn})
             return redirect(url_for("dashboard", prn=prn))
         else:
-            # Fetch cart items from MongoDB based on student's PRN
-            cart_items = list(cart.find({"student_prn": prn}))  # Convert cursor to list
-            items = [item["items"] for item in cart_items]
-            quantities = [item["quantities"] for item in cart_items]
-            preparation_times = [item["preparation_times"] for item in cart_items]
-            return render_template("payment_gateway.html", student=student, items=items, quantities=quantities, preparation_times=preparation_times)
+            items = []
+            quantities = []
+            preparation_times = []
+            for cart_item in cart_items:
+                for index in range(len(cart_item["items"])):
+                    items.append(cart_item["items"][index])
+                    quantities.append(cart_item["quantities"][index])
+                    preparation_times.append(cart_item["preparation_times"][index])
+            return render_template("payment_gateway.html", student=student, cart_items=cart_items, items=items, quantities=quantities, preparation_times=preparation_times)
     else:
         error_message = "Student data not found."
         return render_template("student_login.html", error=error_message)

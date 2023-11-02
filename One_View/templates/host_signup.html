@@ -3,10 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Host Signup - Project One View</title>
+    <title>Host Signup</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-image: url('https://i.pinimg.com/originals/05/04/64/050464f8af825ac6db61d50a971fd449.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        div {
+            text-align: center;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px black;
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            width: 100%;
+            max-width: 380px;
+            animation: fadeIn 2s;
+        }
+
+        h1 {
+            color: black;
+            text-shadow: 2px 0.5px DarkGrey;
+            font-family: Lucida Handwriting, cursive;
+            font-size: 50px;
+        }
+
+        button {
+    		background-color: white;
+    		color: black;
+    		border: none;
+    		padding: 20px 40px;
+    		margin: 5px;
+    		border-radius: 5px;
+    		cursor: pointer;
+    		display: inline-block; /* Change from 'none' to 'inline-block' to make the buttons visible */
+    		font-size: 18px;
+}
+
+        button:hover {
+            background-color: LavenderBlush;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+            font-family: Arial, sans-serif;
+            font-size: 20px;
+        }
+
+        h2 {
+            color: black;
+            text-shadow: 2px 0.5px DarkGrey;
+        }
+        
+        p {
+            color: black;
+            text-shadow: 2px 0.5px DarkGrey;
+            font-size: 30px;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Host Signup</h1>
+    <div id="hostRegisterForm" style="display: block;">
+    <h2>Host Signup</h2>
     <form action="/host_signup" method="post">
         <label for="username">Username:</label><br>
         <input type="text" id="username" name="username"><br>
@@ -14,5 +88,6 @@
         <input type="password" id="password" name="password"><br>
         <input type="submit" value="Sign Up">
     </form>
+    </div>
 </body>
 </html>

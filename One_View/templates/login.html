@@ -3,11 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Project One View</title>
+    <title>Login Page</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-image: url('https://i.pinimg.com/originals/05/04/64/050464f8af825ac6db61d50a971fd449.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        div {
+            text-align: center;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px black;
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            width: 100%;
+            max-width: 380px;
+            animation: fadeIn 2s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        h1 {
+            color: black;
+            text-shadow: 2px 0.5px DarkGrey;
+            font-family: Lucida Handwriting, cursive;
+            font-size: 50px;
+        }
+
+        button {
+    		background-color: white;
+    		color: black;
+    		border: none;
+    		padding: 20px 40px;
+    		margin: 5px;
+    		border-radius: 5px;
+    		cursor: pointer;
+    		display: inline-block; /* Change from 'none' to 'inline-block' to make the buttons visible */
+    		font-size: 18px;
+}
+
+        button:hover {
+            background-color: LavenderBlush;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+            font-family: Arial, sans-serif;
+            font-size: 20px;
+        }
+
+        h2 {
+            color: black;
+            text-shadow: 2px 0.5px DarkGrey;
+        }
+        
+        p {
+            color: black;
+            text-shadow: 2px 0.5px DarkGrey;
+            font-size: 30px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Are you a host or an attendee?</h1>
+
+<div id="initialDiv">
+     <img src="static/images/logo.png" alt="One View Logo">
+</div>
+
+
+<div id="optionsDiv" style="display: none;">
+    <p>Are you....</p>
     <button onclick="location.href='/host_login'">Host</button>
     <button onclick="location.href='/attendee_page'">Attendee</button>
+</div>
+
+
+<script>
+    setTimeout(function () {
+        var initialDiv = document.getElementById("initialDiv");
+        var optionsDiv = document.getElementById("optionsDiv");
+
+        if (initialDiv && optionsDiv) {
+            initialDiv.style.display = "none";
+            optionsDiv.style.display = "block";
+        }
+    }, 2000); // Adjust the delay as needed
+
+</script>
 </body>
 </html>
+

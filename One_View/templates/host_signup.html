@@ -19,11 +19,11 @@
 
         div {
             text-align: center;
-            padding: 20px;
+            padding: 50px;
             border-radius: 5px;
             box-shadow: 0px 0px 10px black;
-            backdrop-filter: blur(10px);
-            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            backdrop-filter: blur(15px); /* Reduced opacity of blur */
+            background-color: rgba(255, 255, 255, 0.6); /* Semi-transparent white background */
             width: 100%;
             max-width: 380px;
             animation: fadeIn 2s;
@@ -37,16 +37,16 @@
         }
 
         button {
-    		background-color: white;
-    		color: black;
-    		border: none;
-    		padding: 20px 40px;
-    		margin: 5px;
-    		border-radius: 5px;
-    		cursor: pointer;
-    		display: inline-block; /* Change from 'none' to 'inline-block' to make the buttons visible */
-    		font-size: 18px;
-}
+            background-color: white;
+            color: black;
+            border: none;
+            padding: 10px 30px; /* Increase button padding */
+            margin: 20px 0; /* Add margin below the button */
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 18px;
+        }
 
         button:hover {
             background-color: LavenderBlush;
@@ -55,12 +55,22 @@
         label {
             display: block;
             text-align: left;
-            
+            font-size: 20px; /* Increased font size */
+            margin-top: 20px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px; /* Increased input box size */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 20px; /* Increased font size */
         }
 
         a {
             text-decoration: none;
-            color: black;
+            color: blue;
             font-family: Arial, sans-serif;
             font-size: 20px;
         }
@@ -68,26 +78,26 @@
         h2 {
             color: black;
             text-shadow: 2px 0.5px DarkGrey;
+            font-size: 30px;
         }
-        
+
         p {
             color: black;
             text-shadow: 2px 0.5px DarkGrey;
-            font-size: 30px;
+            font-size: 22px;
         }
     </style>
 </head>
-
 <body>
     <div id="hostRegisterForm" style="display: block;">
-    <h2>Host Signup</h2>
-    <form action="/host_signup" method="post">
-        <label for="username">Username:</label><br>
-        <input type="text" id="username" name="username"><br>
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password"><br>
-        <input type="submit" value="Sign Up">
-    </form>
+        <h2>Host Signup</h2>
+        <form action="/host_signup" method="post">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password">
+            <button type="submit">Sign Up</button>
+        </form>
     </div>
 </body>
 </html>

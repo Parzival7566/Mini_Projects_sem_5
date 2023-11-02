@@ -46,16 +46,16 @@
         }
 
         button {
-    		background-color: white;
-    		color: black;
-    		border: none;
-    		padding: 20px 40px;
-    		margin: 5px;
-    		border-radius: 5px;
-    		cursor: pointer;
-    		display: inline-block; /* Change from 'none' to 'inline-block' to make the buttons visible */
-    		font-size: 18px;
-}
+            background-color: white;
+            color: black;
+            border: none;
+            padding: 20px 40px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block; /* Change from 'none' to 'inline-block' to make the buttons visible */
+            font-size: 18px;
+        }
 
         button:hover {
             background-color: LavenderBlush;
@@ -64,7 +64,6 @@
         label {
             display: block;
             text-align: left;
-            
         }
 
         a {
@@ -78,27 +77,30 @@
             color: black;
             text-shadow: 2px 0.5px DarkGrey;
         }
-        
+
         p {
             color: black;
             text-shadow: 2px 0.5px DarkGrey;
             font-size: 30px;
+        }
+
+        img {
+            max-width: 100%; /* Adjust the maximum width to fit into the box */
+            max-height: 100%; /* Adjust the maximum height to fit into the box */
         }
     </style>
 </head>
 <body>
 
 <div id="initialDiv">
-     <img src="static/images/logo.png" alt="One View Logo">
+    <img src="static/images/logo.png" alt="One View Logo">
 </div>
-
 
 <div id="optionsDiv" style="display: none;">
     <p>Are you....</p>
     <button onclick="location.href='/host_login'">Host</button>
     <button onclick="location.href='/attendee_page'">Attendee</button>
 </div>
-
 
 <script>
     setTimeout(function () {
@@ -107,11 +109,9 @@
 
         if (initialDiv && optionsDiv) {
             initialDiv.style.display = "none";
-            optionsDiv.style.display = "block";
+            optionsDiv.style display = "block";
         }
     }, 2000); // Adjust the delay as needed
-
 </script>
 </body>
 </html>
-

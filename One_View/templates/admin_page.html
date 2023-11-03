@@ -9,7 +9,7 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            background: url('https://wallpapercave.com/wp/wp2222403.jpg') center/cover no-repeat; /* Use your own blurred image */
+            background: url('https://i.pinimg.com/originals/62/01/e4/6201e4f9237300798c735225a5094a00.jpg') center/cover no-repeat; /* Use your own blurred image */
             font-family: 'Arial', sans-serif;
         }
 
@@ -22,33 +22,36 @@
         }
 
         .header-title {
-            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent background */
             padding: 20px;
             border-radius: 10px;
-            backdrop-filter: blur(10px); /* Adds a blur effect */
+            backdrop-filter: blur(15px); /* Adds a blur effect */
             text-align: center;
         }
 
         .header-title h2 {
-            font-size: 36px;
-            margin: 0;
-            color: #fff;
+    	font-size: 36px;
+    	margin: 0;
+    	color: #6B5B95;
+        font-family: Big Caslon, serif;
         }
 
         .header-title p {
             font-size: 18px;
             margin: 0;
-            color: #ccc;
+            color: Grey;
+            font-family: Lucida Handwriting, cursive;
         }
 
         .button-container {
             display: flex;
             justify-content: center;
             margin-top: 20px;
+            /*backdrop-filter: blur(15px);*/
         }
 
         .primary-btn {
-            background-color: black;
+            background-color: lavenderBlush;
             color: #fff;
             border: none;
             padding: 10px 20px;
@@ -71,6 +74,7 @@
             padding: 5px;
             text-align: center;
             margin: 10px;
+            backdrop-filter: blur(15px);
         }
 
         .user-box {
@@ -82,22 +86,23 @@
             padding: 10px;
             font-size: 14px;
         }
-
+        
         .username {
             font-weight: bold;
         }
 
         .logout-button {
             position: absolute;
-            top: 70px;
+            top: 60px;
             right: 20px;
-            background-color: #f00;
+            background-color: Red;
+            padding: 4px 16px;
         }
 
         .how-to-use-box {
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(255, 255, 255, 0.5);
             border-radius: 20px;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
             padding: 30px;
             text-align: center;
             margin-top: 20px;
@@ -105,15 +110,22 @@
 
         .how-to-use-title {
             font-size: 24px;
-            color: #fff;
-            font-family: Bradley Hand, cursive;
+            color: #6B5B95;
+            font-family: Lucida Handwriting, cursive;
         }
 
         .how-to-use-steps {
-            font-size: 15px;
-            color: #ccc;
+            font-size: 17px;
+            color: #333;
+            font-family: "Raleway", Arial, sans-serif;
             line-height: 1.5;
         }
+        
+        .box a {
+        		color: #6B5B95;
+                }
+                
+  
     </style>
 </head>
 <body>
@@ -127,14 +139,17 @@
             <p>- One place to view your memories -</p>
         </div>
         <div class="button-container">
+        
             <div class="box">
-                <a href="/{{ username }}/ongoing_event" class="primary-btn">Ongoing Event</a>
+                <a href="/ongoing_event" class="primary-btn">Ongoing Event</a>
             </div>
             <div class="box">
-                <a href="/{{ username }}/new_event" class="primary-btn">New Event</a>
+           
+                <a href="/new_event" class="primary-btn">New Event</a>
             </div>
             <div class="box">
-                <a href="/{{ username }}/past_event" class="primary-btn">Past Event</a>
+            
+                <a href="/past_event" class="primary-btn">Past Event</a>
             </div>
         </div>
         <div class="how-to-use-box">

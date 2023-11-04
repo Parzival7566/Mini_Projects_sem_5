@@ -146,12 +146,13 @@ def new_event(username):
 def ongoing_event(username):
     # Access the username from the session
     session_username = session.get('username')
+    event_status = event_data.find_one({'status': 'ongoing'})
     if session_username and session_username == username:
         user = host_details.find_one({'username': session_username})
         if user:
             # Fetch the ongoing events for the logged-in user only
             ongoing_events = list(event_data.find({'hostName': session_username}))
-            if ongoing_events == []:
+            if ongoing_events == [] and not event_status:
                 return render_template('ongoing_event.html', username=session_username)
             else:
                 return render_template('ongoing_event.html', event_data=ongoing_events, username=session_username)

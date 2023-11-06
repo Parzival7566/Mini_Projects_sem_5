@@ -37,9 +37,8 @@
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             margin-bottom: 30px;
-            max-width: 600px;
-            padding: 40px;
-            }
+            
+        }
 
         .container {
             max-width: 600px;
@@ -158,9 +157,6 @@
         document.querySelectorAll('.delete-button').forEach((button) => {
             button.addEventListener('click', () => {
                 const imageId = button.getAttribute('data-image-id');
-                cdocument.querySelectorAll('.delete-button').forEach((button) => {
-            button.addEventListener('click', () => {
-                const imageId = button.getAttribute('data-image-id');
                 const passwordInput = document.createElement('input');
                 passwordInput.type = 'password';
                 passwordInput.placeholder = 'Enter password to delete the image:';
@@ -184,7 +180,7 @@
                 confirmButton.addEventListener('click', () => {
                     const password = passwordInput.value;
                     if (password) {
-                        fetch(`/delete_image/${imageId}`, {
+                        fetch(`/delete_image/{{ imageId }}`, {
                             method: 'DELETE',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -211,7 +207,6 @@
                 });
             });
         });
-    </script>
     </script>
 </body>
 </html>

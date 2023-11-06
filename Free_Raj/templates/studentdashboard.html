@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Dashboard</title>
+</head>
+<body>
+    <h1>Welcome, {{ student["uname"] }}!</h1>
+    <h2>Menu</h2>
+
+    <form action="/place_order" method="post">
+    <input type="hidden" name="prn" value="{{ student["prn"] }}">
+    <ul>
+        {% for item in menu %}
+        <li>
+            <span>{{ item["name"] }}</span>
+            <input type="hidden" name="item" value="{{ item["name"] }}">
+            <input type="number" name="quantity" value="0" min="0">
+            <input type="hidden" name="preparation_time" value="{{ item["preparation_time"] }}">
+            <span>Approx Preparation Time: {{ item["preparation_time"] }}</span>
+            <button type="submit">Add to Cart</button>
+        </li>
+        {% endfor %}
+    </ul>
+</form>
+
+    <script>
+    function showCart() {
+        window.location.href = "/view_cart?prn={{ student['prn'] }}";
+    }
+
+    function checkout() {
+        // Implement checkout logic (e.g., payment processing)
+    }
+</script>
+
+    <!-- View Cart and Checkout buttons -->
+    <button id="view-cart" onclick="showCart()">View Cart</button>
+</body>
+</html>

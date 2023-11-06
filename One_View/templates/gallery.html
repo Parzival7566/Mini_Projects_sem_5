@@ -39,8 +39,6 @@
             margin-bottom: 30px;
             max-width: 600px;
             padding: 40px;
-            display: flex;
-            
             }
 
         .container {
@@ -128,62 +126,6 @@
         .delete-button:hover {
             background-color: #ff6666;
         }
-        
-        
-        
-         #image-gallery {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .image-card {
-            max-width: 300px;
-            background-color: #fff;
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative; /* Add this for animation */
-        }
-
-        .image-card img {
-            width: 100%;
-            height: auto;
-            transition: transform 0.2s; /* Add this for animation */
-        }
-
-        .image-card:hover img {
-            transform: scale(1.1);
-            cursor: zoom-in;
-        }
-
-        /* Additional styles for the popup image */
-        .popup-image-container {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .popup-image {
-            max-width: 80%;
-            max-height: 80%;
-        }
-
-        .close-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 30px;
-            color: #fff;
-            cursor: pointer;
-        }
     </style>
 </head>
 <body>
@@ -210,16 +152,13 @@
             </div>
         </div>
     </div>
-    
-     <!-- Add a popup image container for the gallery -->
-    <div class="popup-image-container" id="popupImage">
-        <span class="close-button" onclick="closeImage()">&#215;</span>
-        <img src="" alt="Popup Image" class="popup-image">
-    </div>
 
     <script>
        // JavaScript code for handling delete button click event
         document.querySelectorAll('.delete-button').forEach((button) => {
+            button.addEventListener('click', () => {
+                const imageId = button.getAttribute('data-image-id');
+                cdocument.querySelectorAll('.delete-button').forEach((button) => {
             button.addEventListener('click', () => {
                 const imageId = button.getAttribute('data-image-id');
                 const passwordInput = document.createElement('input');
@@ -245,7 +184,7 @@
                 confirmButton.addEventListener('click', () => {
                     const password = passwordInput.value;
                     if (password) {
-                        fetch(`/delete_image/{{ imageId }}`, {
+                        fetch(`/delete_image/${imageId}`, {
                             method: 'DELETE',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -268,23 +207,11 @@
                 });
                 
                 cancelButton.addEventListener('click', () => {
-                    passwordContainer remove();
+                    passwordContainer.remove();
                 });
             });
         });
-
-        // Function to show the image in a popup
-        function showImage(imageSrc) {
-            const popupImage = document.getElementById("popupImage");
-            popupImage.querySelector("img").src = imageSrc;
-            popupImage.style.display = "flex";
-        }
-
-        // Function to close the popup image
-        function closeImage() {
-            const popupImage = document.getElementById("popupImage");
-            popupImage.style.display = "none";
-        }
+    </script>
     </script>
 </body>
 </html>

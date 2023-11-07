@@ -2,38 +2,148 @@
 <html>
 <head>
     <title>Student Dashboard</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        html {
+            min-height: 100%;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            background: url('https://d3ui957tjb5bqd.cloudfront.net/images/screenshots/products/12/127/127864/u4vzcvdi8r8rdlfdngpyd2lc9tqjap6omdkfqvia0ph8yr9d6rjwxy4mybjobslh-o.jpg?1402667790');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #333;
+            font-family: Avantgarde, TeX Gyre Adventor, URW Gothic L, sans-serif;
+            font-size: 40px;
+            text-shadow: 2px 2px 4px beige;
+            animation: fadeIn 3s; /* Fade in animation */
+        }
+
+        h2 {
+            color: #555;
+            background-color: beige;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            backdrop-filter: blur(5px); /* Apply a blurred glass effect */
+            margin: 10px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 3s; 
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: beige;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 10px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            backdrop-filter: blur(20px); /* Apply a blurred glass effect */
+            animation: slideIn 2s; /* slide in animation */
+        }
+
+        input[type="number"] {
+            width: 50px;
+            margin: 10px 0;
+        }
+
+        button {
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 20px; /* Increase button size */
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s; /* Add transform transition for animation */
+        }
+
+        button:hover {
+            background-color: #222;
+            box-shadow: 0 0 10px beige;
+            transform: scale(1.1); /* Add a scale effect on hover */
+        }
+
+        #view-cart {
+            margin-top: 20px;
+            animation: slideIn 2s; /* slide in animation */
+        }
+
+        /* Page animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 <body>
     <h1>Welcome, {{ student["uname"] }}!</h1>
     <h2>Menu</h2>
 
     <form action="/place_order" method="post">
-    <input type="hidden" name="prn" value="{{ student["prn"] }}">
-    <ul>
-        {% for item in menu %}
-        <li>
-            <span>{{ item["name"] }}</span>
-            <input type="hidden" name="item" value="{{ item["name"] }}">
-            <input type="number" name="quantity" value="0" min="0">
-            <input type="hidden" name="preparation_time" value="{{ item["preparation_time"] }}">
-            <span>Approx Preparation Time: {{ item["preparation_time"] }}</span>
-            <button type="submit">Add to Cart</button>
-        </li>
-        {% endfor %}
-    </ul>
-</form>
+        <input type="hidden" name="prn" value="{{ student["prn"] }}">
+        <ul>
+            {% for item in menu %}
+            <li>
+                <span>{{ item["name"] }}</span>
+                <span>Approx Preparation Time: {{ item["preparation_time"] }}</span>
+                <input type="hidden" name="item" value="{{ item["name"] }}">
+                <input type="hidden" name="preparation_time" value="{{ item["preparation_time"] }}">
+                <input type="number" name="quantity" value="0" min="0">
+                <button type="submit">Add to Cart</button>
+            </li>
+            {% endfor %}
+        </ul>
+    </form>
 
     <script>
-    function showCart() {
-        window.location.href = "/view_cart?prn={{ student['prn'] }}";
-    }
+        function showCart() {
+            window.location.href = "/view_cart?prn={{ student['prn'] }}";
+        }
 
-    function checkout() {
-        // Implement checkout logic (e.g., payment processing)
-    }
-</script>
+        function checkout() {
+            // Implement checkout logic (e.g., payment processing)
+        }
+    </script>
 
     <!-- View Cart and Checkout buttons -->
-    <button id="view-cart" onclick="showCart()">View Cart</button>
+    <button id="view-cart" onclick="showCart">View Cart</button>
+    
+    <!-- Add Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

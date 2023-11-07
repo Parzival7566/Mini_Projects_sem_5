@@ -1,28 +1,108 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Payment Gateway</title>
-    </head>
-    <body>
-        <h1>Cart Items</h1>
-        <table>
-            <tr>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Payment Gateway</title>
+    <style>
+        html {
+            min-height: 100%;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            background: url('https://th.bing.com/th/id/R.449cc4600b653b6b40cb860deea47415?rik=%2b1dYF3sFcM2pXg&riu=http%3a%2f%2fgelimax.com%2fMain%2fwp-content%2fuploads%2f2021%2f11%2fphoto1636021067-17-e1636237334100-800x533.jpeg&ehk=mUOsu7lAtXK04Cj%2fEqtgda1DSFUCTyKUUhtA0k81Nf0%3d&risl=&pid=ImgRaw&r=0');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            justify-content: center;
+        }
+
+        h1 {
+            color: black;
+            font-family: Avantgarde, TeX Gyre Adventor, URW Gothic L, sans-serif;
+            font-size: 50px;
+            text-shadow: 2px 2px 4px #FFCE54;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px auto;
+            background-color: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+        }
+
+        th {
+            background-color: black;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #FFCE54;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        input[type="submit"] {
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 20px;
+            transition: transform 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #FFCE54;
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>CART ITEMS</h1>
+    <table>
+        <tr>
             <th>Item</th>
             <th>Quantity</th>
             <th>Preparation Time</th>
-            </tr>
-            {% for cart_item in cart_items %}
-                {% for index in range(cart_item["items"]|length) %}
-                <tr>
+        </tr>
+        {% for cart_item in cart_items %}
+            {% for index in range(cart_item["items"]|length) %}
+            <tr>
                 <td>{{ cart_item["items"][index] }}</td>
                 <td>{{ cart_item["quantities"][index] }}</td>
                 <td>{{ cart_item["preparation_times"][index] }}</td>
-                </tr>
-                {% endfor %}
+            </tr>
             {% endfor %}
-        </table>
-        <form method="POST">
+        {% endfor %}
+    </table>
+    <form method="POST">
         <input type="submit" value="Pay">
-        </form>
-    </body>
+    </form>
+</body>
 </html>

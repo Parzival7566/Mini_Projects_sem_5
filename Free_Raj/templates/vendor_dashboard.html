@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vendor Dashboard</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            background: url('https://producemadesimple.ca/wp-content/uploads/2017/02/Heart-Healthy-Veggies-600x501.jpg');
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            font-family: Avantgarde, TeX Gyre Adventor, URW Gothic L, sans-serif;
+            font-size: 35px;
+            text-shadow: 2px 2px 4px grey;
+        }
+        
+        h2 {
+            color: black;
+            font-family: Lucida Calligraphy, fantasy;
+            font-size: 25px;
+            text-shadow: 2px 1px 4px grey;
+        }
+        
+        #analytics, #orders, #earnings, #menu-items {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            margin: 20px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transform: translateY(0);
+            opacity: 0;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+
+        .order-list p {
+            margin: 5px 0;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 30px;
+            background-color: red;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: grey;
+        }
+
+        .btn-primary {
+            background-color: purple;
+        }
+
+        .btn-primary:hover {
+            background-color: grey;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+        
+        /* Animation */
+        .animated {
+            transform: translateY(0);
+            opacity: 0;
+        }
+        .animated:nth-child(odd) {
+            animation: slideInFromLeft 1s ease forwards;
+        }
+        .animated:nth-child(even) {
+            animation: slideInFromRight 1s ease forwards;
+        }
+
+        @keyframes slideInFromLeft {
+            0% {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInFromRight {
+            0% {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>WELCOME, VENDOR!</h1>
+    
+    <!-- Analytics Section -->
+    <div id="analytics" class="animated">
+        <h2>Analytics</h2>
+        <p>Total Orders: {{ total_orders }}</p>
+        <!-- <p>Most Frequently Ordered Item: {{ most_ordered_item }}</p> -->
+        <!-- Add more analytics data as needed -->
+    </div>
+     <div class="center">
+        <a href="{{ url_for('edit_menu') }}" class="btn btn-primary">Edit Menu</a>
+     </div>
+    <!-- Current and Completed Orders Section -->
+    <div id="orders" class="animated">
+        <div id="current-orders">
+            <h2>Current Orders</h2>
+            <div class="order-list">
+                {% for order in current_orders %}
+                    <p>{{ order }}</p>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div id="completed-orders">
+            <h2>Completed Orders</h2>
+            <div class="order-list">
+                {% for order in completed_orders %}
+                    <p>{{ order }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Earnings Section -->
+    <div id="earnings" class="animated">
+        <h2>Earnings</h2>
+        <p>Total Earnings: Rs{{ total_earnings }}</p>
+        <!-- Add more earnings data as needed -->
+    </div>
+    
+    <!-- Menu Items Section -->
+    <div id="menu-items" class="animated">
+        <h2>Menu Items</h2>
+        <ul>
+            {% for menu_item in menu_items %}
+                <li>
+                    {{ menu_item.name }} - Price: ${{ menu_item.price }} - Preparation Time: {{ menu_item.preparation_time }}
+                    <form method="POST" action="{{ url_for('delete_menu_item', menu_item_id=menu_item._id) }}">
+                        <input type="submit" class="btn" value="Delete">
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <!-- Add Bootstrap JavaScript (optional) -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

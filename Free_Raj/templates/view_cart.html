@@ -2,9 +2,119 @@
 <html>
 <head>
     <title>View Cart</title>
+    <style>
+        html {
+            min-height: 100%;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            background: url('https://th.bing.com/th/id/R.449cc4600b653b6b40cb860deea47415?rik=%2b1dYF3sFcM2pXg&riu=http%3a%2f%2fgelimax.com%2fMain%2fwp-content%2fuploads%2f2021%2f11%2fphoto1636021067-17-e1636237334100-800x533.jpeg&ehk=mUOsu7lAtXK04Cj%2fEqtgda1DSFUCTyKUUhtA0k81Nf0%3d&risl=&pid=ImgRaw&r=0');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            justify-content: center;
+        }
+
+        h1 {
+            color: black;
+            font-family: Avantgarde, TeX Gyre Adventor, URW Gothic L, sans-serif;
+            font-size: 50px;
+            text-shadow: 2px 2px 4px #FFCE54;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px auto;
+            background-color: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+        }
+
+        th {
+            background-color: black;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #FFCE54;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        input[type="submit"] {
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 20px;
+            transition: transform 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #FFCE54;
+            transform: scale(1.05);
+            box-shadow: 0 0 10px #FFCE54; /* Add a glowing effect on hover */
+        }
+
+        a.button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: black;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px;
+            transition: box-shadow 0.3s; /* Add transition for the glowing effect */
+        }
+
+        a.button:hover {
+            background-color: green;
+            box-shadow: 0 0 10px #FFCE54; /* Add a glowing effect on hover */
+        }
+
+        .delete-button {
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: transform 0.3s;
+        }
+
+        .delete-button:hover {
+            background-color: red; /* Turn red when hovered */
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Cart Items</h1>
+    <h1>VIEW MY CART</h1>
     {% if cart_items %}
     <table>
         <tr>
@@ -22,15 +132,15 @@
             <td>
                 <form method="POST" action="{{ url_for('view_cart', prn=student.prn) }}">
                     <input type="hidden" name="item_id" value="{{ cart_item['_id'] }}">
-                    <button type="submit">Delete</button>
+                    <button class="delete-button" type="submit">Delete</button>
                 </form>
             </td>
         </tr>
         {% endfor %}
         {% endfor %}
     </table>
-    <a href="{{ url_for('payment_gateway', prn=student.prn) }}">Checkout</a>
-    <a href="{{ url_for('dashboard', prn=student.prn) }}">Go back to dashboard</a>
+    <a class="button" href="{{ url_for('payment_gateway', prn=student.prn) }}">Checkout</a>
+    <a class="button" href="{{ url_for('dashboard', prn=student.prn) }}">Go back to dashboard</a>
     
     {% else %}
         {% with messages = get_flashed_messages() %}
@@ -40,7 +150,7 @@
         </div>
         {% endif %}
         {% endwith %}
-        <a href="{{ url_for('dashboard', prn=student.prn) }}">Go back to dashboard</a>
+        <a class="button" href="{{ url_for('dashboard', prn=student.prn) }}">Go back to dashboard</a>
     {% endif %}
 </body>
 </html>

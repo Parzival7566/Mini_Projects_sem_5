@@ -100,37 +100,94 @@
             font-size: 15px;
         }
         
-         label {
+        label {
             color: white;
+        }
+        
+        /* Animation for the book flipping */
+        .login-container {
+            width: 620px;
+            height: 450px;
+            perspective: 1200px; /* Increased perspective depth */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .book {
+            width: 60%; /* Larger book size */
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 1s; /* Longer flipping time */
+            animation: openBook 5s forwards; /* Increased animation duration */
+            transform-origin: center right; /* Rotate from the center */
+        }
+
+        .cover, .login-page {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .cover {
+            background-color: black;
+        }
+
+        .login-page {
+            background-color: black;
+            transform: rotateY(180deg);
+            color: white;
+        }
+        
+        @keyframes openBook {
+            0% {
+                transform: translateX(-50%) rotateY(0deg);
+            }
+            100% {
+                transform: translateX(-50%) rotateY(180deg);
+            }
         }
     </style>
 </head>
 <body>
-    <div class="login-box">
-        <h1>Student Login</h1>
-        
-        <form action="/" method="post">
-            <label for="prn">PRN Number:</label>
-            <input type="text" id="prn" name="prn" required>
-            <br><br>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <br><br>
-            <div class="button-container">
-                <input type="submit" value="Login as Student">
-                <!-- Button to login as a vendor -->
-                <form action="/vendor_login" method="get">
-                    <input type="submit" value="Login as Vendor">
-                </form>
+    <div class="login-container">
+        <div class="book">
+            <div class="cover">
+    <img src="your-logo-image-url.jpg" alt="Logo" width="150">
+                <h1>Book Cover with Logo</h1>
+                
             </div>
-        </form>
-        
-        {% if error %}
-        <p> ERROR </p>
-        {% endif }
-        
-        <br>
-        <a href="/create_account">Create Account</a>
+            <div class="login-page">
+                <h1>STUDENT LOGIN</h1>
+                <form action="/" method="post">
+                    <label for="prn">PRN Number:</label>
+                    <input type="text" id="prn" name="prn" required>
+                    <br><br>
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                    <br><br>
+                    <div class="button-container">
+                        <input type="submit" value="Login as Student">
+                        <!-- Button to login as a vendor -->
+                        <form action="/vendor_login" method="get">
+                            <input type="submit" value="Login as Vendor">
+                        </form>
+                    </div>
+                </form>
+                {% if error %}
+                    <p> ERROR </p>
+                {% endif }
+                <br>
+                <a href="/create_account">Create Account</a>
+            </div>
+        </div>
     </div>
 </body>
 </html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vendor Dashboard</title>
+</head>
+<body>
+    <h1>Welcome, Vendor!</h1>
+    
+    <!-- Analytics Section -->
+    <div id="analytics">
+        <h2>Analytics</h2>
+        <p>Total Orders: {{ total_orders }}</p>
+        <!-- Add more analytics data as needed -->
+    </div>
+    <a href="{{ url_for('edit_menu') }}" class="btn btn-primary">Edit Menu</a>
+    <!-- Current Orders Section -->
+<!-- Current Orders Section -->
+<div id="current-orders">
+    <h2>Current Orders</h2>
+    <div class="order-list">
+        <table>
+            <tr>
+                <th>Order ID</th>
+                <th>Items</th>
+                <th>Quantities</th>
+                <th>Action</th>
+            </tr>
+            {% for order in current_orders %}
+                <tr>
+                    <td>{{ order._id }}</td> <!-- Assuming _id is used as the order ID -->
+                    <td>
+                        {% if order.items is iterable %}
+                            {{ order.items|join(', ') }}
+                        {% else %}
+                            {{ order.items }}
+                        {% endif %}
+                    </td>
+                    <td>{{ order.quantities|join(', ') }}</td>
+                    <td>
+                        <form method="post" action="/mark_order_done">
+                            <input type="hidden" name="order_id" value="{{ order._id }}">
+                            <button type="submit">Mark as Done</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+<!-- Completed Orders Section -->
+<div id="completed-orders">
+    <h2>Completed Orders</h2>
+    <div class="order-list">
+        <table>
+            <tr>
+                <th>Order ID</th>
+                <th>Items</th>
+                <th>Quantities</th>
+            </tr>
+            {% for order in completed_orders %}
+                <tr>
+                    <td>{{ order._id }}</td> <!-- Assuming _id is used as the order ID -->
+                    <td>
+                        {% if order.items is iterable and order.items|length > 0 %}
+                            {{ order.items|join(', ') }}
+                        {% elif order.items is iterable and order.items|length == 0 %}
+                            No items
+                        {% else %}
+                            {{ order.items }}
+                        {% endif %}
+                    </td>
+                    <td>{{ order.quantities|join(', ') }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+    
+<h2>Menu Items</h2>
+<ul>
+    {% for menu_item in menu_items %}
+        <li>
+            {{ menu_item.name }} - Price: Rs{{ menu_item.price }} - Preparation Time: {{ menu_item.preparation_time }}
+            <form method="POST" action="{{ url_for('delete_menu_item', menu_item_id=menu_item._id) }}">
+                <input type="submit" value="Delete">
+            </form>
+        </li>
+    {% endfor %}
+</ul>
+
+    
+    <!-- Earnings Section -->
+    <div id="earnings">
+        <h2>Earnings</h2>
+        <p>Total Earnings: Rs{{ total_earnings }}</p>
+        <!-- Add more earnings data as needed -->
+    </div>
+</body>
+</html>

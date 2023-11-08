@@ -63,6 +63,77 @@ def vendor_login():
     
     return render_template("vendor_login.html")
 
+@app.route("/vendor_dashboard")
+def vendor_dashboard():
+    # Retrieve current orders
+    current_orders = list(orders_collection.find({"status": "open"}))
+    
+    # Retrieve completed orders with a status of "closed"
+    completed_orders = list(orders_collection.find({"status": "completed"}))
+    
+    # Retrieve analytics data
+    total_orders = orders_collection.count_documents({})
+    # You can calculate 'most_ordered_item' here
+    menu_items = list(menu_collection.find())
+    # Calculate earnings
+    # You can calculate 'total_earnings' here
+
+    return render_template("vendor_dashboard.html",
+                           menu_items=menu_items, current_orders=current_orders, completed_orders=completed_orders, total_orders=total_orders,
+                           # most_ordered_item=most_ordered_item, total_earnings=total_earnings)
+    )
+
+@app.route("/mark_order_done", methods=["POST"])
+def mark_order_done():
+    if request.method == "POST":
+        order_id = request.form.get("order_id")
+
+        # Find the order in the 'orders_collection' by its ObjectId
+        order = orders_collection.find_one({"_id": ObjectId(order_id)})
+
+        if order:
+            # Update the status to "completed"
+            orders_collection.update_one({"_id": ObjectId(order_id)}, {"$set": {"status": "completed"}})
+
+            # Redirect back to the vendor dashboard
+            return redirect(url_for("vendor_dashboard"))
+
+    # Handle errors or invalid requests
+    return "Invalid request or order not found"
+
+@app.route("/edit_menu", methods=["GET", "POST"])
+def edit_menu():
+    if request.method == "POST":
+        food_item_name = request.form["food_item_name"]
+        price = request.form["price"]
+        preparation_time = request.form["preparation_time"]
+
+        # Create a dictionary with the menu item data
+        menu_item = {
+            "name": food_item_name,
+            "price": price,
+            "preparation_time": preparation_time
+        }
+
+        # Insert the new menu item into the menu collection in MongoDB
+        menu_collection.insert_one(menu_item)
+
+        # Redirect back to the vendor dashboard or another appropriate page
+        return redirect(url_for("vendor_dashboard"))
+
+    return render_template("edit_menu.html")
+
+@app.route("/delete_menu_item/<menu_item_id>", methods=["POST"])
+def delete_menu_item(menu_item_id):
+    # Convert menu_item_id to ObjectId
+    menu_item_id = ObjectId(menu_item_id)
+
+    # Delete the menu item from the menu collection
+    menu_collection.delete_one({"_id": menu_item_id})
+
+    # Redirect back to the vendor dashboard or another appropriate page
+    return redirect(url_for("vendor_dashboard"))
+
 @app.route("/", methods=["GET", "POST"])
 def login():
     if request.method == "POST":

@@ -6,19 +6,20 @@
     <body>
         <h1>Cart Items</h1>
         <table>
-            <tr>
+        <tr>
             <th>Item</th>
             <th>Quantity</th>
+            <th>Cost</th>
             <th>Preparation Time</th>
-            </tr>
-            {% for cart_item in cart_items %}
-                {% for index in range(cart_item["items"]|length) %}
-                <tr>
-                <td>{{ cart_item["items"][index] }}</td>
-                <td>{{ cart_item["quantities"][index] }}</td>
-                <td>{{ cart_item["preparation_times"][index] }}</td>
-                </tr>
-                {% endfor %}
+            <th>Action</th>
+        </tr>
+        {% for cart_item in cart_items %}
+        <tr>
+            <td>{{ cart_item["item"]}}</td>
+            <td>{{ cart_item["quantity"]}}</td>
+            <td>{{ cart_item["price"]}}</td>
+            <td>{{ cart_item["preparation_time"]}}</td>
+            <td>
             {% endfor %}
         </table>
         <form method="POST">

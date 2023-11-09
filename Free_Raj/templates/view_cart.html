@@ -10,15 +10,16 @@
         <tr>
             <th>Item</th>
             <th>Quantity</th>
+            <th>Cost</th>
             <th>Preparation Time</th>
             <th>Action</th>
         </tr>
         {% for cart_item in cart_items %}
-        {% for index in range(cart_item["items"]|length) %}
         <tr>
-            <td>{{ cart_item["items"][index] }}</td>
-            <td>{{ cart_item["quantities"][index] }}</td>
-            <td>{{ cart_item["preparation_times"][index] }}</td>
+            <td>{{ cart_item["item"]}}</td>
+            <td>{{ cart_item["quantity"]}}</td>
+            <td>{{ cart_item["price"]}}</td>
+            <td>{{ cart_item["preparation_time"]}}</td>
             <td>
                 <form method="POST" action="{{ url_for('view_cart', prn=student.prn) }}">
                     <input type="hidden" name="item_id" value="{{ cart_item['_id'] }}">
@@ -26,7 +27,6 @@
                 </form>
             </td>
         </tr>
-        {% endfor %}
         {% endfor %}
     </table>
     <a href="{{ url_for('payment_gateway', prn=student.prn) }}">Checkout</a>

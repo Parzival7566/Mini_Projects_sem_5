@@ -24,26 +24,6 @@ vendor_data = [
 
 vendor_collection.insert_many(vendor_data)
 
-# Sample menu data
-sample_menu = [
-    {"name": "Item 1", "preparation_time": "10 minutes"},
-    {"name": "Item 2", "preparation_time": "15 minutes"},
-    {"name": "Item 3", "preparation_time": "12 minutes"},
-    {"name": "Item 4", "preparation_time": "8 minutes"},
-    {"name": "Item 5", "preparation_time": "20 minutes"},
-    {"name": "Item 6", "preparation_time": "7 minutes"},
-    {"name": "Item 7", "preparation_time": "25 minutes"},
-    {"name": "Item 8", "preparation_time": "11 minutes"},
-    {"name": "Item 9", "preparation_time": "14 minutes"},
-    {"name": "Item 10", "preparation_time": "18 minutes"},
-]
-
-# Automatically populate the menu data when the app starts
-if menu_collection.count_documents({}) == 0:
-    # Remove existing menu items
-    menu_collection.delete_many({})
-    # Populate the menu data
-    menu_collection.insert_many(sample_menu)
 
 @app.route("/vendor_login", methods=["GET", "POST"])
 def vendor_login():
@@ -63,6 +43,7 @@ def vendor_login():
     
     return render_template("vendor_login.html")
 
+
 @app.route("/vendor_dashboard")
 def vendor_dashboard():
     # Retrieve current orders
@@ -77,11 +58,15 @@ def vendor_dashboard():
     menu_items = list(menu_collection.find())
     # Calculate earnings
     # You can calculate 'total_earnings' here
+    
+    # Calculate total price of all orders
+    total_price = sum(int(order["price"])*int(order["quantity"]) for order in current_orders + completed_orders)
 
     return render_template("vendor_dashboard.html",
                            menu_items=menu_items, current_orders=current_orders, completed_orders=completed_orders, total_orders=total_orders,
-                           # most_ordered_item=most_ordered_item, total_earnings=total_earnings)
-    )
+                           total_price=total_price)
+
+
 
 @app.route("/mark_order_done", methods=["POST"])
 def mark_order_done():
@@ -100,6 +85,7 @@ def mark_order_done():
 
     # Handle errors or invalid requests
     return "Invalid request or order not found"
+
 
 @app.route("/edit_menu", methods=["GET", "POST"])
 def edit_menu():
@@ -123,6 +109,7 @@ def edit_menu():
 
     return render_template("edit_menu.html")
 
+
 @app.route("/delete_menu_item/<menu_item_id>", methods=["POST"])
 def delete_menu_item(menu_item_id):
     # Convert menu_item_id to ObjectId
@@ -133,6 +120,7 @@ def delete_menu_item(menu_item_id):
 
     # Redirect back to the vendor dashboard or another appropriate page
     return redirect(url_for("vendor_dashboard"))
+
 
 @app.route("/", methods=["GET", "POST"])
 def login():
@@ -145,6 +133,7 @@ def login():
             error_message = "Invalid PRN or Password. Please try again."
             return render_template("student_login.html", error=error_message)
     return render_template("student_login.html")
+
 
 @app.route("/create_account", methods=["GET", "POST"])
 def create_account():
@@ -166,6 +155,7 @@ def create_account():
             return redirect(url_for("login"))
     return render_template("create_account.html")
 
+
 @app.route("/dashboard/<prn>", methods=["GET", "POST"])
 def dashboard(prn):
     student = students_collection.find_one({"prn": prn})
@@ -175,31 +165,34 @@ def dashboard(prn):
     else:
         error_message = "Student data not found."
         return render_template("student_login.html", error=error_message)
+    
 
 @app.route("/place_order", methods=["POST"])
 def place_order():
-    prn = request.form["prn"]
-    student = students_collection.find_one({"prn": prn})
-    if student:
-        items = []
-        quantities = []
-        preparation_times = []
+    if request.method == "POST":
+        student_prn = request.form.get("prn")
+        items = request.form.getlist("item")
 
-        for item, quantity, preparation_time in zip(request.form.getlist("item"), request.form.getlist("quantity"), request.form.getlist("preparation_time")):
-            if int(quantity) > 0:
-                items.append(item)
-                quantities.append(quantity)
-                preparation_times.append(preparation_time)
+        for item in items:
+            quantity = request.form.get(f"quantity_{item}")
+            preparation_time = request.form.get(f"preparation_time_{item}")
+            price = request.form.get(f"price_{item}")
 
-        cart_data = {
-            "student_prn": prn,
-            "items": items,
-            "quantities": quantities,
-            "preparation_times": preparation_times
-        }
-        cart.insert_one(cart_data)
+            if quantity != '0':
+                cart_item = {
+                    "student_prn": student_prn,
+                    "item": item,
+                    "quantity": quantity,
+                    "preparation_time": preparation_time,
+                    "price": price
+                }
+                cart.insert_one(cart_item)
 
-    return redirect(url_for("dashboard", prn=prn))
+        flash("Item(s) added to cart successfully!")
+        if student_prn:
+            return redirect(url_for("dashboard", prn=student_prn))
+
+
 
 @app.route("/view_cart", methods=["GET", "POST"])
 def view_cart():
@@ -217,6 +210,7 @@ def view_cart():
         error_message = "Student data not found."
         return render_template("student_login.html", error=error_message)
     
+
 @app.route("/payment_gateway", methods=["GET", "POST"])
 def payment_gateway():
     prn = request.args.get("prn")
@@ -237,15 +231,17 @@ def payment_gateway():
             items = []
             quantities = []
             preparation_times = []
+            prices = []
             for cart_item in cart_items:
-                for index in range(len(cart_item["items"])):
-                    items.append(cart_item["items"][index])
-                    quantities.append(cart_item["quantities"][index])
-                    preparation_times.append(cart_item["preparation_times"][index])
+                items.append(cart_item["item"])
+                quantities.append(cart_item["quantity"])
+                preparation_times.append(cart_item["preparation_time"])
+                prices.append(cart_item["price"])
             return render_template("payment_gateway.html", student=student, cart_items=cart_items, items=items, quantities=quantities, preparation_times=preparation_times)
     else:
         error_message = "Student data not found."
         return render_template("student_login.html", error=error_message)
+    
 
 if __name__ == "__main__":
     webbrowser.open('http://127.0.0.1:5000/')

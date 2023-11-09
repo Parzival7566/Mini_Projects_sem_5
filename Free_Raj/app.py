@@ -60,7 +60,7 @@ def vendor_dashboard():
     # You can calculate 'total_earnings' here
     
     # Calculate total price of all orders
-    total_price = sum(int(order["price"]) for order in current_orders + completed_orders)
+    total_price = sum(int(order["price"])*int(order["quantity"]) for order in current_orders + completed_orders)
 
     return render_template("vendor_dashboard.html",
                            menu_items=menu_items, current_orders=current_orders, completed_orders=completed_orders, total_orders=total_orders,

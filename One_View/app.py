@@ -1,5 +1,6 @@
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
+from clustering import load_and_encode_faces, cluster_faces
 from flask_pymongo import PyMongo
 from flask import *
 from flask import session
@@ -251,6 +252,18 @@ def delete_image(image_id):
                         os.remove(os.path.join(app.config["UPLOAD_FOLDER"], image["filename"]))
                         # Delete the image document from the MongoDB database
                         event_gallery.delete_one({'_id': ObjectId(image_id)})
+
+                        # Check if the event is closed
+                        event_status = event_data.find_one({'status': 'closed'})
+                        if event_status:
+                            # Perform face encoding and clustering
+                            input_dir = 'static/uploads'  # Directory containing the images
+                            encodings_file = 'encodings.pickle'  # File to store the face encodings
+                            output_dir = 'static/clusters'  # Directory to store the clusters
+
+                            load_and_encode_faces(input_dir, encodings_file)
+                            cluster_faces(encodings_file, output_dir)
+
                         return jsonify({'success': True, 'message': 'Image deleted successfully'})
                     else:
                         return jsonify({'success': False, 'message': 'Invalid password'})
@@ -271,6 +284,15 @@ def close_event(username, event_id):
         if user:
             event_data.update_one({'_id': ObjectId(event_id)}, {'$set': {"status": 'closed'}})
             flash('Event closed successfully', 'success')
+
+            # Perform face encoding and clustering
+            input_dir = 'static/uploads'  # Directory containing the images
+            encodings_file = 'encodings.pickle'  # File to store the face encodings
+            output_dir = 'static/clusters'  # Directory to store the clusters
+
+            load_and_encode_faces(input_dir, encodings_file)
+            cluster_faces(encodings_file, output_dir)
+
             return redirect(f'/{username}/past_event')
         else:
             flash('Unauthorized access', 'danger')
@@ -278,7 +300,58 @@ def close_event(username, event_id):
     else:
         flash('Unauthorized access', 'danger')
         return redirect('/host_login')
+    
+    
+@app.route('/<username>/cluster/<cluster_dir>')
+def cluster(username, cluster_dir):
+    session_username = session.get('username')
+    if session_username and session_username == username:
+        user = host_details.find_one({'username': session_username})
+        if user:
+            # Fetch the images in the cluster directory
+            cluster_images = [img for img in os.listdir(os.path.join('static', 'clusters', cluster_dir)) if img.startswith('image_')]
+            return render_template('cluster.html', username=session_username, cluster_images=cluster_images, cluster_dir=cluster_dir)
+        else:
+            flash('Unauthorized access', 'danger')
+            return redirect('/host_login')
+    else:
+        flash('Unauthorized access', 'danger')
+        return redirect('/host_login')
+    
+    
+@app.route('/<username>/clusters')
+def clusters(username):
+    session_username = session.get('username')
+    if session_username and session_username == username:
+        user = host_details.find_one({'username': session_username})
+        if user:
+            # Fetch the cluster directories
+            cluster_dirs = os.listdir('static/clusters')
+            return render_template('clusters.html', username=session_username, cluster_dirs=cluster_dirs)
+        else:
+            flash('Unauthorized access', 'danger')
+            return redirect('/host_login')
+    else:
+        flash('Unauthorized access', 'danger')
+        return redirect('/host_login')
+    
 
 if __name__ == '__main__':
+    # Delete encodings.pickle file
+    if os.path.exists('encodings.pickle'):
+        os.remove('encodings.pickle')
+    
+    # Delete static/clusters directory if it exists
+    clusters_dir = 'static/clusters'
+    if os.path.exists(clusters_dir):
+        # Delete all files and subdirectories within clusters_dir
+        for root, dirs, files in os.walk(clusters_dir, topdown=False):
+            for file in files:
+                os.remove(os.path.join(root, file))
+            for dir in dirs:
+                os.rmdir(os.path.join(root, dir))
+        # Delete the clusters_dir itself
+        os.rmdir(clusters_dir)
+    
     webbrowser.open('http://127.0.0.1:5000/')
     app.run(debug=True)

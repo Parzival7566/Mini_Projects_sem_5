@@ -1,0 +1,13 @@
+<!-- cluster.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Face {{cluster_dir.split('_')[1]}}</title>
+</head>
+<body>
+    <h1>{{ cluster_dir }}</h1>
+    {% for cluster_image in cluster_images %}
+    <img src="{{ url_for('static', filename='clusters/' + cluster_dir + '/' + cluster_image) }}" alt="{{ cluster_image }}">
+    {% endfor %}
+</body>
+</html>

@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Image Gallery</title>
+    <style>
+        /* Your CSS Styles Here */
+    </style>
 </head>
 
 <body>
@@ -145,19 +148,24 @@ body {
     }
 }
 </style>
-<script>
-// function to show image when clicking on an image
-function showImage(imageSrc) {
-    let popupImage = document.getElementById("popupImage");
-    popupImage.src = imageSrc;
+    <script>
+        // Function to show image when clicking on an image
+        function showImage(imageSrc) {
+            let popupImage = document.getElementById("popupImage");
+            popupImage.src = imageSrc;
 
-    let imagePopup = document.getElementById("imagePopup");
-    imagePopup.style.display = "block";
-    document.body.style.overflow = "hidden";
-}
+            let imagePopup = document.getElementById("imagePopup");
+            imagePopup.style.display = "flex";
+            document.body.style.overflow = "hidden";
+        }
 
-// function to hide the image when clicking on the close button
-function closeImage() {
-    let imagePopup
-</script>
+        // Function to hide the image when clicking on the close button
+        function closeImage() {
+            let imagePopup = document.getElementById("imagePopup");
+            imagePopup.style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+    </script>
+</body>
+
 </html>

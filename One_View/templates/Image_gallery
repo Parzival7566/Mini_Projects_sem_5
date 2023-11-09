@@ -61,11 +61,10 @@ body {
     justify-content: center;
     align-items: center;
     font-size: 30px;
-    background: #121FCF;
-    background: linear-gradient(to right, #0e85e0 0%, #26ff1a 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: #333; /* or any other color you prefer for the heading */
 }
+
 
 /* Styling the gallery section where all images are */
 .gallery {

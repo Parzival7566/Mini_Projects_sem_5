@@ -282,24 +282,18 @@ def close_event(username, event_id):
     if session_username and session_username == username:
         user = host_details.find_one({'username': session_username})
         if user:
-            # Check if there is at least one image in the gallery
-            images_count = event_gallery.count_documents({'username': session_username, 'eventName': event_id})
-            if images_count > 0:
-                event_data.update_one({'_id': ObjectId(event_id)}, {'$set': {"status": 'closed'}})
-                flash('Event closed successfully', 'success')
+            event_data.update_one({'_id': ObjectId(event_id)}, {'$set': {"status": 'closed'}})
+            flash('Event closed successfully', 'success')
 
-                # Perform face encoding and clustering
-                input_dir = 'static/uploads'  # Directory containing the images
-                encodings_file = 'encodings.pickle'  # File to store the face encodings
-                output_dir = 'static/clusters'  # Directory to store the clusters
+            # Perform face encoding and clustering
+            input_dir = 'static/uploads'  # Directory containing the images
+            encodings_file = 'encodings.pickle'  # File to store the face encodings
+            output_dir = 'static/clusters'  # Directory to store the clusters
 
-                load_and_encode_faces(input_dir, encodings_file)
-                cluster_faces(encodings_file, output_dir)
+            load_and_encode_faces(input_dir, encodings_file)
+            cluster_faces(encodings_file, output_dir)
 
-                return redirect(f'/{username}/past_event')
-            else:
-                flash('Cannot close event without any images in the gallery', 'danger')
-                return redirect(f'/{username}/ongoing_event')
+            return redirect(f'/{username}/past_event')
         else:
             flash('Unauthorized access', 'danger')
             return redirect('/host_login')
@@ -358,6 +352,16 @@ if __name__ == '__main__':
                 os.rmdir(os.path.join(root, dir))
         # Delete the clusters_dir itself
         os.rmdir(clusters_dir)
+    pycache_dir = '__pycache__'
+    if os.path.exists(pycache_dir):
+        # Delete all files and subdirectories within pycache_dir
+        for root, dirs, files in os.walk(pycache_dir, topdown=False):
+            for file in files:
+                os.remove(os.path.join(root, file))
+            for dir in dirs:
+                os.rmdir(os.path.join(root, dir))
+        # Delete the pycache_dir itself
+        os.rmdir(pycache_dir)
     
     webbrowser.open('http://127.0.0.1:5000/')
     app.run(debug=True)

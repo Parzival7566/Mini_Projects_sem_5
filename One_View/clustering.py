@@ -81,20 +81,8 @@ def cluster_faces(encodings, output_dir):
             cv2.imwrite(image_output_path, image)
             (top, right, bottom, left) = data[i]["loc"]
             face = image[top:bottom, left:right]
+            face = cv2.resize(face, (96, 96))
             face_output_path = os.path.join(cluster_dir, f"face_{labelID}.jpg")
             cv2.imwrite(face_output_path, face)
             
     print("[INFO] Images sorted into cluster directories.")
-
-'''
-if __name__ == "__main__":
-    input_dir = 'dataset'
-    encodings_file = 'encodingds.pickle'
-    output_dir = 'clusters'
-
-    # Load and encode faces
-    load_and_encode_faces(input_dir, encodings_file)
-    
-    # Cluster faces and save to output directories
-    cluster_faces(encodings_file, output_dir)
-'''

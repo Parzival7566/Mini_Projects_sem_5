@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendee Login</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-image: url('https://i.pinimg.com/originals/05/04/64/050464f8af825ac6db61d50a971fd449.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        div {
+            text-align: center;
+            padding: 50px;
+            border-radius: 10px;
+            backdrop-filter: blur(18px); /* Reduced opacity of blur */
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 380px;
+            animation: fadeIn 2s;
+        }
+
+		h1 {
+            color: black;
+            font-family: Lucida Handwriting, cursive;
+            font-size: 30px;
+        }
+
+        button#loginButton {
+            background-color: white;
+            color: #333;
+            border: none;
+            padding: 10px 30px; /* Increase button padding */
+            margin: 20px 0; /* Add margin below the button */
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 16px;
+            font-family: "Raleway", Arial, sans-serif;
+        }
+
+        button#loginButton:hover {
+            background-color: LavenderBlush;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            font-size: 17px; /* Increased font size */
+            margin-top: 20px;
+            color: #333;
+            font-family: "Raleway", Arial, sans-serif;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px; /* Increased input box size */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 20px; /* Increased font size */
+        }
+
+        a {
+            text-decoration: none;
+            color: #6B5B95;
+            font-family: Arial, sans-serif;
+            font-size: 20px;
+        }
+
+        h2 {
+            color: #6B5B95;
+            font-family: Lucida Handwriting, cursive;
+            /*text-shadow: 2px 0.5px DarkGrey;*/
+            font-size: 30px;
+        }
+
+        p {
+            color: #333;
+            text-shadow: 2px 0.5px DarkGrey;
+            font-size: 22px;
+        }
+    </style>
+</head>
+<body>
+    <div id="hostLoginForm" style="display: block;">
+        <h1>Attendee Login</h1>
+        <form method="POST" action="/attendee_login">
+            <div class="form-group">
+                <label for="username">Host Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <button type="submit" class="btn">Login</button>
+        </form>
+    </div>
+</body>
+</html>

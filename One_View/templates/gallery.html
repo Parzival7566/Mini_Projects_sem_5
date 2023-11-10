@@ -177,7 +177,9 @@
                     {% if image %}
                         <div class="image-card">
                             <img src="{{ url_for('static', filename='uploads/' + image.filename) }}" alt="Image">
+                            {% if user_type == 'host' %}
                             <button class="delete-button" data-image-id="{{ image._id }}">Delete</button>
+                            {% endif %}
                         </div>
                     {% else %}
                         <p>No images clicked yet! Click some photos before you can view them.</p>

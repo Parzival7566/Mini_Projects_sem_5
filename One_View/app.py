@@ -43,12 +43,12 @@ def host_signup():
         user = host_details.find_one({'username': username})
         if user:
             flash('Username already exists', 'danger')
-            return redirect('/host_signup')
+            return redirect('/')
         else:
             hashed_password = generate_password_hash(password)
             host_details.insert_one({'username': username, 'password': hashed_password})
             flash('Account created successfully', 'success')
-            return redirect('/host_login')
+            return redirect('/')
     else:
         return render_template('host_signup.html')
 
@@ -61,10 +61,11 @@ def host_login():
         user = host_details.find_one({'username': username})
         if user and check_password_hash(user['password'], password):
             session['username'] = username
+            session['user_type'] = 'host'
             return redirect(f'/{username}/admin')
         else:
             flash('Invalid username or password', 'danger')
-            return redirect('/host_login')
+            return redirect('/')
     else:
         return render_template('host_login.html')
 
@@ -79,16 +80,26 @@ def admin_page(username):
             return render_template('admin_page.html', username=session_username)
         else:
             flash('Unauthorized access', 'danger')
-            return redirect('/host_login')
+            return redirect('/')
     else:
         flash('Unauthorized access', 'danger')
-        return redirect('/host_login')
+        return redirect('/')
 
 
-@app.route('/attendee_page')
-def attendee_page():
-    # Add your code here
-    pass
+@app.route('/attendee_login', methods=['GET', 'POST'])
+def attendee_login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        session['username'] = username
+        session['user_type'] = 'attendee'
+        # Fetch the ongoing event for the host
+        ongoing_event = event_data.find_one({'hostName': username, 'status': 'ongoing'})
+        if ongoing_event:
+            session['event_name'] = ongoing_event['eventName']
+        return redirect(f'/{username}/ongoing_event')
+    
+    else:
+        return render_template('attendee_login.html')
 
 @app.route('/logout')
 def logout():
@@ -98,7 +109,11 @@ def logout():
 
 @app.route('/<username>/new_event', methods=['GET', 'POST'])
 def new_event(username):
-    # Access the username from the session
+    user_type = session.get('user_type')
+    if user_type != 'host':
+        flash('Unauthorized access', 'danger')
+        return redirect('/')
+
     session_username = session.get('username')
     if session_username and session_username == username:
         user = host_details.find_one({'username': session_username})
@@ -128,47 +143,56 @@ def new_event(username):
                 return render_template('new_event.html', username=session_username)
         else:
             flash('Unauthorized access', 'danger')
-            return redirect('/host_login')
+            return redirect('/')
     else:
         flash('Unauthorized access', 'danger')
-        return redirect('/host_login')
+        return redirect('/')
 
 @app.route('/<username>/past_event')
 def past_event(username):
-    # Access the username from the session
+    user_type = session.get('user_type')
     session_username = session.get('username')
     if session_username and session_username == username:
         closed_events = list(event_data.find({'hostName': session_username, 'status': 'closed'}))
-        return render_template('past_event.html', username=session_username, closed_events=closed_events)
+        return render_template('past_event.html', username=session_username, user_type=user_type, closed_events=closed_events)
     else:
         flash('Unauthorized access', 'danger')
-        return redirect('/host_login')
+        return redirect('/')
 
 @app.route('/<username>/ongoing_event')
 def ongoing_event(username):
-    # Access the username from the session
+    user_type = session.get('user_type')
+    if user_type != 'host' and user_type != 'attendee':
+        flash('Unauthorized access', 'danger')
+        return redirect('/')
+    
     session_username = session.get('username')
     event_status = event_data.find_one({'status': 'ongoing'})
+    print(session_username,user_type)
     if session_username and session_username == username:
         user = host_details.find_one({'username': session_username})
         if user:
             # Fetch the ongoing events for the logged-in user only
             ongoing_events = list(event_data.find({'hostName': session_username}))
             if ongoing_events == [] or event_status is None:
-                return render_template('ongoing_event.html', username=session_username)
+                return render_template('ongoing_event.html', user_type=user_type, username=session_username)
             else:
-                return render_template('ongoing_event.html', event_data=ongoing_events, username=session_username)
+                return render_template('ongoing_event.html', username=session_username, user_type=user_type, event_data=ongoing_events)
         else:
             flash('Unauthorized access', 'danger')
-            return redirect('/host_login')
+            return redirect('/')
     else:
         flash('Unauthorized access', 'danger')
-        return redirect('/host_login')
+        return redirect('/')
 
 
-@app.route("/<username>/gallery/")
+@app.route('/<username>/gallery/')
 def gallery(username):
-    # Access the username from the session
+    user_type = session.get('user_type')
+    if user_type != 'host' and user_type != 'attendee':
+        flash('Unauthorized access', 'danger')
+        return redirect('/')
+
     session_username = session.get('username')
     event_name = session.get('event_name')
     if session_username and session_username == username:
@@ -176,13 +200,13 @@ def gallery(username):
         event = event_data.find_one({'eventName':event_name })
         if user and event:
             images = event_gallery.find({'username': session_username, 'eventName': event_name})
-            return render_template("gallery.html", gallery=images, username=session_username)
+            return render_template("gallery.html", gallery=images, user_type=user_type,username=session_username)
         else:
             flash('Unauthorized access', 'danger')
-            return redirect('/host_login')
+            return redirect('/')
     else:
         flash('Unauthorized access', 'danger')
-        return redirect('/host_login')
+        return redirect('/')
 
 
 @app.route('/camera_main')
@@ -193,6 +217,11 @@ def camera_main():
 
 @app.route('/upload_webcam', methods=["GET", "POST"])
 def upload_webcam_capture():
+    user_type = session.get('user_type')
+    if user_type != 'host' and user_type != 'attendee':
+        flash('Unauthorized access', 'danger')
+        return redirect('/')
+    # Rest of the code...
     username = session.get('username')
     event_name = session.get('event_name')
     if 'webcam_image' in request.files:
@@ -209,11 +238,11 @@ def upload_webcam_capture():
                 event_gallery.insert_one({
                     "filename": filename,
                     "username": username,
-                    "eventName" : event_name
+                    "eventName": event_name
                 })
 
                 flash("Successfully uploaded image to gallery!", "success")
-                return redirect(url_for("upload_webcam_capture"))
+                return redirect(url_for("gallery", username=username))
             else:
                 flash("An error occurred while uploading the image!", "danger")
                 return redirect(url_for("upload_webcam_capture"))
@@ -223,6 +252,10 @@ def upload_webcam_capture():
 
 @app.route('/delete_image/<image_id>', methods=['GET', 'DELETE'])
 def delete_image(image_id):
+    user_type = session.get('user_type')
+    if user_type != 'host':
+        return jsonify({'message': 'Only the host can delete images'})
+    
     if request.method == 'GET':
         # Fetch the image document from the MongoDB database
         image = event_gallery.find_one({'_id': ObjectId(image_id)})
@@ -278,6 +311,11 @@ def delete_image(image_id):
 
 @app.route('/<username>/close_event/<event_id>', methods=['POST'])
 def close_event(username, event_id):
+    user_type = session.get('user_type')
+    if user_type != 'host':
+        flash('Unauthorized access', 'danger')
+        return redirect('/')
+    
     session_username = session.get('username')
     if session_username and session_username == username:
         user = host_details.find_one({'username': session_username})
@@ -296,10 +334,10 @@ def close_event(username, event_id):
             return redirect(f'/{username}/past_event')
         else:
             flash('Unauthorized access', 'danger')
-            return redirect('/host_login')
+            return redirect('/')
     else:
         flash('Unauthorized access', 'danger')
-        return redirect('/host_login')
+        return redirect('/')
     
     
 @app.route('/<username>/cluster/<cluster_dir>')
@@ -313,10 +351,10 @@ def cluster(username, cluster_dir):
             return render_template('cluster.html', username=session_username, cluster_images=cluster_images, cluster_dir=cluster_dir)
         else:
             flash('Unauthorized access', 'danger')
-            return redirect('/host_login')
+            return redirect('/')
     else:
         flash('Unauthorized access', 'danger')
-        return redirect('/host_login')
+        return redirect('/')
     
     
 @app.route('/<username>/clusters')
@@ -330,10 +368,10 @@ def clusters(username):
             return render_template('clusters.html', username=session_username, cluster_dirs=cluster_dirs)
         else:
             flash('Unauthorized access', 'danger')
-            return redirect('/host_login')
+            return redirect('/')
     else:
         flash('Unauthorized access', 'danger')
-        return redirect('/host_login')
+        return redirect('/')
     
 
 if __name__ == '__main__':

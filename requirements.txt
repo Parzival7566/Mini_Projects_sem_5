@@ -1,4 +1,11 @@
+# usage : pip install -r requirements.txt
+
 pymongo
 flask
 qrcode
 flask_pymongo
+opencv-python
+dlib 
+face-recognition 
+imutils 
+scikit-learn

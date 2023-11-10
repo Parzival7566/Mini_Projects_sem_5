@@ -8,6 +8,9 @@ from bson.objectid import ObjectId
 import os
 import time
 import webbrowser
+from pyngrok import ngrok
+
+public_url = ngrok.connect("http://127.0.0.1:5000").public_url
 
 UPLOAD_FOLDER = "static/uploads/"
 
@@ -174,9 +177,9 @@ def ongoing_event(username):
             # Fetch the ongoing events for the logged-in user only
             ongoing_events = list(event_data.find({'hostName': session_username}))
             if ongoing_events == [] or event_status is None:
-                return render_template('ongoing_event.html', user_type=user_type, username=session_username)
+                return render_template('ongoing_event.html', user_type=user_type, username=session_username, public_url=public_url)
             else:
-                return render_template('ongoing_event.html', username=session_username, user_type=user_type, event_data=ongoing_events)
+                return render_template('ongoing_event.html', username=session_username, user_type=user_type, event_data=ongoing_events, public_url=public_url)
         else:
             flash('Unauthorized access', 'danger')
             return redirect('/')
@@ -394,4 +397,4 @@ if __name__ == '__main__':
         os.rmdir(pycache_dir)
     
     webbrowser.open('http://127.0.0.1:5000/')
-    app.run(debug=True)
+    app.run()

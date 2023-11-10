@@ -192,60 +192,22 @@
     <script>
         const backButton = document.getElementById('back-button');
         backButton.addEventListener('click', () => {
-            window.location.href = "/{{ username }}/ongoing_event";
+            window.location.href = "/{{username}}/ongoing_event";
         });
 
-       // JavaScript code for handling delete button click event
         document.querySelectorAll('.delete-button').forEach((button) => {
             button.addEventListener('click', () => {
                 const imageId = button.getAttribute('data-image-id');
-                const passwordInput = document.createElement('input');
-                passwordInput.type = 'password';
-                passwordInput.placeholder = 'Enter password to delete the image:';
-                
-                const confirmButton = document.createElement('button');
-                confirmButton.textContent = 'Confirm';
-                confirmButton.classList.add('small-button');
-                
-                const cancelButton = document.createElement('button');
-                cancelButton.textContent = 'Cancel';
-                cancelButton.classList.add('small-button');
-                
-                const passwordContainer = document.createElement('div');
-                passwordContainer.appendChild(passwordInput);
-                passwordContainer.appendChild(confirmButton);
-                passwordContainer.appendChild(cancelButton);
-                
-                const imageCard = button.parentElement;
-                imageCard.appendChild(passwordContainer);
-                
-                confirmButton.addEventListener('click', () => {
-                    const password = passwordInput.value;
-                    if (password) {
-                        fetch(`/delete_image/${imageId}`, {
-                            method: 'DELETE',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ password: password })
-                        })
-                        .then((response) => response.json())
-                        .then((data) => {
-                            if (data.success) {
-                                console.log(data.message);
-                                imageCard.remove();
-                            } else {
-                                alert(data.message);
-                            }
-                        })
-                        .catch((error) => {
-                            console.error('Error deleting image:', error);
-                        });
-                    }
-                });
-                
-                cancelButton.addEventListener('click', () => {
-                    passwordContainer.remove();
+                fetch(`/delete_image/${imageId}`, {
+                    method: 'DELETE',
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data.message);
+                    button.parentElement.remove();
+                })
+                .catch((error) => {
+                    console.error('Error deleting image:', error);
                 });
             });
         });

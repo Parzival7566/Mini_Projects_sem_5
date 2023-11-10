@@ -168,7 +168,6 @@ def ongoing_event(username):
     
     session_username = session.get('username')
     event_status = event_data.find_one({'status': 'ongoing'})
-    print(session_username,user_type)
     if session_username and session_username == username:
         user = host_details.find_one({'username': session_username})
         if user:
@@ -276,36 +275,29 @@ def delete_image(image_id):
             # Check if the user is the host
             session_username = session.get('username')
             if session_username and session_username == image['username']:
-                # Check if the password is correct
-                password = request.json.get('password')
-                user = host_details.find_one({'username': session_username})
-                if user:
-                    if 'password' in user and check_password_hash(user['password'], password):
-                        # Delete the image from the uploads directory
-                        os.remove(os.path.join(app.config["UPLOAD_FOLDER"], image["filename"]))
-                        # Delete the image document from the MongoDB database
-                        event_gallery.delete_one({'_id': ObjectId(image_id)})
+                os.remove(os.path.join(app.config["UPLOAD_FOLDER"], image["filename"]))
+                # Delete the image document from the MongoDB database
+                event_gallery.delete_one({'_id': ObjectId(image_id)})
 
-                        # Check if the event is closed
-                        event_status = event_data.find_one({'status': 'closed'})
-                        if event_status:
-                            # Perform face encoding and clustering
-                            input_dir = 'static/uploads'  # Directory containing the images
-                            encodings_file = 'encodings.pickle'  # File to store the face encodings
-                            output_dir = 'static/clusters'  # Directory to store the clusters
+                # Check if the event is closed
+                event_status = event_data.find_one({'status': 'closed'})
+                if event_status:
+                    # Perform face encoding and clustering
+                    input_dir = 'static/uploads'  # Directory containing the images
+                    encodings_file = 'encodings.pickle'  # File to store the face encodings
+                    output_dir = 'static/clusters'  # Directory to store the clusters
 
-                            load_and_encode_faces(input_dir, encodings_file)
-                            cluster_faces(encodings_file, output_dir)
+                    load_and_encode_faces(input_dir, encodings_file)
+                    cluster_faces(encodings_file, output_dir)
 
-                        return jsonify({'success': True, 'message': 'Image deleted successfully'})
-                    else:
-                        return jsonify({'success': False, 'message': 'Invalid password'})
-                else:
-                    return jsonify({'message': 'User not found'}), 404
+                return jsonify({'success': True, 'message': 'Image deleted successfully'})
+
             else:
-                return jsonify({'message': 'Only the host can delete images'})
+                return jsonify({'message': 'User not found'}), 404
         else:
-            return jsonify({'message': 'Image not found'}), 404
+            return jsonify({'message': 'Only the host can delete images'})
+    else:
+        return jsonify({'message': 'Image not found'}), 404
 
     
 

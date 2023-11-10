@@ -17,6 +17,7 @@
         <video id="webcam" autoplay></video>
         <button id="capture-button">Capture</button>
     </div>
+    <button id="flip-button">Flip Camera</button>
     <canvas id="canvas" style="display: none;"></canvas>
     <button id="save-webcam-button" style="display: none;">Save Webcam Capture</button>
 
@@ -29,6 +30,34 @@
     <button id="back-button">Back to ongoing event</button>
 
     <script>
+        let useFrontCamera = true;
+
+        // Flip button event listener
+        const flipButton = document.getElementById('flip-button');
+        flipButton.addEventListener('click', () => {
+            useFrontCamera = !useFrontCamera;
+            startCamera();
+        });
+
+        function startCamera() {
+            navigator.mediaDevices.getUserMedia({ 
+                video: { facingMode: useFrontCamera ? 'user' : 'environment' } 
+            })
+            .then((streamObj) => {
+                stream = streamObj; // Store the stream
+                video.srcObject = stream;
+            })
+            .catch((error) => {
+                console.error('Error accessing webcam:', error);
+            });
+        }
+
+        // Listen for device orientation changes
+        window.addEventListener('deviceorientation', function(event) {
+            // event.alpha, event.beta and event.gamma contain the orientation angles
+            // You can adjust the camera based on these values
+        });
+        
         // Webcam Capture Script
         const video = document.getElementById('webcam');
         const canvas = document.getElementById('canvas');

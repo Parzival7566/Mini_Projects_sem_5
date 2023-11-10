@@ -137,9 +137,11 @@
     <div class="w3-content" style="max-width:1500px">
         <header class="w3-container w3-xlarge w3-padding-12">
             <a href="#" class="w3-left w3-button w3-white">ONGOING EVENT</a>
+            {% if user_type == 'host' %}
             <a href="/{{ username }}/new_event" class="w3-right w3-button w3-white">NEW EVENT</a>
-            <a href="/{{ username }}/past_event" class="w3-right w3-button w3-white">PAST EVENT</a>
             <a href="/{{ username }}/admin" class="w3-right w3-button w3-white">MAIN MENU</a>
+            {% endif %}
+            <a href="/{{ username }}/past_event" class="w3-right w3-button w3-white">PAST EVENT</a>
         </header>
     </div>
     <div class="content-container">
@@ -160,7 +162,7 @@
             <script>
                 var canvas = document.getElementById("qrcode");
 
-                var fixedLink = "https://886f-2401-4900-1c43-b577-6072-948-7e86-269d.ngrok-free.app/{{ username }}/ongoing_event"; // Your fixed link
+                var fixedLink = "https://f783-2401-4900-1c43-b577-6072-948-7e86-269d.ngrok-free.app/attendee_login"; // Your fixed link
 
                 var qr = new QRious({
                     element: canvas,
@@ -175,7 +177,9 @@
                 <a href="/{{ username }}/gallery/" class="primary-btn">Open Gallery</a>
             </div>
             <button id="click-pictures-button" class="primary-btn">Click Pictures!</button>
+            {% if user_type == 'host' %}
             <button id="close-event-button" class="primary-btn" onclick="closeEvent('{{ event._id }}')">Close Event</button>
+            {% endif %}
             {% endfor %}
             {% else %}
             <p>No event data available.</p>

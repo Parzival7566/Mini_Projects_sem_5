@@ -51,7 +51,10 @@ def vendor_dashboard():
     
     # Retrieve completed orders with a status of "closed"
     completed_orders = list(orders_collection.find({"status": "completed"}))
-    
+
+    # Retrieve completed orders with a status of "closed"
+    collected_orders = list(orders_collection.find({"status": "collected"}))
+
     # Retrieve analytics data
     total_orders = orders_collection.count_documents({})
     # You can calculate 'most_ordered_item' here
@@ -60,10 +63,10 @@ def vendor_dashboard():
     # You can calculate 'total_earnings' here
     
     # Calculate total price of all orders
-    total_price = sum(int(order["price"])*int(order["quantity"]) for order in current_orders + completed_orders)
+    total_price = sum(int(order["price"])*int(order["quantity"]) for order in current_orders + completed_orders + collected_orders)
 
     return render_template("vendor_dashboard.html",
-                           menu_items=menu_items, current_orders=current_orders, completed_orders=completed_orders, total_orders=total_orders,
+                           menu_items=menu_items, collected_orders=collected_orders, current_orders=current_orders, completed_orders=completed_orders, total_orders=total_orders,
                            total_price=total_price)
 
 
@@ -86,6 +89,29 @@ def mark_order_done():
     # Handle errors or invalid requests
     return "Invalid request or order not found"
 
+
+@app.route("/mark_order_collected", methods=["POST"])
+def mark_order_collected():
+    if request.method == "POST":
+        order_id = request.form.get("order_id")
+
+        # Find the order in the 'orders_collection' by its ObjectId
+        order = orders_collection.find_one({"_id": ObjectId(order_id)})
+
+        if order:
+            # Check if the order is already collected
+            if order.get("status") == "collected":
+                return "Order is already collected"
+            
+            # Update the status to "collected"
+            orders_collection.update_one({"_id": ObjectId(order_id)}, {"$set": {"status": "collected"}})
+
+            # Redirect back to the vendor dashboard
+            return redirect(url_for("vendor_dashboard"))
+        else:
+            error_message = "Order not found."
+            return render_template("vendor_dashboard.html", error=error_message)
+        
 
 @app.route("/edit_menu", methods=["GET", "POST"])
 def edit_menu():
@@ -161,7 +187,11 @@ def dashboard(prn):
     student = students_collection.find_one({"prn": prn})
     if student:
         menu = list(menu_collection.find())  # Fetch menu items from MongoDB
-        return render_template("studentdashboard.html", student=student, menu=menu)
+        closed_orders = list(orders_collection.find({"student_prn": prn, "status": "completed"}))  # Fetch closed orders for the student
+        if closed_orders == []:
+            return render_template("studentdashboard.html", student=student, menu=menu)
+        else:
+            return render_template("studentdashboard.html", student=student, menu=menu, closed_orders=closed_orders)
     else:
         error_message = "Student data not found."
         return render_template("student_login.html", error=error_message)

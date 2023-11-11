@@ -25,6 +25,34 @@
     </ul>
     </form>
 
+    <button id="view-cart" onclick="showCart()">View Cart</button>
+        
+    <!-- Open Orders Section -->
+    {% if closed_orders %}
+    <div id=ready-orders">
+        <h2>Ready to Collect!</h2>
+        <div class="order-list">
+            <table>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Items</th>
+                    <th>Quantities</th>
+                    <th>Status</th>
+                </tr>
+                {% for order in closed_orders %}
+                    <tr>
+                        <td>{{ order._id }}</td>
+                        <td>{{ order.item }}</td>
+                        <td>{{ order.quantity }}</td>
+                        <td>{{ order.status }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+
     <script>
     function showCart() {
         window.location.href = "/view_cart?prn={{ student['prn'] }}";
@@ -36,6 +64,5 @@
     </script>
 
     <!-- View Cart and Checkout buttons -->
-    <button id="view-cart" onclick="showCart()">View Cart</button>
 </body>
 </html>

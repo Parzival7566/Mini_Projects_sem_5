@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
+from datetime import datetime
 import webbrowser
+import hashlib
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "SECRET_KEY"
@@ -14,6 +16,7 @@ students_collection = mongo.db["students"]
 menu_collection = mongo.db["menu"]
 orders_collection = mongo.db["orders"]
 cart=mongo.db["cart"]
+past_orders_collection=mongo.db["past_orders"]
 vendor_collection=mongo.db["vendor"]
 
 vendor_collection.drop()
@@ -106,6 +109,17 @@ def mark_order_collected():
             # Update the status to "collected"
             orders_collection.update_one({"_id": ObjectId(order_id)}, {"$set": {"status": "collected"}})
 
+            order_data = {
+            "order_id": str(order["_id"]),
+            "items": order["item"],
+            "quantities": order["quantity"],
+            "prices": order["price"],
+            "status": order["status"],
+            "order_cost": sum(int(price) * int(quantity) for price, quantity in zip(order["price"], order["quantity"]))
+            }
+            # Add the order to the 'past_orders_collection' collection
+            past_orders_collection.insert_one(order_data)
+
             # Redirect back to the vendor dashboard
             return redirect(url_for("vendor_dashboard"))
         else:
@@ -164,7 +178,7 @@ def login():
 @app.route("/create_account", methods=["GET", "POST"])
 def create_account():
     if request.method == "POST":
-        uname=request.form["uname"]
+        uname = request.form["uname"]
         prn = request.form["prn"]
         password = request.form["password"]
         student = students_collection.find_one({"prn": prn})
@@ -172,10 +186,14 @@ def create_account():
             error_message = "Account already exists for PRN. Please try again."
             return render_template("create_account.html", error=error_message)
         else:
+            # Hash the password using SHA-256
+            hashed_password = hashlib.sha256(password.encode()).hexdigest()
+
             student_data = {
                 "uname": uname, 
                 "prn": prn,
-                "password": password
+                "password": hashed_password,
+                "order_number": 1
             }
             students_collection.insert_one(student_data)
             return redirect(url_for("login"))
@@ -197,6 +215,15 @@ def dashboard(prn):
         return render_template("student_login.html", error=error_message)
     
 
+@app.route("/past_orders/<prn>")
+def past_orders(prn):
+    # Group orders by order number
+    past_orders = orders_collection.aggregate([
+        {"$match": {"student_prn": prn}},
+        {"$group": {"_id": "$order_number", "orders": {"$push": "$$ROOT"}}}
+    ])
+    return render_template("past_orders.html", past_orders=past_orders)
+        
 @app.route("/place_order", methods=["POST"])
 def place_order():
     if request.method == "POST":
@@ -214,7 +241,8 @@ def place_order():
                     "item": item,
                     "quantity": quantity,
                     "preparation_time": preparation_time,
-                    "price": price
+                    "price": price,
+                    "order_time": datetime.now()  # Add the current date and time
                 }
                 cart.insert_one(cart_item)
 
@@ -235,7 +263,10 @@ def view_cart():
             return redirect(url_for("view_cart", prn=prn))
         else:
             cart_items = list(cart.find({"student_prn": prn}))
-            return render_template("view_cart.html", student=student, cart_items=cart_items)
+            if cart_items ==[]:
+                return render_template("view_cart.html", student=student)
+            else:
+                return render_template("view_cart.html", student=student, cart_items=cart_items)
     else:
         error_message = "Student data not found."
         return render_template("student_login.html", error=error_message)
@@ -254,8 +285,11 @@ def payment_gateway():
             
             for item in cart_items:
                 item["status"] = "open"
+                item["order_time"] = datetime.now()
+                item["order_number"] = student["order_number"]
                 orders_collection.insert_one(item)
             cart.delete_many({"student_prn": prn})
+            students_collection.update_one({"prn": prn}, {"$inc": {"order_number": 1}})
             return redirect(url_for("dashboard", prn=prn))
         else:
             items = []

@@ -52,14 +52,15 @@
     </div>
     {% endif %}
 
-
+    <button id="past_orders" onclick="past_orders()">Past Orders</button>
+    
     <script>
     function showCart() {
         window.location.href = "/view_cart?prn={{ student['prn'] }}";
     }
 
-    function checkout() {
-        // Implement checkout logic (e.g., payment processing)
+    function past_orders() {
+        window.location.href="/past_orders/{{ student['prn'] }}"
     }
     </script>
 

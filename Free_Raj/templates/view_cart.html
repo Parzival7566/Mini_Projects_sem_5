@@ -29,18 +29,18 @@
         </tr>
         {% endfor %}
     </table>
-    <a href="{{ url_for('payment_gateway', prn=student.prn) }}">Checkout</a>
-    <a href="{{ url_for('dashboard', prn=student.prn) }}">Go back to dashboard</a>
+    <form method="POST" action="{{ url_for('payment_gateway', prn=student.prn) }}">
+        <button type="submit">Checkout</button>
+    </form>
+    <form method="POST" action="{{ url_for('dashboard', prn=student.prn) }}">
+        <button type="submit">Go back to dashboard</button>
+    </form>
     
     {% else %}
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <div class="flash-message">
-        {{ messages[0] }}
-        </div>
-        {% endif %}
-        {% endwith %}
-        <a href="{{ url_for('dashboard', prn=student.prn) }}">Go back to dashboard</a>
+        <h2>Cart is currently empty!</h2>
+        <form method="POST" action="{{ url_for('dashboard', prn=student.prn) }}">
+            <button type="submit">Go back to dashboard</button>
+        </form>
     {% endif %}
 </body>
 </html>

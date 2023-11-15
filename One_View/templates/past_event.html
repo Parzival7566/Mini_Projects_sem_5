@@ -120,7 +120,10 @@
     <div class="w3-content" style="max-width:1500px">
         <header class="w3-container w3-xlarge w3-padding-12">
             <a href="#" class="w3-left w3-button w3-white">PAST EVENT</a>
+            {% if user_type == 'host' %}
             <a href="/{{ username }}/new_event" class="w3-right w3-button w3-white">NEW EVENT</a>
+            <a href="/{{ username }}/admin" class="w3-right w3-button w3-white">MAIN MENU</a>
+            {% endif %}
             <a href="/{{ username }}/ongoing_event" class="w3-right w3-button w3-white">ONGOING EVENT</a>
         </header>
     </div>
@@ -134,6 +137,7 @@
                     <p>Host: {{ event.hostName }}</p>
                     <p>Date and Time of Creation: {{ event.createdOn }}</p>
                     <a href="/{{ username }}/gallery/" class="primary-btn">Open Gallery</a>
+                    <a href="/{{ username }}/clusters" class="primary-btn">View Clusters</a>
                 {% endfor %}
                 {% else %}
                 <div class="header-title-container">

@@ -51,6 +51,7 @@
     </div>
 </div>
 
+
 <!-- Completed Orders Section -->
 <div id="completed-orders">
     <h2>Completed Orders</h2>
@@ -61,6 +62,7 @@
                 <th>Items</th>
                 <th>Quantities</th>
                 <th>Status</th> <!-- Add a new column for status -->
+                <th>Action</th> <!-- Add a new column for action -->
             </tr>
             {% for order in completed_orders %}
                 <tr>
@@ -68,6 +70,44 @@
                     <td>{{ order.item }}</td> <!-- Add this line to display the item -->
                     <td>{{ order.quantity }}</td>
                     <td>{{ order.status }}</td>
+                    <td>
+                    {% if order.status == 'completed' %}
+                        {% if order.collected %}
+                            <!-- Display a message if the order is already collected -->
+                            Order Collected
+                        {% else %}
+                            <!-- Add the "Order Collected" button -->
+                            <form method="POST" action="{{ url_for('mark_order_collected') }}">
+                                <input type="hidden" name="order_id" value="{{ order._id }}">
+                                <input type="submit" value="Order Collected">
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+<!-- Collected Orders Section -->
+<div id="collected-orders">
+    <h2>Collected Orders</h2>
+    <div class="order-list">
+        <table>
+            <tr>
+                <th>Order ID</th>
+                <th>Items</th>
+                <th>Quantities</th>
+                <th>Status</th> <!-- Add a new column for status -->
+            </tr>
+            {% for order in collected_orders %}
+                <tr>
+                    <td>{{ order._id }}</td>
+                    <td>{{ order.item }}</td> <!-- Add this line to display the item -->
+                    <td>{{ order.quantity }}</td>
+                    <td>{{ order.status }}</td>
+                </td>
                 </tr>
             {% endfor %}
         </table>

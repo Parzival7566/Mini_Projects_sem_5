@@ -4,6 +4,13 @@ from bson.objectid import ObjectId
 from datetime import datetime
 import webbrowser
 import hashlib
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import base64
+from datetime import datetime
+import os
+
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "SECRET_KEY"
@@ -68,10 +75,52 @@ def vendor_dashboard():
     # Calculate total price of all orders
     total_price = sum(int(order["price"])*int(order["quantity"]) for order in current_orders + completed_orders + collected_orders)
 
-    return render_template("vendor_dashboard.html",
-                           menu_items=menu_items, collected_orders=collected_orders, current_orders=current_orders, completed_orders=completed_orders, total_orders=total_orders,
-                           total_price=total_price)
+    # Calculate order status distribution
+    
+    order_statuses = orders_collection.aggregate([
+    {"$group": {"_id": "$status", "count": {"$sum": 1}}}
+    ])
 
+    # Prepare data for visualization
+    labels = []
+    counts = []
+
+    # Iterate through the results and populate labels and counts
+    for status in order_statuses:
+        labels.append(status["_id"])
+        counts.append(status["count"])
+
+    # Replace the existing code for creating the pie chart
+    plt.figure(figsize=(8, 8))
+    plt.pie(counts, labels=labels, autopct='%1.1f%%', startangle=140)
+    plt.title('Distribution of Orders by Status')
+
+    # Save the plot to a file instead of BytesIO
+    chart_path = os.path.join(app.static_folder, "order_status_chart.png")
+    plt.savefig(chart_path, format='png')
+    plt.close()
+
+    # Convert the chart image to base64
+    with open(chart_path, "rb") as image_file:
+        img_base64 = base64.b64encode(image_file.read()).decode('utf-8')
+
+    # Retrieve order time for each order
+    order_times = [order["order_time"] for order in current_orders + completed_orders + collected_orders]
+
+    # Calculate average order value
+    average_order_value = total_price / total_orders if total_orders > 0 else 0
+
+    # Analyze popular order times
+    if order_times:
+        popular_order_time = max(set(order_times), key=order_times.count)
+    else:
+        popular_order_time = None
+
+    return render_template("vendor_dashboard.html",
+                           menu_items=menu_items, collected_orders=collected_orders, current_orders=current_orders,
+                           completed_orders=completed_orders, total_orders=total_orders, total_price=total_price,
+                           average_order_value=average_order_value, popular_order_time=popular_order_time,
+                           order_status_chart=img_base64)
 
 
 @app.route("/mark_order_done", methods=["POST"])
@@ -224,7 +273,7 @@ def past_orders(prn):
     ])
     return render_template("past_orders.html", past_orders=past_orders)
         
-@app.route("/place_order", methods=["POST"])
+@app.route("/place_order", methods=["POST"])#modified place orders for time analytics
 def place_order():
     if request.method == "POST":
         student_prn = request.form.get("prn")

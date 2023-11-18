@@ -6,11 +6,17 @@
 <body>
     <h1>Welcome, Vendor!</h1>
     
-    <!-- Analytics Section -->
     <div id="analytics">
         <h2>Analytics</h2>
         <p>Total Orders: {{ total_orders }}</p>
-        <!-- Add more analytics data as needed -->
+        <p>Average Order Value: ₹ {{ average_order_value }}</p>
+        <p>Popular Order Time: {% if popular_order_time %}{{ popular_order_time.strftime("%Y-%m-%d %H:%M:%S") }}{% endif %}</p>
+    
+        <!-- Display the order status distribution chart -->
+        <img src="{{ url_for('static', filename='order_status_chart.png') }}" alt="Order Status Distribution">
+
+
+
     </div>
 
 

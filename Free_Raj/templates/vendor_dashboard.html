@@ -24,7 +24,7 @@
 <div id="popular-order-times">
     <h2>Popular Order Times</h2>
     {% if order_times_chart %}
-       <!-- Display the order time distribution histogram -->
+       <!-- Display the order time distribution histogram with right time -->
 <img src="{{ url_for('static', filename='order_time_histogram.png') }}" alt="Order Time Distribution">
 
     {% else %}

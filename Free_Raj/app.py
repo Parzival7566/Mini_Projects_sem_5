@@ -118,7 +118,7 @@ def vendor_dashboard():
     popular_order_time = None
 
     # Analyze popular order times
-
+#added a histogram
     if order_times:
         # Create a histogram for popular order times
         plt.figure(figsize=(10, 6))

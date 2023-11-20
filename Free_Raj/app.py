@@ -10,8 +10,7 @@ import matplotlib.pyplot as plt
 import base64
 from datetime import datetime
 import os
-import io
-
+import recommendation
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "SECRET_KEY"
@@ -106,8 +105,8 @@ def vendor_dashboard():
         img_base64 = base64.b64encode(image_file.read()).decode('utf-8')
 
 
-    # Calculate average order value
-    average_order_value = total_price / total_orders if total_orders > 0 else 0
+    # Calculate average order value with maximum of 2 decimal places
+    average_order_value = round(total_price / total_orders, 2) if total_orders > 0 else 0
 
     order_times = [order["order_time"] for order in current_orders + completed_orders + collected_orders]
 
@@ -146,6 +145,7 @@ def vendor_dashboard():
                         completed_orders=completed_orders, total_orders=total_orders, total_price=total_price,
                         average_order_value=average_order_value, popular_order_time=popular_order_time,
                         order_status_chart=img_base64, order_times_chart=img_base64_times)
+
 
 
 @app.route("/mark_order_done", methods=["POST"])
@@ -287,6 +287,37 @@ def dashboard(prn):
     else:
         error_message = "Student data not found."
         return render_template("student_login.html", error=error_message)
+
+@app.route("/recommendations")
+def show_recommendations():
+    username = request.args.get("username")
+    recent_item = request.args.get("recent_item")
+
+    # Your existing logic to fetch recommendations from the database
+    recommendations = recommendation.recommend(recent_item)
+    return render_template("recommendations.html", username=username, recent_item=recent_item, recommendations=recommendations)
+
+menu_items = [menu_item["name"] for menu_item in menu_collection.find()]
+
+
+@app.route("/recommendations/<prn>")
+def get_recommendation(prn):
+    student = students_collection.find_one({"prn": prn})
+    # Fetch the most recent order for the student based on order_time
+    most_recent_order = orders_collection.find_one(
+        {"student_prn": prn},
+        sort=[("order_time", -1)]
+    )
+    # Extract the most recent item from the order
+    recent_item = most_recent_order.get("item") if most_recent_order else None
+    # Call the recommend function with the most recent item name
+    recommendations = recommendation.recommend(recent_item)
+    # Filter recommendations to include only items present in the menu
+    filtered_recommendations = [item for item in recommendations if item in menu_items]
+    # Render the recommendations.html template with the relevant data
+    return render_template("recommendations.html", student=student, recent_item=recent_item, recommendations=filtered_recommendations)
+
+    
     
 
 @app.route("/past_orders/<prn>")
@@ -297,6 +328,7 @@ def past_orders(prn):
         {"$group": {"_id": "$order_number", "orders": {"$push": "$$ROOT"}}}
     ])
     return render_template("past_orders.html", past_orders=past_orders)
+
         
 @app.route("/place_order", methods=["POST"])#modified place orders for time analytics
 def place_order():
@@ -323,7 +355,6 @@ def place_order():
         flash("Item(s) added to cart successfully!")
         if student_prn:
             return redirect(url_for("dashboard", prn=student_prn))
-
 
 
 @app.route("/view_cart", methods=["GET", "POST"])
@@ -382,5 +413,23 @@ def payment_gateway():
     
 
 if __name__ == "__main__":
+    # Delete existing plots file
+    if os.path.exists('static/order_status_chart.png'):
+        os.remove('static/order_status_chart.png')
+
+    if os.path.exists('static/order_time_histogram.png'):
+        os.remove('static/order_time_histogram.png')
+    
+    pycache_dir = '__pycache__'
+    if os.path.exists(pycache_dir):
+        # Delete all files and subdirectories within pycache_dir
+        for root, dirs, files in os.walk(pycache_dir, topdown=False):
+            for file in files:
+                os.remove(os.path.join(root, file))
+            for dir in dirs:
+                os.rmdir(os.path.join(root, dir))
+        # Delete the pycache_dir itself
+        os.rmdir(pycache_dir)
+
     webbrowser.open('http://127.0.0.1:5000/')
     app.run(debug=True)

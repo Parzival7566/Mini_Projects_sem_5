@@ -1,13 +1,75 @@
-<!-- cluster.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Face {{cluster_dir.split('_')[1]}}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://i.pinimg.com/originals/05/04/64/050464f8af825ac6db61d50a971fd449.jpg') center/cover no-repeat;
+            z-index: -1;
+            opacity: 0.5; /* Initial opacity */
+            animation: fadeBackground 2s forwards; /* Animation for the fade effect */
+        }
+
+        @keyframes fadeBackground {
+            from { opacity: 0; }
+            to { opacity: 0.5; }
+        }
+
+        header {
+            background: linear-gradient(to right, #d3b4cb, #f0e2f7); /* Lighter color gradient */
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #fff;
+            text-align: center;
+            margin: 0;
+        }
+
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px;
+        }
+
+        .image-container img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            margin: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
-    <h1>{{ cluster_dir }}</h1>
-    {% for cluster_image in cluster_images %}
-    <img src="{{ url_for('static', filename='clusters/' + cluster_dir + '/' + cluster_image) }}" alt="{{ cluster_image }}">
-    {% endfor %}
+    <header>
+        <h1>{{ cluster_dir }}</h1>
+    </header>
+
+    <div class="image-container">
+        {% for cluster_image in cluster_images %}
+            <img src="{{ url_for('static', filename='clusters/' + cluster_dir + '/' + cluster_image) }}" alt="{{ cluster_image }}">
+        {% endfor %}
+    </div>
 </body>
 </html>

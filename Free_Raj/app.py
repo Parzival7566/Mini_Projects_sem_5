@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import base64
 from datetime import datetime
 import os
+import io
 
 
 app = Flask(__name__)
@@ -104,23 +105,47 @@ def vendor_dashboard():
     with open(chart_path, "rb") as image_file:
         img_base64 = base64.b64encode(image_file.read()).decode('utf-8')
 
-    # Retrieve order time for each order
-    order_times = [order["order_time"] for order in current_orders + completed_orders + collected_orders]
 
     # Calculate average order value
     average_order_value = total_price / total_orders if total_orders > 0 else 0
 
+    order_times = [order["order_time"] for order in current_orders + completed_orders + collected_orders]
+
+    # Convert order times to datetime objects
+    order_times = [order_time.strftime("%H:%M") for order_time in order_times]
+
+    # Set popular_order_time to None by default
+    popular_order_time = None
+
     # Analyze popular order times
+#added a histogram
     if order_times:
-        popular_order_time = max(set(order_times), key=order_times.count)
+        # Create a histogram for popular order times
+        plt.figure(figsize=(10, 6))
+        plt.hist(order_times, bins=24, edgecolor='black', alpha=0.7)
+        plt.title('Distribution of Orders by Time')
+        plt.xlabel('Time (HH:MM)')
+        plt.ylabel('Number of Orders')
+        plt.xticks(rotation=45, ha='right')  # Rotate x-axis labels for better readability
+        plt.tight_layout()
+
+        # Save the plot to a file
+        chart_path_times = "order_time_histogram.png"
+        plt.savefig(os.path.join(app.static_folder, chart_path_times), format='png')
+        plt.close()
+
+        # Convert the histogram plot to base64
+        with open(os.path.join(app.static_folder, chart_path_times), 'rb') as image_file:
+            img_base64_times = base64.b64encode(image_file.read()).decode('utf-8')
     else:
-        popular_order_time = None
+        img_base64_times = None
+
 
     return render_template("vendor_dashboard.html",
-                           menu_items=menu_items, collected_orders=collected_orders, current_orders=current_orders,
-                           completed_orders=completed_orders, total_orders=total_orders, total_price=total_price,
-                           average_order_value=average_order_value, popular_order_time=popular_order_time,
-                           order_status_chart=img_base64)
+                        menu_items=menu_items, collected_orders=collected_orders, current_orders=current_orders,
+                        completed_orders=completed_orders, total_orders=total_orders, total_price=total_price,
+                        average_order_value=average_order_value, popular_order_time=popular_order_time,
+                        order_status_chart=img_base64, order_times_chart=img_base64_times)
 
 
 @app.route("/mark_order_done", methods=["POST"])

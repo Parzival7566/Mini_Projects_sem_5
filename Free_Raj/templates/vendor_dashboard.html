@@ -6,13 +6,31 @@
 <body>
     <h1>Welcome, Vendor!</h1>
     
-    <!-- Analytics Section -->
     <div id="analytics">
         <h2>Analytics</h2>
         <p>Total Orders: {{ total_orders }}</p>
-        <!-- Add more analytics data as needed -->
-    </div>
+        <p>Average Order Value: ₹ {{ average_order_value }}</p>
+        <p>Popular Order Time: {% if popular_order_time %}{{ popular_order_time.strftime("%H:%M") }}{% endif %}</p>
 
+
+    
+        <!-- Display the order status distribution chart -->
+        <img src="{{ url_for('static', filename='order_status_chart.png') }}" alt="Order Status Distribution">
+        
+
+
+    </div>
+<!-- Popular Order Times Section -->
+<div id="popular-order-times">
+    <h2>Popular Order Times</h2>
+    {% if order_times_chart %}
+       <!-- Display the order time distribution histogram with right time -->
+<img src="{{ url_for('static', filename='order_time_histogram.png') }}" alt="Order Time Distribution">
+
+    {% else %}
+        <p>No data available for popular order times.</p>
+    {% endif %}
+</div>
 
     <a href="{{ url_for('edit_menu') }}" class="btn btn-primary">Edit Menu</a>
 

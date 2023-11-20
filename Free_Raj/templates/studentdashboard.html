@@ -1,69 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
 </head>
 <body>
     <h1>Welcome, {{ student["uname"] }}!</h1>
-    <h2>Menu</h2>
 
+    <h2>Menu</h2>
     <form action="/place_order" method="post">
-    <input type="hidden" name="prn" value="{{ student["prn"] }}">
-    <ul>
-        {% for item in menu %}
-        <li>
-            <span>{{ item["name"] }}</span>
-            <input type="hidden" name="item" value="{{ item["name"] }}">
-            <input type="number" name="quantity_{{ item["name"] }}" value="0" min="0">
-            <input type="hidden" name="preparation_time_{{ item["name"] }}" value="{{ item["preparation_time"] }}">
-            <span>Approx Preparation Time: {{ item["preparation_time"] }} minutes</span>
-            <input type="hidden" name="price_{{ item["name"] }}" value="{{ item["price"] }}">
-            <span>Price : ₹ {{ item["price"] }}</span>
-            <button type="submit">Add to Cart</button>
-        </li>
-        {% endfor %}
-    </ul>
+        <input type="hidden" name="prn" value="{{ student["prn"] }}">
+        <ul>
+            {% for item in menu %}
+                <li>
+                    <span>{{ item["name"] }}</span>
+                    <input type="hidden" name="item" value="{{ item["name"] }}">
+                    <input type="number" name="quantity_{{ item["name"] }}" value="0" min="0">
+                    <input type="hidden" name="preparation_time_{{ item["name"] }}" value="{{ item["preparation_time"] }}">
+                    <span>Approx Preparation Time: {{ item["preparation_time"] }} minutes</span>
+                    <input type="hidden" name="price_{{ item["name"] }}" value="{{ item["price"] }}">
+                    <span>Price: ₹{{ item["price"] }}</span>
+                    <button type="submit">Add to Cart</button>
+                </li>
+            {% endfor %}
+        </ul>
     </form>
 
     <button id="view-cart" onclick="showCart()">View Cart</button>
-        
+    <button onclick="showRecommendation()">Show Recommendation</button>
+
     <!-- Open Orders Section -->
     {% if closed_orders %}
-    <div id=ready-orders">
-        <h2>Ready to Collect!</h2>
-        <div class="order-list">
-            <table>
-                <tr>
-                    <th>Order ID</th>
-                    <th>Items</th>
-                    <th>Quantities</th>
-                    <th>Status</th>
-                </tr>
-                {% for order in closed_orders %}
+        <div id="ready-orders">
+            <h2>Ready to Collect!</h2>
+            <div class="order-list">
+                <table>
                     <tr>
-                        <td>{{ order._id }}</td>
-                        <td>{{ order.item }}</td>
-                        <td>{{ order.quantity }}</td>
-                        <td>{{ order.status }}</td>
+                        <th>Order ID</th>
+                        <th>Items</th>
+                        <th>Quantities</th>
+                        <th>Status</th>
                     </tr>
-                {% endfor %}
-            </table>
+                    {% for order in closed_orders %}
+                        <tr>
+                            <td>{{ order._id }}</td>
+                            <td>{{ order.item }}</td>
+                            <td>{{ order.quantity }}</td>
+                            <td>{{ order.status }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
         </div>
-    </div>
+    {% endif %}
+
+    <!-- Most Recent Order Section -->
+    {% if recent_item %}
+        <div id="most-recent-order">
+            <h2>Most Recent Order</h2>
+            <p>Item: {{ recent_item }}</p>
+            <!-- Add more details as needed -->
+        </div>
     {% endif %}
 
     <button id="past_orders" onclick="past_orders()">Past Orders</button>
-    
+
     <script>
-    function showCart() {
-        window.location.href = "/view_cart?prn={{ student['prn'] }}";
+        function showCart() {
+            window.location.href = "/view_cart?prn={{ student['prn'] }}";
+        }
+
+        
+    function showRecommendation() {
+        window.location.href = `/recommendations/{{ student['prn'] }}`;
     }
 
-    function past_orders() {
-        window.location.href="/past_orders/{{ student['prn'] }}"
-    }
+        function past_orders() {
+            window.location.href = "/past_orders/{{ student['prn'] }}";
+        }
     </script>
-
-    <!-- View Cart and Checkout buttons -->
 </body>
 </html>

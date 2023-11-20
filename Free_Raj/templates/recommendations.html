@@ -1,0 +1,23 @@
+<!-- recommendations.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommendations</title>
+</head>
+<body>
+    <h1>Recommendations for {{ student["uname"]  }}!</h1>
+    <p>Most Recent Item: {{ recent_item }}</p>
+    {% if recommendations %}
+        <ul>
+            {% for recommendation in recommendations %}
+                <li>{{ recommendation }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No recommendations available.</p>
+    {% endif %}
+</body>
+</html>
+

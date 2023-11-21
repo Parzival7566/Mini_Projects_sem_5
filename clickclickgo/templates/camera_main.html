@@ -120,7 +120,7 @@
     <!-- Image Preview Container -->
     <div id="image-preview">
         <img id="preview-image" src="#" alt="Preview">
-		<button id="save-webcam-button" style="border: double;">Save</button>
+<button id="save-webcam-button" style="border: double;">Save</button>
     </div>
 
     <!-- Back to ongoing event button -->
@@ -137,8 +137,8 @@
         });
 
         function startCamera() {
-            navigator.mediaDevices.getUserMedia({ 
-                video: { facingMode: useFrontCamera ? 'user' : 'environment' } 
+            navigator.mediaDevices.getUserMedia({
+                video: { facingMode: useFrontCamera ? 'user' : 'environment' }
             })
             .then((streamObj) => {
                 stream = streamObj; // Store the stream
@@ -154,7 +154,7 @@
             // event.alpha, event.beta and event.gamma contain the orientation angles
             // You can adjust the camera based on these values
         });
-        
+       
         // Webcam Capture Script
         const video = document.getElementById('webcam');
         const canvas = document.getElementById('canvas');
@@ -184,23 +184,39 @@
         });
 
         saveWebcamButton.addEventListener('click', () => {
-            const imageBlob = canvas.toBlob((blob) => {
-                const formData = new FormData();
-                formData.append('webcam_image', blob, 'webcam_capture.png');
+        const imageBlob = canvas.toBlob((blob) => {
+            const formData = new FormData();
+            formData.append('webcam_image', blob, 'webcam_capture.png');
 
-                fetch('/upload_webcam', {
-                    method: 'POST',
-                    body: formData,
-                })
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log(data.message);
-                })
-                .catch((error) => {
-                    console.error('Error saving webcam capture:', error);
-                });
-            }, 'image/png');
-        });
+            fetch('/upload_webcam', {
+                method: 'POST',
+                body: formData,
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data.message);
+
+                // Update the button content and style to a tick mark
+                saveWebcamButton.innerHTML = '&#10004; Saved';
+                saveWebcamButton.style.backgroundColor = '#4CAF50';
+                saveWebcamButton.style.border = 'none';
+                saveWebcamButton.style.cursor = 'default';
+                saveWebcamButton.disabled = true;
+
+                // Optionally, you can reset the button after a delay
+                setTimeout(() => {
+                    saveWebcamButton.innerHTML = 'Save';
+                    saveWebcamButton.style.backgroundColor = '#00004d';
+                    saveWebcamButton.style.border = 'double';
+                    saveWebcamButton.style.cursor = 'pointer';
+                    saveWebcamButton.disabled = false;
+                }, 3000); // Reset after 3 seconds (adjust as needed)
+            })
+            .catch((error) => {
+                console.error('Error saving webcam capture:', error);
+            });
+        }, 'image/png');
+    });
 
         document.addEventListener('DOMContentLoaded', function () {
             const video = document.getElementById('webcam');
@@ -262,7 +278,7 @@
         backButton.addEventListener('click', () => {
             window.location.href = "/{{ username }}/ongoing_event";
         });
-        
+       
             // Start the camera when the page loads
             startCamera();
 });

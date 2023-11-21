@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Ongoing Event</title>
   <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
-  <link rel="stylesheet" href="./style1.css">
+  <link rel="stylesheet" href="/static/style1.css">
 
 </head>
 <body>
@@ -21,6 +21,7 @@
       <input type="text" placeholder="">
       <!--<span class="tooltip">Search</span>-->
     </li>
+    {% if user_type == 'host' %}
     <li>
       <a href="/{{ username }}/HostDashboard">
         <i class='bx bxs-home'></i>
@@ -35,6 +36,7 @@
       </a>
       <span class="tooltip">New Event</span>
     </li>
+    {% endif %}
     <li>
       <a href="/{{ username }}/past_event">
         <i class='bx bx-archive-in'></i>
@@ -42,6 +44,7 @@
       </a>
       <span class="tooltip">Past Event</span>
     </li>
+    {% if user_type == 'host' %}
 	<li>
       <a href="/logout">
         <i class='bx bx-log-out'></i>
@@ -57,6 +60,17 @@
       </div>
 		<i class='bx bx-user' id="log_out"></i>
     </li>
+    {% endif %}
+    {% if user_type == 'attendee' %}
+    <li class="profile">
+      <div class="profile-details">
+        <div class="name_job">
+          <div class="name"><span class="username">Attendee</span></div>
+        </div>
+      </div>
+		<i class='bx bx-user' id="log_out"></i>
+    </li>
+    {% endif %}
   </ul>
 </div>
 <section class="home-section">
@@ -80,7 +94,7 @@
             <script>
                 var canvas = document.getElementById("qrcode");
 
-                var fixedLink = "{{ public_url }}/attendee_login"; // Your fixed link
+                var fixedLink = "{{ public_url }}/"; // Your fixed link
 
                 var qr = new QRious({
                     element: canvas,
@@ -92,7 +106,7 @@
             </script>
 
             <div class="open-gallery-button">
-                <a href="/{{ username }}/gallery/" class="primary-btn">Open Gallery</a>
+            <button onclick="window.location.href='/{{ username }}/gallery/'" class="primary-btn">Open Gallery</button>
             </div>
             <button id="click-pictures-button" class="primary-btn">Click Pictures!</button>
             {% if user_type == 'host' %}
@@ -107,8 +121,9 @@
   
 </section>
 <!-- partial -->
-  <script  src="./script1.js">
-	// Click Pictures Button Script
+  <script  src="/static/script1.js"></script>
+  <script>
+  	// Click Pictures Button Script
     const clickPicturesButton = document.getElementById('click-pictures-button');
     clickPicturesButton.addEventListener('click', () => {
         const photoLimit = 100; // Maximum number of photographs allowed
@@ -133,6 +148,7 @@
             }
         });
     }
+
   </script>
 
 </body>

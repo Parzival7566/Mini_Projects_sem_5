@@ -471,6 +471,9 @@ if __name__ == "__main__":
     if os.path.exists('static/order_time_histogram.png'):
         os.remove('static/order_time_histogram.png')
     
+    if os.path.exists('static/item_contribution_chart.png'):
+        os.remove('static/item_contribution_chart.png')
+
     pycache_dir = '__pycache__'
     if os.path.exists(pycache_dir):
         # Delete all files and subdirectories within pycache_dir

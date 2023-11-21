@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>New Event</title>
+  <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
+  <link rel="stylesheet" href="./style1.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="sidebar">
+  <div class="logo-details">
+    <i class='bx bx-camera icon'></i>
+    <div class="logo_name">ClickClickGo</div>
+    <i class='bx bx-menu' id="btn"></i>
+  </div>
+  <ul class="nav-list">
+    <li>
+      <i class=''></i>
+      <input type="text" placeholder="">
+      <!--<span class="tooltip">Search</span>-->
+    </li>
+    <li>
+      <a href="/{{ username }}/HostDashboard">
+        <i class='bx bxs-home'></i>
+        <span class="links_name">Home Page</span>
+      </a>
+      <span class="tooltip">Home Page</span>
+    </li>
+    <li>
+      <a href="/{{ username }}/past_event">
+        <i class='bx bx-archive-in'></i>
+        <span class="links_name">Past Event</span>
+      </a>
+      <span class="tooltip">Past Event</span>
+    </li>
+    <li>
+      <a href="/{{ username }}/ongoing_event">
+        <i class='bx bx-alarm'></i>
+        <span class="links_name">Ongoing Event</span>
+      </a>
+      <span class="tooltip">Ongoing Event</span>
+    </li>
+	<li>
+      <a href="/logout">
+        <i class='bx bx-log-out'></i>
+        <span class="links_name">Log Out</span>
+      </a>
+      <span class="tooltip">Log Out</span>
+    </li>
+    <li class="profile">
+      <div class="profile-details">
+        <div class="name_job">
+          <div class="name"><span class="username">{{ username }}</span></div>
+        </div>
+      </div>
+		<i class='bx bx-user' id="log_out"></i>
+    </li>
+  </ul>
+</div>
+<section class="home-section">
+	<div class="text"></div>
+    
+  <div class="content-container">
+        <div class="content">
+            <header>
+                <div class="header-title">
+                    <h2 align="center">Create your very own event!</h2>
+                    <p></p>
+                </div>
+            </header>
+            <main>
+                <div class="container">
+                    <form id="eventForm" action="/{{ username }}/new_event" method="post">
+                        <label for="eventName">Name of the event:</label>
+                        <input type="text" id="eventName" name="eventName" required><br>
+
+                        <label for="photos">Total number of photographs for the event (max 100):</label>
+                        <input type="number" id="photos" name="photos" required max="100"><br>
+
+                        <label for="duration">Duration of the event in hours (max 72):</label>
+                        <input type="number" id="duration" name="duration" required max="72" required><br>
+
+                        <button type="submit" class="primary-btn">Create Event</button>
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+  
+</section>
+<!-- partial -->
+  <script  src="./script1.js"></script>
+
+</body>
+</html>

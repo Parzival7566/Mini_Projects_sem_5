@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Ongoing Event</title>
+  <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
+  <link rel="stylesheet" href="/static/style1.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="sidebar">
+  <div class="logo-details">
+    <i class='bx bx-camera icon'></i>
+    <div class="logo_name">ClickClickGo</div>
+    <i class='bx bx-menu' id="btn"></i>
+  </div>
+  <ul class="nav-list">
+    <li>
+      <i class=''></i>
+      <input type="text" placeholder="">
+      <!--<span class="tooltip">Search</span>-->
+    </li>
+    {% if user_type == 'host' %}
+    <li>
+      <a href="/{{ username }}/HostDashboard">
+        <i class='bx bxs-home'></i>
+        <span class="links_name">Home Page</span>
+      </a>
+      <span class="tooltip">Home Page</span>
+    </li>
+    <li>
+      <a href="/{{ username }}/new_event">
+        <i class='bx bx-book-add'></i>
+        <span class="links_name">New Event</span>
+      </a>
+      <span class="tooltip">New Event</span>
+    </li>
+    {% endif %}
+    <li>
+      <a href="/{{ username }}/past_event">
+        <i class='bx bx-archive-in'></i>
+        <span class="links_name">Past Event</span>
+      </a>
+      <span class="tooltip">Past Event</span>
+    </li>
+    {% if user_type == 'host' %}
+	<li>
+      <a href="/logout">
+        <i class='bx bx-log-out'></i>
+        <span class="links_name">Log Out</span>
+      </a>
+      <span class="tooltip">Log Out</span>
+    </li>
+    <li class="profile">
+      <div class="profile-details">
+        <div class="name_job">
+          <div class="name"><span class="username">{{ username }}</span></div>
+        </div>
+      </div>
+		<i class='bx bx-user' id="log_out"></i>
+    </li>
+    {% endif %}
+    {% if user_type == 'attendee' %}
+    <li class="profile">
+      <div class="profile-details">
+        <div class="name_job">
+          <div class="name"><span class="username">Attendee</span></div>
+        </div>
+      </div>
+		<i class='bx bx-user' id="log_out"></i>
+    </li>
+    {% endif %}
+  </ul>
+</div>
+<section class="home-section">
+  <div class="text"></div>
+  
+  <div class="content-container">
+        <div class="content">
+            {% if event_data %}
+            {% for event in event_data %}
+            <h1 class="header-title">{{ event.eventName }}</h1>
+            <h2 class="sub-heading">Duration: {{ event.duration }} hours | Photo Limit: {{ event.photos }}</h2>
+
+            <div class="admin-details">
+                <p>Host: {{ event.hostName }}</p>
+                <p>Date and Time of Creation: {{ event.createdOn }}</p>
+            </div>
+            <div>
+                <canvas id="qrcode"></canvas>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/qrious"></script>
+            <script>
+                var canvas = document.getElementById("qrcode");
+
+                var fixedLink = "{{ public_url }}/"; // Your fixed link
+
+                var qr = new QRious({
+                    element: canvas,
+                    value: fixedLink,
+                    size: 128,
+                    background: "white",    
+                    foreground: "#6B5B95" 
+                });
+            </script>
+
+            <div class="open-gallery-button">
+            <button onclick="window.location.href='/{{ username }}/gallery/'" class="primary-btn">Open Gallery</button>
+            </div>
+            <button id="click-pictures-button" class="primary-btn">Click Pictures!</button>
+            {% if user_type == 'host' %}
+            <button id="close-event-button" class="primary-btn" onclick="closeEvent('{{ event._id }}')">Close Event</button>
+            {% endif %}
+            {% endfor %}
+            {% else %}
+            <p>No event data available.</p>
+            {% endif %}
+        </div>
+    </div>
+  
+</section>
+<!-- partial -->
+  <script  src="/static/script1.js"></script>
+  <script>
+  	// Click Pictures Button Script
+    const clickPicturesButton = document.getElementById('click-pictures-button');
+    clickPicturesButton.addEventListener('click', () => {
+        const photoLimit = 100; // Maximum number of photographs allowed
+        const currentPhotos = parseInt("{{ photos }}"); // Get the current number of photographs
+
+        if (currentPhotos >= photoLimit) {
+            alert(`You have reached the maximum limit of ${photoLimit} photographs.`);
+        } else {
+            window.location.href = "/camera_main" ;
+        }
+    });
+
+
+    function closeEvent(eventId) {
+        fetch(`/{{ username }}/close_event/${eventId}`, {
+            method: 'POST'
+        }).then(response => {
+            if (response.ok) {
+                window.location.href = `/{{ username }}/past_event`; // Redirect to the past event page
+            } else {
+                alert('Failed to close event');
+            }
+        });
+    }
+
+  </script>
+
+</body>
+</html>

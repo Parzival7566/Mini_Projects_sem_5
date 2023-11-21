@@ -58,12 +58,14 @@ def vendor_login():
 def vendor_dashboard():
     # Retrieve current orders
     current_orders = list(orders_collection.find({"status": "open"}))
-    
+   
     # Retrieve completed orders with a status of "closed"
     completed_orders = list(orders_collection.find({"status": "completed"}))
 
+
     # Retrieve completed orders with a status of "closed"
     collected_orders = list(orders_collection.find({"status": "collected"}))
+
 
     # Retrieve analytics data
     total_orders = orders_collection.count_documents({})
@@ -71,50 +73,62 @@ def vendor_dashboard():
     menu_items = list(menu_collection.find())
     # Calculate earnings
     # You can calculate 'total_earnings' here
-    
+   
     # Calculate total price of all orders
     total_price = sum(int(order["price"])*int(order["quantity"]) for order in current_orders + completed_orders + collected_orders)
 
+
     # Calculate order status distribution
-    
+   
     order_statuses = orders_collection.aggregate([
     {"$group": {"_id": "$status", "count": {"$sum": 1}}}
     ])
 
+
     # Prepare data for visualization
     labels = []
     counts = []
+
 
     # Iterate through the results and populate labels and counts
     for status in order_statuses:
         labels.append(status["_id"])
         counts.append(status["count"])
 
+
     # Replace the existing code for creating the pie chart
     plt.figure(figsize=(8, 8))
     plt.pie(counts, labels=labels, autopct='%1.1f%%', startangle=140)
     plt.title('Distribution of Orders by Status')
+
 
     # Save the plot to a file instead of BytesIO
     chart_path = os.path.join(app.static_folder, "order_status_chart.png")
     plt.savefig(chart_path, format='png')
     plt.close()
 
+
     # Convert the chart image to base64
     with open(chart_path, "rb") as image_file:
         img_base64 = base64.b64encode(image_file.read()).decode('utf-8')
 
 
-    # Calculate average order value with maximum of 2 decimal places
-    average_order_value = round(total_price / total_orders, 2) if total_orders > 0 else 0
+
+
+    # Calculate average order value
+    average_order_value = round(total_price / total_orders ,2) if total_orders > 0 else 0
+
 
     order_times = [order["order_time"] for order in current_orders + completed_orders + collected_orders]
 
+
     # Convert order times to datetime objects
-    order_times = [order_time.strftime("%H:%M") for order_time in order_times]
+    order_times = [order_time.strftime("%H") for order_time in order_times]
+
 
     # Set popular_order_time to None by default
     popular_order_time = None
+
 
     # Analyze popular order times
 #added a histogram
@@ -128,10 +142,12 @@ def vendor_dashboard():
         plt.xticks(rotation=45, ha='right')  # Rotate x-axis labels for better readability
         plt.tight_layout()
 
+
         # Save the plot to a file
         chart_path_times = "order_time_histogram.png"
         plt.savefig(os.path.join(app.static_folder, chart_path_times), format='png')
         plt.close()
+
 
         # Convert the histogram plot to base64
         with open(os.path.join(app.static_folder, chart_path_times), 'rb') as image_file:
@@ -140,11 +156,46 @@ def vendor_dashboard():
         img_base64_times = None
 
 
+    #per item chart
+    # Calculate the contribution of each item to the day's total orders
+    item_contributions = {}
+    for order in current_orders + completed_orders + collected_orders:
+        for item, quantity in zip(order["item"], order["quantity"]):
+            if item not in item_contributions:
+                item_contributions[item] = 0
+            item_contributions[item] += int(quantity)
+
+
+    # Prepare data for the pie chart
+    labels = list(item_contributions.keys())
+    values = list(item_contributions.values())
+
+
+    # Create a pie chart
+    plt.figure(figsize=(8, 8))
+    plt.pie(values, labels=labels, autopct='%1.1f%%', startangle=140)
+    plt.title("Contribution of Each Item to Total Orders")
+
+
+    # Save the pie chart to a file
+    chart_path_items = "item_contribution_chart.png"
+    plt.savefig(os.path.join(app.static_folder, chart_path_items), format='png')
+    plt.close()
+
+
+    # Convert the pie chart image to base64
+    with open(os.path.join(app.static_folder, chart_path_items), "rb") as image_file:
+        img_base64_items = base64.b64encode(image_file.read()).decode('utf-8')
+
+
     return render_template("vendor_dashboard.html",
-                        menu_items=menu_items, collected_orders=collected_orders, current_orders=current_orders,
-                        completed_orders=completed_orders, total_orders=total_orders, total_price=total_price,
-                        average_order_value=average_order_value, popular_order_time=popular_order_time,
-                        order_status_chart=img_base64, order_times_chart=img_base64_times)
+                           menu_items=menu_items, collected_orders=collected_orders, current_orders=current_orders,
+                           completed_orders=completed_orders, total_orders=total_orders, total_price=total_price,
+                           average_order_value=average_order_value, popular_order_time=popular_order_time,
+                           order_status_chart=img_base64, order_times_chart=img_base64_times,
+                           item_contribution_chart=img_base64_items)
+
+
 
 
 

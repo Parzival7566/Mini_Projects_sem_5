@@ -4,27 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dashStyle.css">
 </head>
 <body>
+	<div class="nav">
+		<div class="logo">
+		<h1>free<b>Raj</b></h1>
+		</div>
+	</div>
     <h1>Welcome, {{ student["uname"] }}!</h1>
 
     <h2>Menu</h2>
     <form action="/place_order" method="post">
         <input type="hidden" name="prn" value="{{ student["prn"] }}">
-        <ul>
+        <div class="row">
             {% for item in menu %}
-                <li>
-                    <span>{{ item["name"] }}</span>
-                    <input type="hidden" name="item" value="{{ item["name"] }}">
-                    <input type="number" name="quantity_{{ item["name"] }}" value="0" min="0">
-                    <input type="hidden" name="preparation_time_{{ item["name"] }}" value="{{ item["preparation_time"] }}">
-                    <span>Approx Preparation Time: {{ item["preparation_time"] }} minutes</span>
-                    <input type="hidden" name="price_{{ item["name"] }}" value="{{ item["price"] }}">
-                    <span>Price: ₹{{ item["price"] }}</span>
-                    <button type="submit">Add to Cart</button>
-                </li>
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item["name"] }}</h5>
+                            <input type="hidden" name="item" value="{{ item["name"] }}">
+                            <input type="number" name="quantity_{{ item["name"] }}" value="0" min="0" class="form-control mb-2">
+                            <input type="hidden" name="preparation_time_{{ item["name"] }}" value="{{ item["preparation_time"] }}">
+                            <p class="card-text">Approx Preparation Time: {{ item["preparation_time"] }} minutes</p>
+                            <input type="hidden" name="price_{{ item["name"] }}" value="{{ item["price"] }}">
+                            <p class="card-text">Price: ₹{{ item["price"] }}</p>
+                            <button type="submit">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
-        </ul>
+        </div>
     </form>
 
     <button id="view-cart" onclick="showCart()">View Cart</button>
@@ -35,21 +46,25 @@
         <div id="ready-orders">
             <h2>Ready to Collect!</h2>
             <div class="order-list">
-                <table>
-                    <tr>
-                        <th>Order ID</th>
-                        <th>Items</th>
-                        <th>Quantities</th>
-                        <th>Status</th>
-                    </tr>
-                    {% for order in closed_orders %}
+                <table class="table">
+                    <thead>
                         <tr>
-                            <td>{{ order._id }}</td>
-                            <td>{{ order.item }}</td>
-                            <td>{{ order.quantity }}</td>
-                            <td>{{ order.status }}</td>
+                            <th>Order ID</th>
+                            <th>Items</th>
+                            <th>Quantities</th>
+                            <th>Status</th>
                         </tr>
-                    {% endfor %}
+                    </thead>
+                    <tbody>
+                        {% for order in closed_orders %}
+                            <tr>
+                                <td>{{ order._id }}</td>
+                                <td>{{ order.item }}</td>
+                                <td>{{ order.quantity }}</td>
+                                <td>{{ order.status }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -66,15 +81,18 @@
 
     <button id="past_orders" onclick="past_orders()">Past Orders</button>
 
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <script>
         function showCart() {
             window.location.href = "/view_cart?prn={{ student['prn'] }}";
         }
 
-        
-    function showRecommendation() {
-        window.location.href = `/recommendations/{{ student['prn'] }}`;
-    }
+        function showRecommendation() {
+            window.location.href = `/recommendations/{{ student['prn'] }}`;
+        }
 
         function past_orders() {
             window.location.href = "/past_orders/{{ student['prn'] }}";
@@ -82,3 +100,4 @@
     </script>
 </body>
 </html>
+

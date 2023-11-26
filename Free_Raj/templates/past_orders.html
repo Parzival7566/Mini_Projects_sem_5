@@ -1,13 +1,24 @@
 <!DOCTYPE html>
-<html>
-    <head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Past Orders</title>
-    </head>
-    <body>
-        <h1>Past Orders</h1>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="dashStyle.css">
+</head>
+<body>
+	<div class="nav">
+	<i class='fas fa-coffee'></i>
+		<div class="logo">
+		<h1>free<b>Raj</b></h1>
+		</div>
+	</div><br>
+	<h2>Past Orders</h2>
         {% if past_orders %}
         {% for order_group in past_orders %}
-            <h2>Order Number: {{ order_group._id }}</h2>
+            <h4>Order Number: {{ order_group._id }}</h4><br>
             <table>
                 <tr>
                     <th>Order ID</th>

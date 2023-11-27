@@ -10,10 +10,7 @@ import matplotlib.pyplot as plt
 import base64
 from datetime import datetime
 import os
-import recommendation
-from pyngrok import ngrok
-
-public_url = ngrok.connect("http://127.0.0.1:5000").public_url
+import recommendation_engine.canteen_food_recommend as canteen_food_recommend
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "SECRET_KEY"
@@ -296,11 +293,11 @@ def login():
         prn = request.form["prn"]
         student = students_collection.find_one({"prn": prn})
         if student:
-            return redirect(url_for("dashboard", prn=prn, public_url=public_url))
+            return redirect(url_for("dashboard", prn=prn))
         else:
             error_message = "Invalid PRN or Password. Please try again."
             return render_template("student_login.html", error=error_message)
-    return render_template("student_login.html", public_url=public_url)
+    return render_template("student_login.html")
 
 
 @app.route("/create_account", methods=["GET", "POST"])
@@ -348,7 +345,7 @@ def show_recommendations():
     recent_item = request.args.get("recent_item")
 
     # Your existing logic to fetch recommendations from the database
-    recommendations = recommendation.recommend(recent_item)
+    recommendations = canteen_food_recommend.recommend(recent_item)
     return render_template("recommendations.html", username=username, recent_item=recent_item, recommendations=recommendations)
 
 menu_items = [menu_item["name"] for menu_item in menu_collection.find()]
@@ -365,7 +362,7 @@ def get_recommendation(prn):
     # Extract the most recent item from the order
     recent_item = most_recent_order.get("item") if most_recent_order else None
     # Call the recommend function with the most recent item name
-    recommendations = recommendation.recommend(recent_item)
+    recommendations = canteen_food_recommend.recommend(recent_item)
     # Filter recommendations to include only items present in the menu
     filtered_recommendations = [item for item in recommendations if item in menu_items]
     # Render the recommendations.html template with the relevant data

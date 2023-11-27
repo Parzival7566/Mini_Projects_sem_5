@@ -1,11 +1,16 @@
-import Recommendation_sample_new
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from datetime import datetime
 import webbrowser
 import hashlib
-#from flask import jsonify
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import base64
+from datetime import datetime
+import os
+import canteen_food_recommend
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "SECRET_KEY"
@@ -53,12 +58,14 @@ def vendor_login():
 def vendor_dashboard():
     # Retrieve current orders
     current_orders = list(orders_collection.find({"status": "open"}))
-    
+   
     # Retrieve completed orders with a status of "closed"
     completed_orders = list(orders_collection.find({"status": "completed"}))
 
+
     # Retrieve completed orders with a status of "closed"
     collected_orders = list(orders_collection.find({"status": "collected"}))
+
 
     # Retrieve analytics data
     total_orders = orders_collection.count_documents({})
@@ -66,13 +73,129 @@ def vendor_dashboard():
     menu_items = list(menu_collection.find())
     # Calculate earnings
     # You can calculate 'total_earnings' here
-    
+   
     # Calculate total price of all orders
     total_price = sum(int(order["price"])*int(order["quantity"]) for order in current_orders + completed_orders + collected_orders)
 
+
+    # Calculate order status distribution
+   
+    order_statuses = orders_collection.aggregate([
+    {"$group": {"_id": "$status", "count": {"$sum": 1}}}
+    ])
+
+
+    # Prepare data for visualization
+    labels = []
+    counts = []
+
+
+    # Iterate through the results and populate labels and counts
+    for status in order_statuses:
+        labels.append(status["_id"])
+        counts.append(status["count"])
+
+
+    # Replace the existing code for creating the pie chart
+    plt.figure(figsize=(8, 8))
+    plt.pie(counts, labels=labels, autopct='%1.1f%%', startangle=140)
+    plt.title('Distribution of Orders by Status')
+
+
+    # Save the plot to a file instead of BytesIO
+    chart_path = os.path.join(app.static_folder, "order_status_chart.png")
+    plt.savefig(chart_path, format='png')
+    plt.close()
+
+
+    # Convert the chart image to base64
+    with open(chart_path, "rb") as image_file:
+        img_base64 = base64.b64encode(image_file.read()).decode('utf-8')
+
+
+
+
+    # Calculate average order value
+    average_order_value = round(total_price / total_orders ,2) if total_orders > 0 else 0
+
+
+    order_times = [order["order_time"] for order in current_orders + completed_orders + collected_orders]
+
+
+    # Convert order times to datetime objects
+    order_times = [order_time.strftime("%H") for order_time in order_times]
+
+
+    # Set popular_order_time to None by default
+    popular_order_time = None
+
+
+    # Analyze popular order times
+#added a histogram
+    if order_times:
+        # Create a histogram for popular order times
+        plt.figure(figsize=(10, 6))
+        plt.hist(order_times, bins=24, edgecolor='black', alpha=0.7)
+        plt.title('Distribution of Orders by Time')
+        plt.xlabel('Time (HH:MM)')
+        plt.ylabel('Number of Orders')
+        plt.xticks(rotation=45, ha='right')  # Rotate x-axis labels for better readability
+        plt.tight_layout()
+
+
+        # Save the plot to a file
+        chart_path_times = "order_time_histogram.png"
+        plt.savefig(os.path.join(app.static_folder, chart_path_times), format='png')
+        plt.close()
+
+
+        # Convert the histogram plot to base64
+        with open(os.path.join(app.static_folder, chart_path_times), 'rb') as image_file:
+            img_base64_times = base64.b64encode(image_file.read()).decode('utf-8')
+    else:
+        img_base64_times = None
+
+
+    #per item chart
+    # Calculate the contribution of each item to the day's total orders
+    item_contributions = {}
+    for order in current_orders + completed_orders + collected_orders:
+        for item, quantity in zip(order["item"], order["quantity"]):
+            if item not in item_contributions:
+                item_contributions[item] = 0
+            item_contributions[item] += int(quantity)
+
+
+    # Prepare data for the pie chart
+    labels = list(item_contributions.keys())
+    values = list(item_contributions.values())
+
+
+    # Create a pie chart
+    plt.figure(figsize=(8, 8))
+    plt.pie(values, labels=labels, autopct='%1.1f%%', startangle=140)
+    plt.title("Contribution of Each Item to Total Orders")
+
+
+    # Save the pie chart to a file
+    chart_path_items = "item_contribution_chart.png"
+    plt.savefig(os.path.join(app.static_folder, chart_path_items), format='png')
+    plt.close()
+
+
+    # Convert the pie chart image to base64
+    with open(os.path.join(app.static_folder, chart_path_items), "rb") as image_file:
+        img_base64_items = base64.b64encode(image_file.read()).decode('utf-8')
+
+
     return render_template("vendor_dashboard.html",
-                           menu_items=menu_items, collected_orders=collected_orders, current_orders=current_orders, completed_orders=completed_orders, total_orders=total_orders,
-                           total_price=total_price)
+                           menu_items=menu_items, collected_orders=collected_orders, current_orders=current_orders,
+                           completed_orders=completed_orders, total_orders=total_orders, total_price=total_price,
+                           average_order_value=average_order_value, popular_order_time=popular_order_time,
+                           order_status_chart=img_base64, order_times_chart=img_base64_times,
+                           item_contribution_chart=img_base64_items)
+
+
 
 
 
@@ -215,84 +338,50 @@ def dashboard(prn):
     else:
         error_message = "Student data not found."
         return render_template("student_login.html", error=error_message)
-    
+
 @app.route("/recommendations")
 def show_recommendations():
     username = request.args.get("username")
     recent_item = request.args.get("recent_item")
 
     # Your existing logic to fetch recommendations from the database
-    recommendations = Recommendation_sample_new.recommend(recent_item)
-
+    recommendations = canteen_food_recommend.recommend(recent_item)
     return render_template("recommendations.html", username=username, recent_item=recent_item, recommendations=recommendations)
-
-
-
-
-
 
 menu_items = [menu_item["name"] for menu_item in menu_collection.find()]
 
 
- # Add this route for recommendations
 @app.route("/recommendations/<prn>")
 def get_recommendation(prn):
+    student = students_collection.find_one({"prn": prn})
     # Fetch the most recent order for the student based on order_time
     most_recent_order = orders_collection.find_one(
         {"student_prn": prn},
         sort=[("order_time", -1)]
     )
-
     # Extract the most recent item from the order
     recent_item = most_recent_order.get("item") if most_recent_order else None
-
     # Call the recommend function with the most recent item name
-    recommendations = Recommendation_sample_new.recommend(recent_item)
-
+    recommendations = canteen_food_recommend.recommend(recent_item)
     # Filter recommendations to include only items present in the menu
     filtered_recommendations = [item for item in recommendations if item in menu_items]
-
     # Render the recommendations.html template with the relevant data
-    return render_template("recommendations.html", username=prn, recent_item=recent_item, recommendations=filtered_recommendations)
+    return render_template("recommendations.html", student=student, recent_item=recent_item, recommendations=filtered_recommendations)
 
     
     
+
 @app.route("/past_orders/<prn>")
 def past_orders(prn):
-    # Group orders by order number and sort each group by order_time in descending order
+    # Group orders by order number
     past_orders = orders_collection.aggregate([
         {"$match": {"student_prn": prn}},
-        {"$group": {
-            "_id": "$order_number",
-            "orders": {
-                "$push": {
-                    "item": "$item",
-                    "quantity": "$quantity",
-                    "price": "$price",
-                    "status": "$status",
-                    "order_cost": "$order_cost",
-                    "order_time": "$order_time"
-                }
-            }
-        }},
-        {"$project": {
-            "order_number": "$_id",
-            "orders": {"$slice": ["$orders", 1]},  # Take only the most recent order
-            "_id": 0
-        }},
-        {"$sort": {"orders.0.order_time": -1}}  # Sort by order_time in descending order
+        {"$group": {"_id": "$order_number", "orders": {"$push": "$$ROOT"}}}
     ])
-
     return render_template("past_orders.html", past_orders=past_orders)
 
-def get_most_recent_item(past_orders):
-    if past_orders:
-        most_recent_order = past_orders[0]
-        return most_recent_order.get("item")  # Replace with the actual key for the item name
-    else:
-        return None  # Handle the case when there are no past orders
         
-@app.route("/place_order", methods=["POST"])
+@app.route("/place_order", methods=["POST"])#modified place orders for time analytics
 def place_order():
     if request.method == "POST":
         student_prn = request.form.get("prn")
@@ -317,7 +406,6 @@ def place_order():
         flash("Item(s) added to cart successfully!")
         if student_prn:
             return redirect(url_for("dashboard", prn=student_prn))
-
 
 
 @app.route("/view_cart", methods=["GET", "POST"])
@@ -376,5 +464,26 @@ def payment_gateway():
     
 
 if __name__ == "__main__":
+    # Delete existing plots file
+    if os.path.exists('static/order_status_chart.png'):
+        os.remove('static/order_status_chart.png')
+
+    if os.path.exists('static/order_time_histogram.png'):
+        os.remove('static/order_time_histogram.png')
+    
+    if os.path.exists('static/item_contribution_chart.png'):
+        os.remove('static/item_contribution_chart.png')
+
+    pycache_dir = '__pycache__'
+    if os.path.exists(pycache_dir):
+        # Delete all files and subdirectories within pycache_dir
+        for root, dirs, files in os.walk(pycache_dir, topdown=False):
+            for file in files:
+                os.remove(os.path.join(root, file))
+            for dir in dirs:
+                os.rmdir(os.path.join(root, dir))
+        # Delete the pycache_dir itself
+        os.rmdir(pycache_dir)
+
     webbrowser.open('http://127.0.0.1:5000/')
-    app.run()
+    app.run(debug=True)

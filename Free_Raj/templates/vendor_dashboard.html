@@ -6,7 +6,7 @@
     <title>Vendor Dashboard</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="dashStyle.css">
+    <link rel="stylesheet" href="/static/dashStyle.css">
 </head>
 <body>
 	<div class="nav">
@@ -184,6 +184,13 @@
         <p>No data available for popular order times.</p>
     {% endif %}
 </div>
+
+    {% if item_contribution_chart %}
+        <div id="item-contribution-chart">
+            <h2>Contribution of Each Item to Total Orders</h2>
+            <img src="{{ url_for('static', filename='item_contribution_chart.png') }}" alt="Item Contribution Chart">
+        </div>
+    {% endif %}
 
     <a href="{{ url_for('edit_menu') }}" class="btn btn-primary">Edit Menu</a>
 

@@ -8,41 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
    </head>
 <body>
-<<<<<<< HEAD
-    <h1>Student Login</h1>
-    <div>
-        <canvas id="qrcode"></canvas>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/qrious"></script>
-    <script>
-        var canvas = document.getElementById("qrcode");
-
-        var fixedLink = "{{ public_url }}"; // Your fixed link
-
-        var qr = new QRious({
-                element: canvas,
-                value: fixedLink,
-                size: 128,
-                background: "white",    
-                foreground: "#6B5B95" 
-            });
-    </script>
-    
-    <form action="/" method="post">
-        PRN Number: <input type="text" name="prn" required>
-        <br><br>
-        Password: <input type="password" name="password" required>
-        <br><br>
-        <input type="submit" value="Login as Student">
-    </form>
-
-    <!-- Button to login as a vendor -->
-    <form action="/vendor_login" method="get">
-        <input type="submit" value="Login as Vendor">
-    </form>
-
-    {% if error %}
-=======
   <div class="container">
     <div class="cover">
       <div class="front">
@@ -64,14 +29,13 @@
                 <input type="password" name="password" placeholder="Enter your password" required>
               </div>
               <div class="button input-box">
-                <input type="submit" value="Sumbit">
+                <input type="submit" value="Submit">
               </div>
               <div class="text sign-up-text">Don't have an account? <a href="/create_account">Sigup now</a></div>
             </div>
         </form>
 		
 	{% if error %}
->>>>>>> b63c22c03f967d83cb199e188656a8061bf80a2e
     <p>{{ error }}</p>
     {% endif %}
       

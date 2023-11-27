@@ -3,183 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Project One View</title>
-</head>
+    <title>Home - Project One View</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        /* General styles for body and html */
         body, html {
             margin: 0;
             padding: 0;
-        }
-
-        /* Background and typography */
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(to right, #007bff, #00bfff); /* Gradient background */
-            color: #fff;
-        }
-
-        /* Sidebar styles */
-        .sidebar {
-            background-color: rgba(0, 0, 0, 0.7); /* Slightly transparent black background */
-            color: #fff;
-            width: 250px;
             height: 100%;
-            position: fixed;
-            overflow: auto;
-            box-shadow: 1px 0px 3px rgba(0, 0, 0, 0.2);
+            /* Background image */
+            background: url('https://i.pinimg.com/originals/62/01/e4/6201e4f9237300798c735225a5094a00.jpg') center/cover no-repeat; /* Use your own blurred image */
+            font-family: 'Arial', sans-serif;
         }
 
-        .sidebar-header {
-            padding: 20px;
-            text-align: center;
-            font-size: 1.5rem;
-        }
-
-        .nav-links {
-            list-style-type: none;
-            padding: 0;
-            margin-top: 30px;
-        }
-
-        .nav-links li {
-            padding: 15px;
-            text-align: center;
-        }
-
-        .nav-links a {
-            color: #fff;
-            text-decoration: none;
-            display: block;
-            transition: 0.3s;
-        }
-
-        .nav-links a.active {
-            background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent white background */
-            border-right: 5px solid #fff; /* White right border for active link */
-            padding-right: 10px;
-        }
-
-        .nav-links a:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-right: 5px solid #fff;
-            padding-right: 10px;
-        }
-
-        /* Content styles */
-        .content {
-            margin-left: 250px;
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px; /* Rounded corners */
-        }
-
-        header {
-            text-align: center;
-            color: #007bff; /* Accent color */
-        }
-
-        #upload-button:hover {
-            background-color: #00bfff; /* Lighter blue on hover */
-        }
-
-        #image-gallery {
+        /* Container styles */
+        .container {
             display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
+            height: 100vh;
         }
 
-        /* Add your provided code below */
-        /* Image gallery styles */
-        #image-gallery {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        .image-card {
-            max-width: 300px;
-            background-color: #fff;
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        /* Header title styles */
+        .header-title {
+            background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent background */
+            padding: 20px;
             border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .image-card img {
-            width: 100%;
-            height: auto;
-        }
-
-        /* Action buttons styles */
-        .action-buttons {
+            backdrop-filter: blur(15px); /* Adds a blur effect */
             text-align: center;
-            margin-top: 30px;
         }
 
-        .secondary-btn {
-            background-color: transparent;
-            color: #007bff;
-            border: 2px solid #007bff;
-            padding: 10px 20px;
-            margin: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s ease, color 0.3s ease;
+        /* Keyframes for Header Title Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .secondary-btn:hover {
-            background-color: #007bff;
-            color: #fff;
+        /* Apply Animation to Header Title */
+        .header-title h2 {
+            font-size: 36px;
+            margin: 0;
+            color: #6B5B95;
+            font-family: Big Caslon, serif;
+            /* Animation properties */
+            animation: fadeInUp 1s ease forwards;
         }
-        /* End of your provided code */
 
-        /* Button styles */
+        /* Other CSS styles remain unchanged */
+        .header-title p {
+            font-size: 18px;
+            margin: 0;
+            color: Grey;
+            font-family: Lucida Handwriting, cursive;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            /*backdrop-filter: blur(15px);*/
+        }
+
         .primary-btn {
-            background-color: #007bff;
+            background-color: lavenderBlush;
             color: #fff;
             border: none;
             padding: 10px 20px;
             cursor: pointer;
             border-radius: 5px;
             font-weight: bold;
-            transition: background-color 0.3s ease;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            margin: 10px;
+            display: inline-block;
         }
 
         .primary-btn:hover {
             background-color: #00bfff;
         }
 
+        .box {
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            padding: 5px;
+            text-align: center;
+            margin: 10px;
+            backdrop-filter: blur(15px);
+        }
+
+        .user-box {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 14px;
+        }
+        
+        .username {
+            font-weight: bold;
+        }
+
+        .logout-button {
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            background-color: Red;
+            padding: 4px 16px;
+        }
+
+        .how-to-use-box {
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            padding: 30px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .how-to-use-title {
+            font-size: 24px;
+            color: #6B5B95;
+            font-family: Lucida Handwriting, cursive;
+        }
+
+        .how-to-use-steps {
+            font-size: 17px;
+            color: #333;
+            font-family: "Raleway", Arial, sans-serif;
+            line-height: 1.5;
+        }
+        
+        .box a {
+        		color: #6B5B95;
+                }
+                
+  
+
     </style>
+</head>
 <body>
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <h1><a href="/admin" style="text-decoration: none; color: inherit;">Project One View</a></h1>
+ <div class="container">
+        <a href="/logout" class="primary-btn logout-button">Logout</a>
+        <div class="user-box">
+            Logged in as <span class="username">{{ username }}</span>
         </div>
-        <ul class="nav-links">
-            <li><a href="/new_event">New Event</a></li>
-            <li><a href="/past_event">Past Events</a></li>
-            <li><a href="/ongoing_event">Ongoing Events</a></li>
-        </ul>
+    <!-- Main content container -->
+    <div class="container">
+        <!-- Header title with animation -->
+        <div class="header-title">
+            <h2>ONE VIEW</h2>
+            <p>- One place to view your memories -</p>
+        </div>
+        <div class="button-container">
+        
+            <div class="box">
+                <a href="/{{ username }}/ongoing_event" class="primary-btn">Ongoing Event</a>
+            </div>
+            <div class="box">
+           
+                <a href="/{{ username }}/new_event" class="primary-btn">New Event</a>
+            </div>
+            <div class="box">
+            
+                <a href="/{{ username }}/past_event" class="primary-btn">Past Event</a>
+            </div>
+        </div>
+        <div class="how-to-use-box">
+            <div class="how-to-use-title">How to Use?</div>
+            <div class="how-to-use-steps">
+                Step 1: Create a new Event.
+                <br>
+                Step 2: Share your Event details with friends.
+                <br>
+                Step 3: Upload pictures and create memories together :)
+            </div>
+        </div>
     </div>
-    <div class="content">
-        <header>
-            <div class="header-title">
-                <h2>Your Events</h2>
-                <p>One place to view your memories</p>
-            </div>
-        </header>
-        <main>
-            <div id="image-gallery">
-                <!-- Display uploaded images here -->
-            </div>
-            <div class="action-buttons">
-                <button id="view-images-button" class="secondary-btn">View Images</button>
-                <button id="manage-pictures-button" class="secondary-btn">Manage Pictures</button>
-            </div>
-        </main>
-    </div>
+
+    <!-- Bootstrap JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+

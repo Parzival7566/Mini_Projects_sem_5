@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneView - Your Place for Memories</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden; /* Hide overflow to prevent scrollbars */
+        }
+
+        .container {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            padding: 20px; /* Add some padding for better visibility */
+        }
+
+        .header-title {
+            position: relative;
+            z-index: 1;
+            text-align: right; /* Align text to the right side */
+            color: #000; /* Changed color to black */
+            opacity: 0; /* Initial opacity set to 0 for fade-in effect */
+            animation: fadeInUp 4s forwards; /* Fade-in and shift-up animation for 4 seconds */
+            animation-delay: 5s; /* Delay the start of the animation by 5 seconds */
+        }
+
+        .header-title h1 {
+            font-size: 96px; /* Increased font size */
+            margin: 0;
+            font-family: 'Big Caslon', serif;
+        }
+
+        .header-subtitle {
+            font-size: 24px;
+            margin-top: 20px;
+            opacity: 0; /* Initial opacity set to 0 for fade-in effect */
+            animation: fadeIn 4s forwards 1s; /* Fade-in animation for 4 seconds with a delay of 1 second */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px); /* Initial position shifted down by 20px */
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Add a short animation for the background image */
+        @keyframes backgroundAnimation {
+            from {
+                background-position: 50% 50%; /* Center the background image */
+            }
+            to {
+                background-position: 100% 100%;
+            }
+        }
+
+        body {
+            background: url('https://cdn.dribbble.com/users/1321525/screenshots/6636950/gif_export.gif') center/cover no-repeat;
+            animation: backgroundAnimation 5s linear forwards; /* Background animation for 5 seconds */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-title">
+            <h1 class="mb-0" style="color: #000;">OneView</h1>
+            <div class="header-subtitle" style="color: #000;">Your Place for Memories</div>
+        </div>
+    </div>
+</body>
+</html>

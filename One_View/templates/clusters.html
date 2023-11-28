@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Clusters</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background: #ffd973;
+            color: #000;
+            text-align: center;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px;
+        }
+
+        .image-container img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            margin: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Clusters</h1>
+    </header>
+    <div class="image-container">
+         {% for cluster_dir in cluster_dirs %}
+    <a href="/{{ username }}/cluster/{{ cluster_dir }}">
+        <img src="{{ url_for('static', filename='clusters/' + cluster_dir + '/face_' + cluster_dir.split('_')[1] + '.jpg') }}" alt="{{ cluster_dir }}">
+    </a>
+    {% endfor %}
+    </div>
+</body>
+</html>

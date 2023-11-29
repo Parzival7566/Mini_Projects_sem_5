@@ -1,19 +1,44 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Create Account</title>
-</head>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <title> Create Account </title>
+    <link rel="stylesheet" href="/static/style1.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
 <body>
-    <h1>Create Account</h1>
-    
-    <form action="/create_account" method="post">
-        Username: <input type="text" name="uname" required>
-        <br><br>
-        PRN Number: <input type="text" name="prn" required>
-        <br><br>
-        Password: <input type="password" name="password" required>
-        <br><br>
-        <input type="submit" value="Create Account">
-    </form>
+  <div class="container">
+    <div class="cover">
+      <div class="front">
+        <img src="/static/Taco.jpeg" alt="">
+      </div>
+    </div>
+    <div class="forms">
+        <div class="form-content">
+          <div class="login-form">
+            <div class="title">Sign Up</div>
+          <form action="/create_account" method="post">
+            <div class="input-boxes">
+			  <div class="input-box">
+                <i class="fas fa-at"></i>
+                <input type="text" name="uname" placeholder="Enter Username" required>
+              </div>
+              <div class="input-box">
+                <i class="fas fa-asterisk"></i>
+                <input type="text" name="prn" placeholder="Enter PRN" required>
+              </div>
+              <div class="input-box">
+                <i class="fas fa-lock"></i>
+                <input type="password" name="password" placeholder="Enter password" required>
+              </div>
+              <div class="button input-box">
+                <input type="submit" value="Submit">
+              </div>
+            </div>
+        </form>
+    </div>
+    </div>
+  </div>
 </body>
 </html>

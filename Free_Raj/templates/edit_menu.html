@@ -1,21 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Menu</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/static/dashStyle.css">
 </head>
 <body>
-    <h1>Edit Menu</h1>
-    <form method="POST" action="/edit_menu">
-        <label for="food_item_name">Food Item Name:</label>
-        <input type="text" name="food_item_name" required><br>
+	<div class="nav">
+	<i class='fas fa-coffee'></i>
+		<div class="logo">
+		<h1>free<b>Raj</b></h1>
+		</div>
+	</div><br>
+    <h2>Edit Menu</h2>
+	<div class="forms">
+			<div class="form-content">
+				<div class="login-form">
+				<form method="POST" action="/edit_menu">
+					<label for="food_item_name">Food Item Name:</label>
+					<input type="text" name="food_item_name" required><br><br>
 
-        <label for="price">Price:</label>
-        <input type="text" name="price" required><br>
+					<label for="price">Price:</label>
+					<input type="text" name="price" required><br><br>
 
-        <label for="preparation_time">Preparation Time:</label>
-        <input type="text" name="preparation_time" required><br>
+					<label for="preparation_time">Preparation Time:</label>
+					<input type="text" name="preparation_time" required><br><br>
 
-        <input type="submit" value="Add to Menu">
-    </form>
+					<div class="button input-box">
+					<input type="submit" value="Add to Menu">
+					</div>
+				</form>
+				</div>
+			</div>
+	</div>
 </body>
 </html>

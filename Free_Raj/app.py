@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import base64
 from datetime import datetime
 import os
-import recommendation
+import recommendation_engine.canteen_food_recommend as canteen_food_recommend
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "SECRET_KEY"
@@ -345,7 +345,7 @@ def show_recommendations():
     recent_item = request.args.get("recent_item")
 
     # Your existing logic to fetch recommendations from the database
-    recommendations = recommendation.recommend(recent_item)
+    recommendations = canteen_food_recommend.recommend(recent_item)
     return render_template("recommendations.html", username=username, recent_item=recent_item, recommendations=recommendations)
 
 menu_items = [menu_item["name"] for menu_item in menu_collection.find()]
@@ -362,7 +362,7 @@ def get_recommendation(prn):
     # Extract the most recent item from the order
     recent_item = most_recent_order.get("item") if most_recent_order else None
     # Call the recommend function with the most recent item name
-    recommendations = recommendation.recommend(recent_item)
+    recommendations = canteen_food_recommend.recommend(recent_item)
     # Filter recommendations to include only items present in the menu
     filtered_recommendations = [item for item in recommendations if item in menu_items]
     # Render the recommendations.html template with the relevant data
@@ -486,4 +486,4 @@ if __name__ == "__main__":
         os.rmdir(pycache_dir)
 
     webbrowser.open('http://127.0.0.1:5000/')
-    app.run(debug=True)
+    app.run()

@@ -88,3 +88,44 @@ ul {
         #past_orders {
             margin-top: 20px;
         }
+
+        .forms .button input{
+                    color: #fff;
+                    background: #ff1a1a;
+                    border-radius: 6px;
+                    border-style: none;
+                    padding: 10px;
+                    cursor: pointer;
+                    transition: all 0.4s ease;
+                }
+                .forms .button input:hover{
+                    background: #e60000;
+                }
+                .color-key {
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                }
+        
+        .forms .form-content .button{
+            color: #996633;
+            margin-top: 40px;
+          }
+              
+          .forms .form-content .button input{
+            color: #fff;
+            background: #ff1a1a;
+            border-radius: 6px;
+            border-style: none;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+          }
+          .forms .form-content .button input:hover{
+            background: #e60000;
+          }
+        .color-key {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }

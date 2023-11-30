@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Analytics</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/static/dashStyle.css">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.min.js"></script>
+</head>
+<body>
+	<div class="nav">
+		<i class='fas fa-coffee'></i>
+		<div class="logo">
+			<h1>free<b>Raj</b></h1>
+		</div>
+	</div><br>
+    <h2>Vendor Analytics</h2><br>
+    <div style="display: flex; justify-content: space-around;">
+
+    <!-- Item Contribution Chart Section -->
+<div id="item-contribution-chart">
+    <h3>Item Contribution</h3>
+    <script>
+        var labels = JSON.parse('{{ item_labels|tojson|safe }}');
+        var counts = JSON.parse('{{ item_counts|tojson|safe }}');
+
+        var data = labels.map(function(label, i) {
+            return {label: label, count: counts[i]};
+        });
+
+        var width = 480;
+        var height = 500;
+        var radius = Math.min(width, height) / 2;
+
+        var color = d3.scaleOrdinal(d3.schemeCategory10);
+
+        var svg = d3.select("#item-contribution-chart")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .append("g")
+            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+        var pie = d3.pie()
+            .value(function(d) { return d.count; });
+
+        var path = d3.arc()
+            .outerRadius(radius - 10)
+            .innerRadius(0);
+
+        var arcs = svg.selectAll("arc")
+            .data(pie(data))
+            .enter()
+            .append("g")
+            .attr("class", "arc");
+
+        var tip = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([-10, 0])
+            .html(function(d) {
+                return "<span style='color:black'>" + d.data.label + "</span>";
+            });
+
+        svg.call(tip);
+
+        arcs.append("path")
+            .attr("d", path)
+            .attr("fill", function(d) { return color(d.data.label); })
+            .each(function(d) { this._current = d; }) // store the initial angles
+            .on("mouseover", function(d) {
+                d3.select(this)
+                    .attr("stroke","white")
+                    .transition()
+                    .duration(400)
+                    .attr("d", d3.arc()
+                        .innerRadius(0)
+                        .outerRadius(radius));
+                tip.show(d, this);
+            })
+            .on("mouseout", function(d) {
+                d3.select(this)
+                    .attr("stroke","none")
+                    .transition()
+                    .duration(400)
+                    .attr("d", path);
+                tip.hide(d, this);
+            })
+
+    </script>
+</div>
+
+<!-- Order Status Distribution Section -->
+<div id="order-status-distribution">
+    <h3>Order Status</h3>
+    <script>
+        var labels = JSON.parse('{{ order_status_labels|tojson|safe }}');
+        var counts = JSON.parse('{{ order_status_counts|tojson|safe }}');
+
+        var data = labels.map(function(label, i) {
+            return {label: label, count: counts[i]};
+        });
+
+        var width = 480;
+        var height = 500;
+        var radius = Math.min(width, height) / 2;
+
+        var color = d3.scaleOrdinal(d3.schemeCategory10);
+
+        var svg = d3.select("#order-status-distribution")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .append("g")
+            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+        var pie = d3.pie()
+            .value(function(d) { return d.count; });
+
+        var path = d3.arc()
+            .outerRadius(radius - 10)
+            .innerRadius(0);
+
+        var arcs = svg.selectAll("arc")
+            .data(pie(data))
+            .enter()
+            .append("g")
+            .attr("class", "arc");
+
+
+        var tip = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([-10, 0])
+            .html(function(d) {
+                return "<span style='color:black'>" + d.data.label + "</span>";
+            });
+
+        svg.call(tip);
+
+        arcs.append("path")
+            .attr("d", path)
+            .attr("fill", function(d) { return color(d.data.label); })
+            .each(function(d) { this._current = d; }) // store the initial angles
+            .on("mouseover", function(d) {
+                d3.select(this)
+                    .attr("stroke","white")
+                    .transition()
+                    .duration(400)
+                    .attr("d", d3.arc()
+                        .innerRadius(0)
+                        .outerRadius(radius));
+                tip.show(d, this);
+            })
+            .on("mouseout", function(d) {
+                d3.select(this)
+                    .attr("stroke","none")
+                    .transition()
+                    .duration(400)
+                    .attr("d", path);
+                tip.hide(d, this);
+            })
+    </script>
+</div>
+</div>
+
+<!-- Popular Order Times Section -->
+<div id="popular-order-times">
+    <h3>Popular Order Times</h3>
+    <script>
+        var labels = JSON.parse('{{ order_time_labels|tojson|safe }}');
+        var counts = JSON.parse('{{ order_time_counts|tojson|safe }}');
+
+        var data = labels.map(function(label, i) {
+            return {label: Number(label), count: counts[i]};
+        }).sort(function(a, b) { return a.label - b.label; });
+
+        var sortedLabels = data.map(function(d) { return d.label; }); // Extract labels from sorted data
+
+        // Adjust margins and dimensions for the SVG
+        var margin = {top: 20, right: 50, bottom: 50, left: 50},
+            width = 1400 - margin.left - margin.right,
+            height = 750 - margin.top - margin.bottom;
+
+        var x = d3.scaleBand()
+            .domain(sortedLabels) // Use sorted labels for domain
+            .range([0, width])
+            .padding(0.1);
+
+        var y = d3.scaleLinear()
+            .domain([0, d3.max(counts)])
+            .nice()
+            .range([height, 0]);
+
+        var color = d3.scaleOrdinal(d3.schemeCategory10);
+
+        var svg = d3.select("#popular-order-times")
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        svg.selectAll(".bar")
+            .data(data)
+            .enter().append("rect")
+            .attr("class", "bar")
+            .attr("x", function(d) { return x(d.label); })
+            .attr("width", x.bandwidth())
+            .attr("y", function(d) { return y(d.count); })
+            .attr("height", function(d) { return height - y(d.count); })
+            .attr("fill", "green");
+
+        svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x));
+
+        svg.append("g")
+            .call(d3.axisLeft(y));
+
+        svg.append("text")             
+            .attr("transform", "translate(" + (width/2) + " ," + (height + margin.top + 20) + ")")
+            .style("text-anchor", "middle")
+            .text("Order Time");
+
+        svg.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - margin.left)
+            .attr("x",0 - (height / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text("Count"); 
+
+    </script>
+    <form action="{{ url_for('vendor_dashboard') }}">
+        <button type="submit">Back to dashboard</button>
+    </form>
+</div>
+
+
+
+</body>
+</html>

@@ -48,7 +48,7 @@
             .value(function(d) { return d.count; });
 
         var path = d3.arc()
-            .outerRadius(radius - 10)
+            .outerRadius(radius)
             .innerRadius(0);
 
         var arcs = svg.selectAll("arc")
@@ -56,6 +56,7 @@
             .enter()
             .append("g")
             .attr("class", "arc");
+
 
         var tip = d3.tip()
             .attr('class', 'd3-tip')

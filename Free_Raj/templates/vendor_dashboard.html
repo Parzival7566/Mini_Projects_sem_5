@@ -24,6 +24,7 @@
     <h3>Current Orders</h3>
     {% if current_orders %}
     <div class="order-list">
+    <div class="sub-div">
         <table class="table">
             <thead>
                 <tr>
@@ -58,6 +59,7 @@
             </tbody>
         </table>
     </div>
+    </div>
     {% else %}
     <p>No Orders Received Yet! Hang Tight!</p>
     {% endif %}
@@ -69,6 +71,7 @@
     <h3>Completed Orders</h3>
     {% if completed_orders %}
 <div class="order-list">
+    <div class="sub-div">
         <table class="table">
             <thead>
                 <tr>
@@ -103,6 +106,7 @@
             </tbody>
         </table>
     </div>
+    </div>
     {% else %}
     <p>No Orders Completed Yet!</p>
     {% endif %}
@@ -113,6 +117,7 @@
     <h3>Collected Orders</h3>
     {% if collected_orders %}
     <div class="order-list">
+		<div class="sub-div">
         <table class="table">
             <thead>
                 <tr>
@@ -135,6 +140,7 @@
             </tbody>
         </table>
     </div>
+	</div>
     {% else %}
     <p>No Orders Collected Yet!</hp>
     {% endif %}

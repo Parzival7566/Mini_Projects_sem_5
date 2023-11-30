@@ -7,192 +7,180 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="/static/dashStyle.css">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
 </head>
 <body>
 	<div class="nav">
-	<i class='fas fa-coffee'></i>
+		<i class='fas fa-coffee'></i>
 		<div class="logo">
-		<h1>free<b>Raj</b></h1>
+			<h1>free<b>Raj</b></h1>
 		</div>
 	</div><br>
     <h2>Welcome, Vendor!</h2><br>
+    
 
 <!-- Current Orders Section -->
 <div id="current-orders">
     <h3>Current Orders</h3>
+    {% if current_orders %}
     <div class="order-list">
-        <table>
-            <tr>
-                <th>Order ID</th>
-                <th>Items</th>
-                <th>Quantities</th>
-                <th>Status</th> <!-- Add a new column for status -->
-            </tr>
-            {% for order in current_orders %}
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>{{ order._id }}</td>
-                    <td>{{ order.item }}</td> <!-- Add this line to display the item -->
-                    <td>{{ order.quantity }}</td>
-                    <td>{{ order.status }}</td>
-                    <td>
-                    {% if order.status == 'completed' %}
-                        <!-- Display a message if the order is already completed -->
-                        Order Completed
-                    {% else %}
-                        <!-- Add the "Mark as Completed" button -->
-						<div class="forms">
-							<div class="form-content">
-								<div class="login-form">
-									<form method="POST" action="{{ url_for('mark_order_done') }}">
-									<input type="hidden" name="order_id" value="{{ order._id }}">
-									<div class="button input-box">
-									<input type="submit" value="Mark as Completed">
-									</div>
-									</form>
-								</div>
-							</div>
-						</div>
-                    {% endif %}
-                </td>
+                    <th>Order ID</th>
+                    <th>Items</th>
+                    <th>Quantities</th>
+                    <th>Status</th>
+                    <th>Action</th>
                 </tr>
+            </thead>
+
+            <tbody>
+                {% for order in current_orders %}
+                            <tr>
+                                <td>{{ order._id }}</td>
+                                <td>{{ order.item }}</td>
+                                <td>{{ order.quantity }}</td>
+                                <td>{{ order.status }}</td>
+                            
+                                <td>
+                                    <div class="forms">
+                                        <form method="POST" action="{{ url_for('mark_order_done') }}">
+                                                <input type="hidden" name="order_id" value="{{ order._id }}">
+                                                <div class="button input-box">
+                                                    <input type="submit" value="Mark as Completed">
+                                                </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
             {% endfor %}
+            </tbody>
         </table>
     </div>
+    {% else %}
+    <p>No Orders Received Yet! Hang Tight!</p>
+    {% endif %}
 </div>
+
 
 <!-- Completed Orders Section -->
 <div id="completed-orders">
     <h3>Completed Orders</h3>
-    <div class="order-list">
-        <table>
-            <tr>
-                <th>Order ID</th>
-                <th>Items</th>
-                <th>Quantities</th>
-                <th>Status</th> <!-- Add a new column for status -->
-                <th>Action</th> <!-- Add a new column for action -->
-            </tr>
-            {% for order in completed_orders %}
+    {% if completed_orders %}
+<div class="order-list">
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>{{ order._id }}</td>
-                    <td>{{ order.item }}</td> <!-- Add this line to display the item -->
-                    <td>{{ order.quantity }}</td>
-                    <td>{{ order.status }}</td>
-                    <td>
-                    {% if order.status == 'completed' %}
-                        {% if order.collected %}
-                            <!-- Display a message if the order is already collected -->
-                            Order Collected
-                        {% else %}
-                            <!-- Add the "Order Collected" button -->
-							<div class="forms">
-							<div class="form-content">
-							<div class="login-form">
-                            <form method="POST" action="{{ url_for('mark_order_collected') }}">
-                                <input type="hidden" name="order_id" value="{{ order._id }}">
-								<div class="button input-box">
-                                <input type="submit" value="Order Collected">
-								</div>
-                            </form>
-							</div>
-							</div>
-							</div>
-                        {% endif %}
-                    {% endif %}
-                    </td>
+                    <th>Order ID</th>
+                    <th>Items</th>
+                    <th>Quantities</th>
+                    <th>Status</th>
+                    <th>Action</th>
                 </tr>
+            </thead>
+
+            <tbody>
+                {% for order in completed_orders %}
+                            <tr>
+                                <td>{{ order._id }}</td>
+                                <td>{{ order.item }}</td>
+                                <td>{{ order.quantity }}</td>
+                                <td>{{ order.status }}</td>
+                            
+                                <td>
+                                    <div class="forms">
+                                        <form method="POST" action="{{ url_for('mark_order_collected') }}">
+                                                <input type="hidden" name="order_id" value="{{ order._id }}">
+                                                <div class="button input-box">
+                                                    <input type="submit" value="Mark as Collected">
+                                                </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
             {% endfor %}
+            </tbody>
         </table>
     </div>
+    {% else %}
+    <p>No Orders Completed Yet!</p>
+    {% endif %}
 </div>
 
 <!-- Collected Orders Section -->
 <div id="collected-orders">
     <h3>Collected Orders</h3>
+    {% if collected_orders %}
     <div class="order-list">
-        <table>
-            <tr>
-                <th>Order ID</th>
-                <th>Items</th>
-                <th>Quantities</th>
-                <th>Status</th> <!-- Add a new column for status -->
-            </tr>
-            {% for order in collected_orders %}
+		<div class="sub-div">
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>{{ order._id }}</td>
-                    <td>{{ order.item }}</td> <!-- Add this line to display the item -->
-                    <td>{{ order.quantity }}</td>
-                    <td>{{ order.status }}</td>
-                </td>
+                    <th>Order ID</th>
+                    <th>Items</th>
+                    <th>Quantities</th>
+                    <th>Status</th>
                 </tr>
+            </thead>
+
+            <tbody>
+                {% for order in collected_orders %}
+                            <tr>
+                                <td>{{ order._id }}</td>
+                                <td>{{ order.item }}</td>
+                                <td>{{ order.quantity }}</td>
+                                <td>{{ order.status }}</td>
+                            </tr>
             {% endfor %}
+            </tbody>
         </table>
     </div>
+	</div>
+    {% else %}
+    <p>No Orders Collected Yet!</hp>
+    {% endif %}
 </div>
 
+<p></p>
 <!-- Earnings Section -->
     <div id="earnings">
-        <h3>Earnings</h3>
+        <h3>Earnings and Analytics</h3>
         <p>Total Earnings: ₹ {{ total_price }}</p>
-        <!-- Add more earnings data as needed -->
+        <a href="{{ url_for('vendor_analytics') }}" class="btn btn-primary">View Analytics</a>
     </div>
-
+<p></p>
 <!-- Menu -->   
 <h3>Menu Items</h3>
-<ul>
-    {% for menu_item in menu_items %}
-        <li>
-            {{ menu_item.name }} - Price: ₹ {{ menu_item.price }} - Preparation Time: {{ menu_item.preparation_time }}
-			<div class="forms">
-				<div class="form-content">
-					<div class="login-form">
-					<form method="POST" action="{{ url_for('delete_menu_item', menu_item_id=menu_item._id) }}">
-					<div class="button input-box">
-					<input type="submit" value="Delete">
-					</div>
-					</form>
-					</div>
-				</div>
-			</div>
-        </li>
-    {% endfor %}
-</ul>
-
-<!--Analytics-->   
-    <div id="analytics">
-        <h3>Analytics</h3>
-        <p>Total Orders: {{ total_orders }}</p>
-        <p>Average Order Value: ₹ {{ average_order_value }}</p>
-        <p>Popular Order Time: {% if popular_order_time %}{{ popular_order_time.strftime("%H:%M") }}{% endif %}</p>
-
-
-    
-        <!-- Display the order status distribution chart -->
-        <img src="{{ url_for('static', filename='order_status_chart.png') }}" alt="Order Status Distribution">
-        
-
-
-    </div>
-<!-- Popular Order Times Section -->
-<div id="popular-order-times">
-    <h3>Popular Order Times</h3>
-    {% if order_times_chart %}
-       <!-- Display the order time distribution histogram with right time -->
-<img src="{{ url_for('static', filename='order_time_histogram.png') }}" alt="Order Time Distribution">
-
-    {% else %}
-        <p>No data available for popular order times.</p>
-    {% endif %}
-</div>
-
-    {% if item_contribution_chart %}
-        <div id="item-contribution-chart">
-            <h2>Contribution of Each Item to Total Orders</h2>
-            <img src="{{ url_for('static', filename='item_contribution_chart.png') }}" alt="Item Contribution Chart">
-        </div>
-    {% endif %}
-
     <a href="{{ url_for('edit_menu') }}" class="btn btn-primary">Edit Menu</a>
+
+<div class="row">
+            {% for item in menu_items %}
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item["name"] }}</h5>
+                            <input type="hidden" name="item" value="{{ item["name"] }}">
+                            <input type="hidden" name="preparation_time_{{ item["name"] }}" value="{{ item["preparation_time"] }}">
+                            <p class="card-text">Approx Preparation Time: {{ item["preparation_time"] }} minutes</p>
+                            <input type="hidden" name="price_{{ item["name"] }}" value="{{ item["price"] }}">
+                            <p class="card-text">Price: ₹{{ item["price"] }}</p>
+                            <div class="forms">
+                                <div class="form-content">
+                                    <div class="login-form">
+                                        <form method="POST" action="{{ url_for('delete_menu_item', menu_item_id=item._id) }}">
+                                            <div class="button input-box">
+                                                <input type="submit" value="Delete">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
 
 </body>
 </html>

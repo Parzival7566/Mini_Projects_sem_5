@@ -62,141 +62,183 @@ def vendor_dashboard():
     # Retrieve completed orders with a status of "closed"
     completed_orders = list(orders_collection.find({"status": "completed"}))
 
-
-    # Retrieve completed orders with a status of "closed"
+    # Retrieve completed orders with a status of "collected"
     collected_orders = list(orders_collection.find({"status": "collected"}))
-
 
     # Retrieve analytics data
     total_orders = orders_collection.count_documents({})
-    # You can calculate 'most_ordered_item' here
     menu_items = list(menu_collection.find())
-    # Calculate earnings
-    # You can calculate 'total_earnings' here
-   
-    # Calculate total price of all orders
-    total_price = sum(int(order["price"])*int(order["quantity"]) for order in current_orders + completed_orders + collected_orders)
 
+    # Calculate total price of all orders
+    total_price = sum(int(order["price"]) * int(order["quantity"]) for order in current_orders + completed_orders + collected_orders)
 
     # Calculate order status distribution
-   
     order_statuses = orders_collection.aggregate([
-    {"$group": {"_id": "$status", "count": {"$sum": 1}}}
+        {"$group": {"_id": "$status", "count": {"$sum": 1}}}
     ])
-
 
     # Prepare data for visualization
     labels = []
     counts = []
-
 
     # Iterate through the results and populate labels and counts
     for status in order_statuses:
         labels.append(status["_id"])
         counts.append(status["count"])
 
+    # Calculate average order value
+    average_order_value = round(total_price / total_orders, 2) if total_orders > 0 else 0
 
-    # Replace the existing code for creating the pie chart
-    plt.figure(figsize=(8, 8))
-    plt.pie(counts, labels=labels, autopct='%1.1f%%', startangle=140)
-    plt.title('Distribution of Orders by Status')
+    # Prepare data for "Popular Order Times" plot
+    order_times = orders_collection.aggregate([
+        {"$group": {"_id": {"$hour": "$order_time"}, "count": {"$sum": 1}}}
+    ])
 
+    order_time_labels = []
+    order_time_counts = []
 
-    # Save the plot to a file instead of BytesIO
-    chart_path = os.path.join(app.static_folder, "order_status_chart.png")
-    plt.savefig(chart_path, format='png')
-    plt.close()
+    for order_time in order_times:
+        order_time_labels.append(order_time["_id"])
+        order_time_counts.append(order_time["count"])
 
+    # Prepare data for "Item Contribution Chart" plot
+    item_contributions = orders_collection.aggregate([
+        {"$group": {"_id": "$item", "count": {"$sum": 1}}}
+    ])
 
-    # Convert the chart image to base64
-    with open(chart_path, "rb") as image_file:
-        img_base64 = base64.b64encode(image_file.read()).decode('utf-8')
+    item_labels = []
+    item_counts = []
 
+    for item in item_contributions:
+        item_labels.append(item["_id"])
+        item_counts.append(item["count"])
 
+    if current_orders==[]:
+        return render_template("vendor_dashboard.html",
+                           completed_orders=completed_orders,
+                           collected_orders=collected_orders,
+                           total_orders=total_orders,
+                           menu_items=menu_items,
+                           total_price=total_price,
+                           order_status_labels=labels,
+                           order_status_counts=counts,
+                           average_order_value=average_order_value,
+                           order_time_labels=order_time_labels,
+                           order_time_counts=order_time_counts,
+                           item_labels=item_labels,
+                           item_counts=item_counts)
+    
+    elif completed_orders==[]:
+        return render_template("vendor_dashboard.html",
+                           current_orders=current_orders,
+                           collected_orders=collected_orders,
+                           total_orders=total_orders,
+                           menu_items=menu_items,
+                           total_price=total_price,
+                           order_status_labels=labels,
+                           order_status_counts=counts,
+                           average_order_value=average_order_value,
+                           order_time_labels=order_time_labels,
+                           order_time_counts=order_time_counts,
+                           item_labels=item_labels,
+                           item_counts=item_counts)
+    
+    elif collected_orders==[]:
+        return render_template("vendor_dashboard.html",
+                           completed_orders=completed_orders,
+                           current_orders=current_orders,
+                           total_orders=total_orders,
+                           menu_items=menu_items,
+                           total_price=total_price,
+                           order_status_labels=labels,
+                           order_status_counts=counts,
+                           average_order_value=average_order_value,
+                           order_time_labels=order_time_labels,
+                           order_time_counts=order_time_counts,
+                           item_labels=item_labels,
+                           item_counts=item_counts)
+    else:
+        return render_template("vendor_dashboard.html",
+                           current_orders=current_orders,
+                           completed_orders=completed_orders,
+                           collected_orders=collected_orders,
+                           total_orders=total_orders,
+                           menu_items=menu_items,
+                           total_price=total_price,
+                           order_status_labels=labels,
+                           order_status_counts=counts,
+                           average_order_value=average_order_value,
+                           order_time_labels=order_time_labels,
+                           order_time_counts=order_time_counts,
+                           item_labels=item_labels,
+                           item_counts=item_counts)
 
+@app.route("/vendor_analytics")
+def vendor_analytics():
+    # Retrieve current orders
+    current_orders = list(orders_collection.find({"status": "open"}))
+   
+    # Retrieve completed orders with a status of "closed"
+    completed_orders = list(orders_collection.find({"status": "completed"}))
+
+    # Retrieve completed orders with a status of "collected"
+    collected_orders = list(orders_collection.find({"status": "collected"}))
+
+    # Retrieve analytics data
+    total_orders = orders_collection.count_documents({})
+    menu_items = list(menu_collection.find())
+
+    # Calculate total price of all orders
+    total_price = sum(int(order["price"]) * int(order["quantity"]) for order in current_orders + completed_orders + collected_orders)
+
+    # Calculate order status distribution
+    order_statuses = orders_collection.aggregate([
+        {"$group": {"_id": "$status", "count": {"$sum": 1}}}
+    ])
+
+    # Prepare data for visualization
+    labels = []
+    counts = []
+
+    for status in order_statuses:
+        labels.append(status["_id"])
+        counts.append(status["count"])
 
     # Calculate average order value
-    average_order_value = round(total_price / total_orders ,2) if total_orders > 0 else 0
+    average_order_value = round(total_price / total_orders, 2) if total_orders > 0 else 0
 
+    # Prepare data for "Popular Order Times" plot
+    order_times = orders_collection.aggregate([
+        {"$group": {"_id": {"$hour": "$order_time"}, "count": {"$sum": 1}}}
+    ])
 
-    order_times = [order["order_time"] for order in current_orders + completed_orders + collected_orders]
+    order_time_labels = []
+    order_time_counts = []
 
+    for order_time in order_times:
+        order_time_labels.append(order_time["_id"])
+        order_time_counts.append(order_time["count"])
 
-    # Convert order times to datetime objects
-    order_times = [order_time.strftime("%H") for order_time in order_times]
+    # Prepare data for "Item Contribution Chart" plot
+    item_contributions = orders_collection.aggregate([
+        {"$group": {"_id": "$item", "count": {"$sum": 1}}}
+    ])
 
+    item_labels = []
+    item_counts = []
 
-    # Set popular_order_time to None by default
-    popular_order_time = None
+    for item in item_contributions:
+        item_labels.append(item["_id"])
+        item_counts.append(item["count"])
 
-
-    # Analyze popular order times
-#added a histogram
-    if order_times:
-        # Create a histogram for popular order times
-        plt.figure(figsize=(10, 6))
-        plt.hist(order_times, bins=24, edgecolor='black', alpha=0.7)
-        plt.title('Distribution of Orders by Time')
-        plt.xlabel('Time (HH:MM)')
-        plt.ylabel('Number of Orders')
-        plt.xticks(rotation=45, ha='right')  # Rotate x-axis labels for better readability
-        plt.tight_layout()
-
-
-        # Save the plot to a file
-        chart_path_times = "order_time_histogram.png"
-        plt.savefig(os.path.join(app.static_folder, chart_path_times), format='png')
-        plt.close()
-
-
-        # Convert the histogram plot to base64
-        with open(os.path.join(app.static_folder, chart_path_times), 'rb') as image_file:
-            img_base64_times = base64.b64encode(image_file.read()).decode('utf-8')
-    else:
-        img_base64_times = None
-
-
-    #per item chart
-    # Calculate the contribution of each item to the day's total orders
-    item_contributions = {}
-    for order in current_orders + completed_orders + collected_orders:
-        for item, quantity in zip(order["item"], order["quantity"]):
-            if item not in item_contributions:
-                item_contributions[item] = 0
-            item_contributions[item] += int(quantity)
-
-
-    # Prepare data for the pie chart
-    labels = list(item_contributions.keys())
-    values = list(item_contributions.values())
-
-
-    # Create a pie chart
-    plt.figure(figsize=(8, 8))
-    plt.pie(values, labels=labels, autopct='%1.1f%%', startangle=140)
-    plt.title("Contribution of Each Item to Total Orders")
-
-
-    # Save the pie chart to a file
-    chart_path_items = "item_contribution_chart.png"
-    plt.savefig(os.path.join(app.static_folder, chart_path_items), format='png')
-    plt.close()
-
-
-    # Convert the pie chart image to base64
-    with open(os.path.join(app.static_folder, chart_path_items), "rb") as image_file:
-        img_base64_items = base64.b64encode(image_file.read()).decode('utf-8')
-
-
-    return render_template("vendor_dashboard.html",
-                           menu_items=menu_items, collected_orders=collected_orders, current_orders=current_orders,
-                           completed_orders=completed_orders, total_orders=total_orders, total_price=total_price,
-                           average_order_value=average_order_value, popular_order_time=popular_order_time,
-                           order_status_chart=img_base64, order_times_chart=img_base64_times,
-                           item_contribution_chart=img_base64_items)
-
-
-
+    return render_template("vendor_analytics.html",
+                           order_status_labels=labels,
+                           order_status_counts=counts,
+                           average_order_value=average_order_value,
+                           order_time_labels=order_time_labels,
+                           order_time_counts=order_time_counts,
+                           item_labels=item_labels,
+                           item_counts=item_counts)
 
 
 @app.route("/mark_order_done", methods=["POST"])
@@ -475,6 +517,17 @@ if __name__ == "__main__":
         os.remove('static/item_contribution_chart.png')
 
     pycache_dir = '__pycache__'
+    if os.path.exists(pycache_dir):
+        # Delete all files and subdirectories within pycache_dir
+        for root, dirs, files in os.walk(pycache_dir, topdown=False):
+            for file in files:
+                os.remove(os.path.join(root, file))
+            for dir in dirs:
+                os.rmdir(os.path.join(root, dir))
+        # Delete the pycache_dir itself
+        os.rmdir(pycache_dir)
+    
+    pycache_dir = 'recommendation_engine/__pycache__'
     if os.path.exists(pycache_dir):
         # Delete all files and subdirectories within pycache_dir
         for root, dirs, files in os.walk(pycache_dir, topdown=False):

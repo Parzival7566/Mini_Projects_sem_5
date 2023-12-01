@@ -15,29 +15,39 @@
 		<h1>free<b>Raj</b></h1>
 		</div>
 	</div><br>
+    <div id="past-orders">
 	<h2>Past Orders</h2>
         {% if past_orders %}
         {% for order_group in past_orders %}
             <h4>Order Number: {{ order_group._id }}</h4><br>
-            <table>
-                <tr>
-                    <th>Order ID</th>
-                    <th>Item</th>
-                    <th>Quantity</th>
-                    <th>Status</th>
-                </tr>
-                {% for order in order_group.orders %}
-                <tr>
-                    <td>{{ order._id }}</td>
-                    <td>{{ order.item }}</td>
-                    <td>{{ order.quantity }}</td>
-                    <td>{{ order.status }}</td>
-                </tr>
-                {% endfor %}
-            </table>
+            <div class="order-list">
+                <div class="sub-div">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Items</th>
+                            <th>Quantities</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for order in order_group.orders %}
+                                    <tr>
+                                        <td>{{ order._id }}</td>
+                                        <td>{{ order.item }}</td>
+                                        <td>{{ order.quantity }}</td>
+                                        <td>{{ order.status }}</td>
+                                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         {% endfor %}
         {% else %}
         <h2>No orders made yet!</h2>
-        {% endif %}    
+        {% endif %}  
+        </div>  
     </body>
 </html>

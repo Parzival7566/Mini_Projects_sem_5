@@ -17,7 +17,10 @@
 	</div>
     <h2>Cart Items</h2>
     {% if cart_items %}
-    <table>
+    <div class="order-list">
+        <div class="sub-div">
+        <table class="table">
+        <thead>
         <tr>
             <th>Item</th>
             <th>Quantity</th>
@@ -25,6 +28,9 @@
             <th>Preparation Time</th>
             <th>Action</th>
         </tr>
+        </thead>
+
+        <tbody>
         {% for cart_item in cart_items %}
         <tr>
             <td>{{ cart_item["item"]}}</td>
@@ -39,7 +45,10 @@
             </td>
         </tr>
         {% endfor %}
+        </tbody>
     </table><br>
+        </div>
+        </div>
     <form method="POST" action="{{ url_for('payment_gateway', prn=student.prn) }}">
         <button type="submit">Checkout</button>
     </form><br>

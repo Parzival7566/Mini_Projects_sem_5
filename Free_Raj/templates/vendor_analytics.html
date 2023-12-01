@@ -48,7 +48,7 @@
             .value(function(d) { return d.count; });
 
         var path = d3.arc()
-            .outerRadius(radius)
+            .outerRadius(radius - 10)
             .innerRadius(0);
 
         var arcs = svg.selectAll("arc")

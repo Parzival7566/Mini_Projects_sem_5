@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendee Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
             display: flex;
@@ -9,96 +12,141 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            background-image: url('https://i.pinimg.com/originals/05/04/64/050464f8af825ac6db61d50a971fd449.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+            background-color: #E67E22;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Polaroid pictures in the background */
+        .polaroid {
+            position: absolute;
+            width: 120px;
+            height: 160px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transform: rotate(-5deg);
+        }
+
+        .polaroid:nth-child(1) {
+            top: 10%;
+            left: 10%;
+        }
+
+        .polaroid:nth-child(2) {
+            top: 60%;
+            left: 10%;
+        }
+
+        .polaroid:nth-child(3) {
+            top: 10%;
+            left: 70%;
+        }
+
+        .polaroid:nth-child(4) {
+            top: 60%;
+            left: 70%;
         }
 
         div {
             text-align: center;
             padding: 50px;
             border-radius: 10px;
-            backdrop-filter: blur(18px); /* Reduced opacity of blur */
-            background-color: rgba(255, 255, 255, 0.8);
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
             width: 100%;
             max-width: 380px;
             animation: fadeIn 2s;
+            position: relative;
+            z-index: 1;
         }
 
-		h1 {
-            color: black;
-            font-family: Lucida Handwriting, cursive;
+        h1 {
+            font-family: 'Lucida Handwriting', cursive;
             font-size: 30px;
         }
 
         button#loginButton {
-            background-color: white;
-            color: #333;
+            background-color: #2c3e50; /* Dark blue-gray */
+            color: white;
             border: none;
-            padding: 10px 30px; /* Increase button padding */
-            margin: 20px 0; /* Add margin below the button */
+            padding: 10px 30px;
+            margin: 20px 0;
             border-radius: 5px;
             cursor: pointer;
             display: inline-block;
             font-size: 16px;
-            font-family: "Raleway", Arial, sans-serif;
+            font-family: 'Raleway', Arial, sans-serif;
         }
 
         button#loginButton:hover {
-            background-color: LavenderBlush;
+            background-color: #34495e; /* Slightly lighter blue-gray on hover */
         }
 
         label {
             display: block;
             text-align: left;
-            font-size: 17px; /* Increased font size */
+            font-size: 17px;
             margin-top: 20px;
-            color: #333;
-            font-family: "Raleway", Arial, sans-serif;
+            color: white;
+            font-family: 'Raleway', Arial, sans-serif;
         }
 
         input[type="text"],
         input[type="password"] {
             width: 100%;
-            padding: 10px; /* Increased input box size */
+            padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 20px; /* Increased font size */
+            font-size: 20px;
+            color: #2c3e50; /* Dark blue-gray text */
+            background-color: #ecf0f1; /* Light gray background */
         }
 
         a {
             text-decoration: none;
-            color: #6B5B95;
+            color: #3498db; /* Blue */
             font-family: Arial, sans-serif;
             font-size: 20px;
         }
 
-        h2 {
-            color: #6B5B95;
-            font-family: Lucida Handwriting, cursive;
-            /*text-shadow: 2px 0.5px DarkGrey;*/
-            font-size: 30px;
-        }
-
-        p {
-            color: #333;
-            text-shadow: 2px 0.5px DarkGrey;
-            font-size: 22px;
+        /* Small polaroid near the box */
+        .polaroid-near-box {
+            position: absolute;
+            width: 80px;
+            height: 100px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transform: rotate(-5deg);
+            top: 30%;
+            left: 25%;
         }
     </style>
 </head>
 <body>
-    <div id="hostLoginForm" style="display: block;">
+    <!-- Polaroid pictures in the background -->
+    <div class="polaroid"></div>
+    <div class="polaroid"></div>
+    <div class="polaroid"></div>
+    <div class="polaroid"></div>
+
+    <!-- Small polaroid near the box -->
+    <div class="polaroid-near-box"></div>
+
+    <div id="hostLoginForm">
         <h1>Attendee Login</h1>
         <form method="POST" action="/attendee_login">
             <div class="form-group">
                 <label for="username">Host Username:</label>
                 <input type="text" id="username" name="username" required>
             </div>
-            <button type="submit" class="btn">Login</button>
+            <button type="submit" class="btn" id="loginButton">Login</button>
         </form>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

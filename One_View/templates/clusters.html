@@ -10,28 +10,11 @@
             margin: 0;
             padding: 0;
             position: relative;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://i.pinimg.com/originals/05/04/64/050464f8af825ac6db61d50a971fd449.jpg') center/cover no-repeat;
-            z-index: -1;
-            opacity: 0.5; /* Initial opacity */
-            animation: fadeBackground 2s forwards; /* Animation for the fade effect */
-        }
-
-        @keyframes fadeBackground {
-            from { opacity: 0; }
-            to { opacity: 0.5; }
+            background: linear-gradient(to right, #F5CBA7, #FDF2E9); /* Updated background gradient */
         }
 
         header {
-            background: linear-gradient(to right, #d3b4cb, #f0e2f7); /* Lighter color gradient */
+            background: linear-gradient(to right, #E67E22, #F0B27A); /* Header background gradient */
             color: white;
             text-align: center;
             padding: 20px;
@@ -62,11 +45,15 @@
     </style>
 </head>
 <body>
-    <h1>Clusters</h1>
-    {% for cluster_dir in cluster_dirs %}
-    <a href="/{{ username }}/cluster/{{ cluster_dir }}">
-        <img src="{{ url_for('static', filename='clusters/' + cluster_dir + '/face_' + cluster_dir.split('_')[1] + '.jpg') }}" alt="{{ cluster_dir }}">
-    </a>
-    {% endfor %}
+    <header>
+        <h1>Clusters</h1>
+    </header>
+    <div class="image-container">
+        {% for cluster_dir in cluster_dirs %}
+        <a href="/{{ username }}/cluster/{{ cluster_dir }}">
+            <img src="{{ url_for('static', filename='clusters/' + cluster_dir + '/face_' + cluster_dir.split('_')[1] + '.jpg') }}" alt="{{ cluster_dir }}">
+        </a>
+        {% endfor %}
+    </div>
 </body>
 </html>

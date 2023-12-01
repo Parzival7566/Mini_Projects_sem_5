@@ -6,24 +6,26 @@
     <title>Past Events</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
             font-family: "Raleway", Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: url('https://apis.xogrp.com/media-api/images/46d984fa-2e38-11e4-843f-22000aa61a3e') center/cover no-repeat;
+            background: url('https://mir-s3-cdn-cf.behance.net/projects/404/9abd2a163335367.Y3JvcCwyNzYxLDIxNjAsNTk0LDA.png') center/cover no-repeat;
             color: #fff;
+            backdrop-filter: blur(10px); /* Background blur effect */
         }
 
         header {
             text-align: center;
-            color: #007bff;
+            color: #fff; /* Adjusted text color for the header */
         }
 
         .header-title-container {
             padding: 30px;
-            background-color: rgba(255, 255, 255, 0.9);
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            background-color: rgba(0, 0, 0, 0.7); /* Adjusted background color for the header */
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
             border-radius: 20px;
             margin-bottom: 30px;
             opacity: 0; /* Start with zero opacity */
@@ -32,7 +34,7 @@
 
         .w3-button {
             font-size: 20px;
-            color: #333;
+            color: #fff; /* Adjusted text color for buttons */
             font-family: "Raleway", Arial, sans-serif;
         }
 
@@ -50,13 +52,13 @@
             bottom: 0; /* Set margin-bottom to 0 */
             text-align: center;
             font-size: 20px;
-            color: #333;
+            color: #fff; /* Adjusted text color for the content */
             font-family: "Raleway", Arial, sans-serif;
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(0, 0, 0, 0.7); /* Adjusted background color for the content */
             max-width: 650px;
             margin: 0 auto;
             padding: 30px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             justify-content: center;
             align-items: center;
@@ -65,19 +67,16 @@
         .container {
             max-width: 600px;
             padding: 40px;
-            background-color: #fff;
+            background-color: #000; /* Adjusted background color for the container */
             border-radius: 5px;
-            background-color: rgba(255, 255, 255, 0.5);
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            background-color: rgba(0, 0, 0, 0.5); /* Adjusted background color for the container */
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
             border-radius: 20px;
         }
-
 
         .primary-btn {
             font-size: 20px;
             padding: 10px 20px;
-            background-color: #6B5B95;
-            color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -86,23 +85,36 @@
             margin-left: 0;
         }
 
-        button:hover {
+        .primary-btn:hover {
             background-color: #CFC0C0;
+        }
+
+        .open-gallery-button, .view-clusters-button {
+            background-color: grey; /* Set background color to grey */
+            color: #fff; /* Adjusted text color for the buttons */
+            font-size: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+            margin-left: 0;
         }
 
         a {
             font-size: 20px;
+            color: #fff; /* Adjusted text color for links */
         }
         
         h2 {
             font-size: 40px;
             font-family: Lucida Handwriting, cursive;
-            color: #6B5B95;
         }
         
         p {
             font-size: 20px;
-            color: #333;
+            color: #fff; /* Adjusted text color for paragraphs */
             font-family: "Raleway", Arial, sans-serif;
         }
         
@@ -136,8 +148,8 @@
                     <p>Duration: {{ event.duration }} hours | Photo Limit: {{ event.photos }}</p>
                     <p>Host: {{ event.hostName }}</p>
                     <p>Date and Time of Creation: {{ event.createdOn }}</p>
-                    <a href="/{{ username }}/gallery/" class="primary-btn">Open Gallery</a>
-                    <a href="/{{ username }}/clusters" class="primary-btn">View Clusters</a>
+                    <a href="/{{ username }}/gallery/" class="open-gallery-button">Open Gallery</a>
+                    <a href="/{{ username }}/clusters" class="view-clusters-button">View Clusters</a>
                 {% endfor %}
                 {% else %}
                 <div class="header-title-container">

@@ -3,36 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webcam Capture, and Preview</title>
+    <title>Webcam Capture and Preview</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://fonts.googleapis.com/css?family=Corben:bold" rel="stylesheet" type="text/css">
     <style>
-        /* Add your CSS styles here */
+        body {
+            font-family: 'Corben', Georgia, Times, serif;
+            background-color: #E67E22; /* Updated background color */
+            padding-top: 20px;
+            padding-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+        }
+
+        h1, h2 {
+            margin-bottom: 10px;
+            color: Black;
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        #webcam-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 10px;
+            border: 10px solid white;
+             min-width: 30vw;
+  max-width: 100%;  
+            overflow: hidden;
+            background-color: white;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #webcam-container video {
+         min-width: 30vw;
+  max-width: 100%;  
+  object-fit: contain;
+            width: 280px;
+             margin-bottom: 10px;
+            border-radius: 8px;
+            outline-style: solid;
+            outline-color: black;
+  			outline-width: thin;
+        }
+
+        button {
+            margin-bottom: 5px;
+        }
+
+        #image-preview img {
+            width: 280px;
+            border-radius: 8px;
+        }
+
+        .btn {
+            color: Black;
+            background-color: LightGrey;
+            border: none;
+            font-weight: bold;
+            font-size: 16px;
+            padding: 8px 16px;
+        }
+
+        .btn:hover {
+            background-color: Gray;
+        }
     </style>
 </head>
 <body>
-    <h1>Webcam Capture, and Preview</h1>
+    <h1 class="text-center">Webcam Capture and Preview</h1>
 
-    <!-- Webcam Capture Option -->
     <h2>Webcam Capture</h2>
     <div id="webcam-container">
         <video id="webcam" autoplay></video>
-        <button id="capture-button">Capture</button>
+        <button id="capture-button" class="btn">Capture</button>
+        <button id="flip-button" class="btn">Flip Camera</button>
+        <canvas id="canvas" style="display: none;"></canvas>
+        <button id="save-webcam-button" class="btn" style="display: none;">Save Capture</button>
     </div>
-    <button id="flip-button">Flip Camera</button>
-    <canvas id="canvas" style="display: none;"></canvas>
-    <button id="save-webcam-button" style="display: none;">Save Webcam Capture</button>
 
-    <!-- Image Preview Container -->
     <div id="image-preview" style="display: none;">
         <img id="preview-image" src="#" alt="Preview">
     </div>
 
-    <!-- Back to ongoing event button -->
-    <button id="back-button">Back to ongoing event</button>
+    <button id="back-button" class="btn">Back to Ongoing Event</button>
 
+    <!-- Bootstrap JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        let useFrontCamera = true;
+         let useFrontCamera = true;
 
-        // Flip button event listener
         const flipButton = document.getElementById('flip-button');
         flipButton.addEventListener('click', () => {
             useFrontCamera = !useFrontCamera;
@@ -44,7 +108,7 @@
                 video: { facingMode: useFrontCamera ? 'user' : 'environment' } 
             })
             .then((streamObj) => {
-                stream = streamObj; // Store the stream
+                stream = streamObj;
                 video.srcObject = stream;
             })
             .catch((error) => {
@@ -52,13 +116,6 @@
             });
         }
 
-        // Listen for device orientation changes
-        window.addEventListener('deviceorientation', function(event) {
-            // event.alpha, event.beta and event.gamma contain the orientation angles
-            // You can adjust the camera based on these values
-        });
-        
-        // Webcam Capture Script
         const video = document.getElementById('webcam');
         const canvas = document.getElementById('canvas');
         const captureButton = document.getElementById('capture-button');
@@ -79,7 +136,6 @@
             canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
             saveWebcamButton.style.display = 'block';
 
-            // Display the preview image
             const previewImage = document.getElementById('preview-image');
             previewImage.src = canvas.toDataURL('image/png');
             const imagePreview = document.getElementById('image-preview');
@@ -105,70 +161,11 @@
             }, 'image/png');
         });
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const video = document.getElementById('webcam');
-            const canvas = document.getElementById('canvas');
-            const captureButton = document.getElementById('capture-button');
-            const saveButton = document.getElementById('save-button');
-            const imagePreview = document.getElementById('image-preview');
-
-            let stream; // Store the webcam stream for stopping it later
-
-            function startCamera() {
-                navigator.mediaDevices.getUserMedia({ video: true })
-                    .then((streamObj) => {
-                        stream = streamObj; // Store the stream
-                        video.srcObject = stream;
-                    })
-                    .catch((error) => {
-                        console.error('Error accessing webcam:', error);
-                    });
-            }
-
-            function stopCamera() {
-                if (stream) {
-                    stream.getTracks().forEach((track) => {
-                        track.stop();
-                    });
-                }
-            }
-
-            captureButton.addEventListener('click', () => {
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-
-            // Show the single save button
-            saveButton.style.display = 'block';
-
-            saveButton.addEventListener('click', () => {
-                // Handle saving the image here (you can use AJAX to send it to the server).
-                // Then, reset the canvas, hide the image preview, and stop the webcam stream.
-                canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-                imagePreview.style.display = 'none';
-                saveButton.style.display = 'none';
-
-                stopCamera(); // Stop the webcam stream
-
-                // Open the camera preview in a new tab
-                const cameraPreviewUrl = 'camera_preview.html';
-                const newTab = window.open(cameraPreviewUrl, '_blank');
-
-                // Close the new tab and return to the original tab after a delay
-                setTimeout(() => {
-                    newTab.close();
-                }, 2000);
-            });
-        });
-
-        // Back button event listener
         backButton.addEventListener('click', () => {
             window.location.href = "/{{ username }}/ongoing_event";
         });
-        
-            // Start the camera when the page loads
-            startCamera();
-});
+
+        startCamera();
     </script>
 </body>
 </html>

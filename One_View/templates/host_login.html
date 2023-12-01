@@ -11,10 +11,9 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            background-image: url('https://i.pinimg.com/originals/05/04/64/050464f8af825ac6db61d50a971fd449.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+            background-color: #E67E22;
+            overflow: hidden;
+            position: relative;
         }
 
         div {
@@ -22,17 +21,19 @@
             padding: 50px;
             border-radius: 10px;
             backdrop-filter: blur(18px); /* Reduced opacity of blur */
-            background-color: rgba(255, 255, 255, 0.8);
+            background-color: rgba(0, 0, 0, 0.8); /* Shades of black */
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 380px;
             animation: fadeIn 2s;
+            color: white; /* Text color in white */
         }
 
-		h1 {
-            color: black;
-            font-family: Lucida Handwriting, cursive;
+		h2 {
+            font-family: 'Lucida Handwriting', cursive;
             font-size: 30px;
+            text-shadow: 2px 2px 4px white; /* White text shadow */
+            color: white; /* Text color in white */
         }
 
         button#loginButton {
@@ -57,7 +58,7 @@
             text-align: left;
             font-size: 17px; /* Increased font size */
             margin-top: 20px;
-            color: #333;
+            color: white; /* Text color in white */
             font-family: "Raleway", Arial, sans-serif;
         }
 
@@ -72,21 +73,13 @@
 
         a {
             text-decoration: none;
-            color: #6B5B95;
+            color: white; /* Text color in white */
             font-family: Arial, sans-serif;
             font-size: 20px;
         }
 
-        h2 {
-            color: #6B5B95;
-            font-family: Lucida Handwriting, cursive;
-            /*text-shadow: 2px 0.5px DarkGrey;*/
-            font-size: 30px;
-        }
-
         p {
-            color: #333;
-            text-shadow: 2px 0.5px DarkGrey;
+            color: white; /* Text color in white */
             font-size: 22px;
         }
     </style>

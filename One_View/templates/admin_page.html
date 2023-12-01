@@ -3,154 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Project One View</title>
+    <title>OneView - Your Place for Memories</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
-            background: url('https://i.pinimg.com/originals/62/01/e4/6201e4f9237300798c735225a5094a00.jpg') center/cover no-repeat; /* Use your own blurred image */
             font-family: 'Arial', sans-serif;
+            overflow: hidden; /* Hide overflow to prevent scrollbars */
         }
 
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
+        .top-container {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 20px;
+            color: #000;
+        }
+
+        .top-container a {
+            color: #000;
+            margin-right: 10px;
+            display: block;
+            background-color: #ff0000; /* Red background color for the logout button */
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none; /* Remove underline from links */
+        }
+
+        .bottom-container {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            padding: 20px;
+            color: #000;
         }
 
         .header-title {
-            background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent background */
-            padding: 20px;
-            border-radius: 10px;
-            backdrop-filter: blur(15px); /* Adds a blur effect */
-            text-align: center;
+            text-align: right; /* Align text to the right side */
+            opacity: 0; /* Initial opacity set to 0 for fade-in effect */
+            animation: fadeOutAndFadeIn 4s forwards; /* Fade-out and fade-in animation for 4 seconds */
+            animation-delay: 5s; /* Delay the start of the animation by 5 seconds */
         }
 
-        .header-title h2 {
-    	font-size: 36px;
-    	margin: 0;
-    	color: #6B5B95;
-        font-family: Big Caslon, serif;
+        .header-title img {
+            /* Set the background image path */
+            width: 200px; /* Set the width of the image */
+            height: 60px; /* Set the height of the image */
+            margin: 0; /* Remove margin */
+            overflow: hidden; /* Hide overflowing content */
         }
 
-        .header-title p {
-            font-size: 18px;
-            margin: 0;
-            color: Grey;
-            font-family: Lucida Handwriting, cursive;
+        .header-subtitle {
+            font-size: 24px;
+            margin-top: 20px;
+            opacity: 0; /* Initial opacity set to 0 for fade-in effect */
+            animation: fadeIn 4s forwards 1s; /* Fade-in animation for 4 seconds with a delay of 1 second */
         }
 
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOutAndFadeIn {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+        }
+
+        /* Add a short animation for the background image */
+        @keyframes backgroundAnimation {
+            from {
+                background-position: 50% 50%; /* Center the background image */
+            }
+            to {
+                background-position: 100% 100%;
+            }
+        }
+
+        body {
+            background: url('https://cdn.dribbble.com/users/1321525/screenshots/6636950/gif_export.gif') center/cover no-repeat;
+            animation: backgroundAnimation 5s linear forwards; /* Background animation for 5 seconds */
+        }
+
+        /* Additional styles for the new content */
         .button-container {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             margin-top: 20px;
-            /*backdrop-filter: blur(15px);*/
+            visibility: hidden; /* Initially hide the button container */
+            animation: showButtons 1s forwards 9s; /* Animation to show buttons with a delay */
         }
 
-        .primary-btn {
-            background-color: lavenderBlush;
+        .button-container .primary-btn {
             color: #fff;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-weight: bold;
-            text-decoration: none;
-            transition: background-color 0.3s;
-            margin: 10px;
-            display: inline-block;
-        }
-
-        .primary-btn:hover {
-            background-color: #00bfff;
-        }
-
-        .box {
-            background-color: rgba(255, 255, 255, 0.5);
-            border-radius: 10px;
-            padding: 5px;
-            text-align: center;
-            margin: 10px;
-            backdrop-filter: blur(15px);
-        }
-
-        .user-box {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: rgba(255, 255, 255, 0.7);
-            border-radius: 10px;
+            text-decoration: none; /* Remove underline from links */
+            background-color: #000;
             padding: 10px;
-            font-size: 14px;
-        }
-        
-        .username {
-            font-weight: bold;
-        }
-
-        .logout-button {
-            position: absolute;
-            top: 60px;
-            right: 20px;
-            background-color: Red;
-            padding: 4px 16px;
+            border-radius: 5px;
+            display: inline-block; /* Add this to make the buttons appear inline */
         }
 
         .how-to-use-box {
-            background-color: rgba(255, 255, 255, 0.5);
-            border-radius: 20px;
-            backdrop-filter: blur(15px);
-            padding: 30px;
-            text-align: center;
-            margin-top: 20px;
+            color: #000; /* Text color for the new content */
+            position: absolute;
+            bottom: 20px; /* Adjusted margin from the bottom */
+            right: 20px; /* Adjusted margin from the right */
+            opacity: 0; /* Initial opacity set to 0 for fade-in effect */
+            animation: fadeIn 4s forwards 5s; /* Fade-in animation for 4 seconds with a delay of 5 seconds */
         }
 
         .how-to-use-title {
             font-size: 24px;
-            color: #6B5B95;
-            font-family: Lucida Handwriting, cursive;
+            margin-bottom: 10px;
         }
 
         .how-to-use-steps {
-            font-size: 17px;
-            color: #333;
-            font-family: "Raleway", Arial, sans-serif;
-            line-height: 1.5;
+            font-size: 18px;
         }
-        
-        .box a {
-        		color: #6B5B95;
-                }
-                
-  
+
+        /* Add animation for the buttons */
+        @keyframes showButtons {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="top-container">
         <a href="/logout" class="primary-btn logout-button">Logout</a>
-        <div class="user-box">
-            Logged in as <span class="username">{{ username }}</span>
-        </div>
+    </div>
+
+    <div class="bottom-container">
         <div class="header-title">
-            <h2>ONE VIEW</h2>
+            <img src="/One_View/static/images/OneView_Logo_30.11.23-03.png" alt="OneView Logo">
             <p>- One place to view your memories -</p>
         </div>
         <div class="button-container">
-        
-            <div class="box">
-                <a href="/{{ username }}/ongoing_event" class="primary-btn">Ongoing Event</a>
-            </div>
-            <div class="box">
-           
-                <a href="/{{ username }}/new_event" class="primary-btn">New Event</a>
-            </div>
-            <div class="box">
-            
-                <a href="/{{ username }}/past_event" class="primary-btn">Past Event</a>
-            </div>
+            <a href="/{{ username }}/ongoing_event" class="primary-btn">Ongoing Event</a>
+            <a href="/{{ username }}/new_event" class="primary-btn">New Event</a>
+            <a href="/{{ username }}/past_event" class="primary-btn">Past Event</a>
         </div>
         <div class="how-to-use-box">
             <div class="how-to-use-title">How to Use?</div>

@@ -6,26 +6,28 @@
     <title>Gallery</title>
     <style>
         body, html {
+            font-family: "Raleway", Arial, sans-serif;
             margin: 0;
             padding: 0;
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(to right, #007bff, #00bfff);
+            background-color: #E67E22;
             color: #fff;
         }
-
-        header {
+    
+        header, h1 {
             text-align: center;
-            color: #007bff;
-        }
-
-        .header-title-container {
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: #E67E22;
+            color: #fff;
             padding: 20px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            margin-bottom: 20px;
         }
-
+    
+        .header-title-container {
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            margin-bottom: 30px;
+        }
+    
         .sidebar {
             background-color: rgba(0, 0, 0, 0.7);
             color: #fff;
@@ -34,60 +36,102 @@
             position: fixed;
             overflow: auto;
             box-shadow: 1px 0px 3px rgba(0, 0, 0, 0.2);
+            display: none;
         }
 
         .sidebar-header {
-            padding: 20px;
+        padding: 20px;
+        text-align: center;
+        font-size: 1.5rem;
+    }
+
+    .w3-button {
+            font-size: 20px;
+            color: #333;
+            font-family: "Raleway", Arial, sans-serif;
+        }
+
+    .w3-button.w3-white {
+        background-color: #F0B27A;
+        color: #000; /* Updated text color to black */
+    }
+
+    .w3-button:hover {
+        background-color: #CFC0C0;
+    }
+
+    .nav-links {
+        list-style-type: none;
+        padding: 0;
+        margin-top: 30px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .nav-links li {
+        padding: 15px;
+        text-align: center;
+    }
+
+    .nav-links a {
+        font-size: 20px;
+        padding: 10px 20px;
+        background-color: #F0B27A;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-top: 20px;
+        margin-left: 10px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .nav-links a:hover {
+        background-color: #CFC0C0;
+    }
+
+    .nav-links a.active {
+        background-color: #333;
+    }
+
+    .content {
+            margin-top: 50px;
+            margin-left: 0;
+            position: center;
+            top: 60px;
+            bottom: 0;
             text-align: center;
-            font-size: 1.5rem;
-        }
-
-        .nav-links {
-            list-style-type: none;
-            padding: 0;
-            margin-top: 30px;
-        }
-
-        .nav-links li {
-            padding: 15px;
-            text-align: center;
-        }
-
-        .nav-links a {
-            color: #fff;
-            text-decoration: none;
-            display: block;
-            transition: 0.3s;
-        }
-
-        .nav-links a.active,
-        .nav-links a:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-right: 5px solid #fff;
-            padding-right: 10px;
-        }
-
-        .content {
-            margin-left: 250px;
-            padding: 20px;
-            text-align: center;
-            color: #007bff;
-            background-color: rgba(255, 255, 255, 0.9);
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
-
-        .container {
-            max-width: 600px;
+            font-size: 20px;
+            color: #333;
+            font-family: "Raleway", Arial, sans-serif;
+            background-color: #E67E22;
+            max-width: 650px;
             margin: 0 auto;
-            padding: 40px;
-            background-color: #fff;
+            padding: 30px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
+            border-radius: 10px;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            animation: fadeIn 2s ease-in forwards;
         }
 
-        .primary-btn {
-            background-color: #007bff;
+    .container {
+        max-width: 600px;
+        padding: 40px;
+        background-color: #F0B27A;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 20px;
+    }
+
+
+    .primary-btn {
+            font-size: 20px;
+            background-color: #F0B27A;
             color: #fff;
             border: none;
             padding: 10px 20px;
@@ -95,82 +139,88 @@
             border-radius: 5px;
             font-weight: bold;
             transition: background-color 0.3s ease;
-            margin-top: 20px;
-            margin-left: 0;
         }
 
         .primary-btn:hover {
             background-color: #CFC0C0;
         }
 
-        button {
-            padding: 10px 20px;
-            background-color: #6B5B95;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 20px;
-            margin-left: 0;
+    #image-gallery {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 25px;
+    }
+
+    .image-card {
+        max-width: 300px;
+        background-color: #F0B27A;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .image-card img {
+        width: 100%;
+        height: auto;
+    }
+
+    .delete-button {
+        font-size: 20px;
+        background-color: #ff0000;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .delete-button:hover {
+        background-color: #ff6666;
+    }
+
+    h2  {
+            font-size: 40px;
+            font-family: Lucida Handwriting, cursive;
+            color: #E67E22;
+        }
+        
+    p   {
+            font-size: 20px;
+            color: #333;
+            font-family: "Raleway", Arial, sans-serif;
         }
 
-        button:hover {
-            background-color: #CFC0C0;
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
         }
+        to {
+            opacity: 1;
+        }
+    }
 
-        #image-gallery {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
+    
+</style>
 
-        .image-card {
-            max-width: 300px;
-            background-color: #fff;
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .image-card img {
-            width: 100%;
-            height: auto;
-        }
-
-        .small-button {
-            padding: 5px 10px;
-            font-size: 12px;
-        }
-        .delete-button {
-            background-color: #ff0000;
-            color: #fff;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        .delete-button:hover {
-            background-color: #ff6666;
-        }
-    </style>
 </head>
 <body>
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <h1><a href="/{{ username }}/admin" style="text-decoration: none; color: inherit;">Project One View</a></h1>
-        </div>
-        <ul class="nav-links">
-            <li><a href="/{{ username }}/new_event">New Event</a></li>
-            <li><a href="/{{ username }}/past_event">Past Events</a></li>
-            <li><a href="/{{ username }}/ongoing_event">Ongoing Events</a></li>
-        </ul>
+    <div class="w3-content" style="max-width:1500px">
+        <header class="w3-container w3-xlarge w3-padding-12">
+            <div class="nav-links">
+                <a href="#" class="w3-button w3-white">GALLERY</a>
+                {% if user_type == 'host' %}
+                <a href="/{{ username }}/ongoing_event" class="w3-button w3-white">ONGOING EVENT</a>
+                <a href="/{{ username }}/new_event" class="w3-button w3-white">NEW EVENT</a>
+                <a href="/{{ username }}/past_event" class="w3-button w3-white">PAST EVENT</a>
+                <a href="/{{ username }}/admin" class="w3-button w3-white">MAIN MENU</a>
+                {% endif %}
+            </div>
+        </header>
     </div>
     <div class="content">
-        <button id="back-button">Back to ongoing events</button>
+        <button id="back-button" class="primary-btn">Back to ongoing events</button>
         <div class="container">
             <div id="image-gallery">
                 {% for image in gallery %}

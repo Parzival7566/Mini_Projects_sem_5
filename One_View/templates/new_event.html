@@ -11,8 +11,9 @@
             font-family: "Raleway", Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: url('https://apis.xogrp.com/media-api/images/46d984fa-2e38-11e4-843f-22000aa61a3e') center/cover no-repeat;
+            background: url('https://mir-s3-cdn-cf.behance.net/projects/404/9abd2a163335367.Y3JvcCwyNzYxLDIxNjAsNTk0LDA.png') center/cover no-repeat;
             color: #fff;
+            backdrop-filter: blur(10px); /* Background blur effect */
         }
 
         .w3-row img {
@@ -27,8 +28,8 @@
         }
 
         .content {
-            background-color: rgba(255, 255, 255, 0.9);
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            background-color: rgba(0, 0, 0, 0.8); /* Adjusted background color for the box */
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             width: 100%;
             max-width: 600px;
@@ -65,7 +66,7 @@
             display: block;
             margin-bottom: 10px;
             font-weight: bold;
-            color: #333;
+            color: #fff; /* Adjusted text color for labels */
         }
 
         input[type="text"],
@@ -73,14 +74,16 @@
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
-            border: 1px solid #ccc;
+            border: 1px solid #fff; /* Adjusted border color for text boxes */
             border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.2); /* Adjusted background color for text boxes */
+            color: #fff; /* Adjusted text color for text boxes */
         }
 
         button {
             padding: 8px 16px;
             font-size: 20px;
-            background-color: #6B5B95;
+            background-color: black; /* Adjusted background color for the button */
             color: #fff;
             border: none;
             border-radius: 5px;
@@ -89,18 +92,24 @@
             margin-top: 20px;
             margin-left: 0;
         }
-        
+
         h2 {
-        	font-family: Lucida Handwriting, cursive;
-            color: #6B5B95;
-            }
-            
+            font-family: Lucida Handwriting, cursive;
+            color: #fff; /* Adjusted text color for "Create your very own event!" */
+        }
+
         a {
-        	font-size: 20px;
-            }
+            font-size: 20px;
+            color: #fff; /* Adjusted text color for links */
+        }
 
         button:hover {
             background-color: #CFC0C0;
+        }
+
+        /* Adjusted text color for the menu items */
+        header a.w3-button.w3-white {
+            color: #fff;
         }
     </style>
 </head>

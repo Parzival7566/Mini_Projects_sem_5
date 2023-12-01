@@ -11,10 +11,7 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            background-image: url('https://i.pinimg.com/originals/05/04/64/050464f8af825ac6db61d50a971fd449.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+            background-color: #E67E22; /* Updated background color */
         }
 
         div {
@@ -22,8 +19,8 @@
             padding: 20px;
             border-radius: 10px;
             backdrop-filter: blur(17px); /* Reduced opacity of blur */
-            background-color: rgba(255, 255, 255, 0.8);
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            background-color: rgba(0, 0, 0, 0.8); /* Adjusted background color */
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
             width: 100%;
             max-width: 380px;
             animation: fadeIn 2s;
@@ -38,15 +35,19 @@
             }
         }
 
+        h1, h2, p, label, a {
+            color: #fff; /* Adjusted text color to white */
+            font-family: "Raleway", Arial, sans-serif;
+        }
+
         h1 {
-            color: black;
-            text-shadow: 2px 0.5px DarkGrey;
+            text-shadow: 2px 0.5px #363636; /* Adjusted text shadow */
             font-family: Lucida Handwriting, cursive;
             font-size: 50px;
         }
 
         button {
-            background-color: white;
+            background-color: #363636; /* Adjusted button background color */
             border: none;
             padding: 20px 40px;
             margin: 5px;
@@ -54,12 +55,11 @@
             cursor: pointer;
             display: inline-block; /* Change from 'none' to 'inline-block' to make the buttons visible */
             font-size: 18px;
-            color: #333;
-            font-family: "Raleway", Arial, sans-serif;
+            color: #fff; /* Adjusted text color to white */
         }
 
         button:hover {
-            background-color: LavenderBlush;
+            background-color: #555; /* Adjusted button hover background color */
         }
 
         label {
@@ -69,33 +69,61 @@
 
         a {
             text-decoration: none;
-            color: black;
-            font-family: Arial, sans-serif;
             font-size: 20px;
         }
 
         h2 {
-            color: black;
-            text-shadow: 2px 0.5px DarkGrey;
+            text-shadow: 2px 0.5px #363636; /* Adjusted text shadow */
         }
 
         p {
-            color: #6B5B95;
-            font-family: Lucida Handwriting, cursive;
-            /*text-shadow: 2px 0.5px DarkGrey;*/
             font-size: 30px;
         }
 
         img {
-            max-width: 100%; /* Adjust the maximum width to fit into the box */
-            max-height: 100%; /* Adjust the maximum height to fit into the box */
+            max-width: 100%; /* Adjusted the maximum width to fit into the box */
+            max-height: 100%; /* Adjusted the maximum height to fit into the box */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOutAndFadeIn {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+        }
+
+        /* Add a short animation for the background image */
+        @keyframes backgroundAnimation {
+            from {
+                background-position: 50% 50%; /* Center the background image */
+            }
+            to {
+                background-position: 100% 100%;
+            }
+        }
+
+        body {
+            background: url('https://cdn.dribbble.com/users/1321525/screenshots/6636950/gif_export.gif') center/cover no-repeat;
+            animation: backgroundAnimation 5s linear forwards; /* Background animation for 5 seconds */
         }
     </style>
 </head>
 <body>
 
 <div id="initialDiv">
-    <img src="static/images/logo.png" alt="One View Logo">
+    <img src="/One_View/static/images/OneView_Logo_30.11.23-03.png" alt="One View Logo">
 </div>
 
 <div id="optionsDiv" style="display: none;">

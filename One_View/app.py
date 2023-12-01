@@ -202,7 +202,10 @@ def gallery(username):
         event = event_data.find_one({'eventName':event_name })
         if user and event:
             images = event_gallery.find({'username': session_username, 'eventName': event_name})
-            return render_template("gallery.html", gallery=images, user_type=user_type,username=session_username)
+            if images!= []:
+                return render_template("gallery.html", gallery=images, user_type=user_type,username=session_username, event=event)
+            else:
+                return render_template("gallery.html", user_type=user_type,username=session_username, event=event)
         else:
             flash('Unauthorized access', 'danger')
             return redirect('/')

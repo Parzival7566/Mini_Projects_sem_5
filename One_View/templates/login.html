@@ -107,10 +107,10 @@
 </head>
 <body>
 
-<!--<img id="logo" src="/New_OV/OneView_Logo_30.11.23-03.png" style="display: none; z-index: 9999; position: relative;">-->
+<!--<img id="logo" src="/One_View/static/images/ovlogo.png" style="display: none; z-index: 9999; position: relative;">-->
 
 <div id="initialDiv"style="display: none; z-index: 9999; position: relative;">
-    <img src="/One_View/static/images/ovlogo.png" alt="One View Logo">
+    <img id="logo" src="/One_View/static/images/ovlogo.png" style="display: none; z-index: 9999; position: relative;">
 </div>
 
 <div id="optionsDiv" style="display: none;">
@@ -124,14 +124,18 @@
 
     setTimeout(function() {
         document.body.className = "background2";
+        var initialDiv = document.getElementById("initialDiv");
+    if (initialDiv) {
+        initialDiv.style.display = "block";
+    }
     }, 2000);
 
     setTimeout(function () {
-        var initialDiv = document.getElementById("initialDiv");
+        //var initialDiv = document.getElementById("initialDiv");
         var optionsDiv = document.getElementById("optionsDiv");
 
-        if (initialDiv && optionsDiv) {
-            initialDiv.style.display = "none";
+        if (optionsDiv) {
+            //initialDiv.style.display = "none";
             optionsDiv.style.display = "block";
         }
     }, 4000); // Adjust the delay as needed

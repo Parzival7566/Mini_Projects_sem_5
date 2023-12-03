@@ -7,13 +7,11 @@
     <style>
         @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
         body {
-            background-color: #f1dbae;
             font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            position: relative;
+            background-color: #f1dbae;
         }
 
         header {
@@ -21,41 +19,91 @@
             color: #f1dbae;
             text-align: center;
             padding: 20px;
-            width: 100%;
-            box-sizing: border-box;
+            margin-bottom: 20px;
         }
 
         h1 {
+            color: #f1dbae;
+            text-align: center;
             margin: 0;
         }
 
-        .image-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin: 20px;
-        }
+	
+	.nav {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	padding: 10px 0;
+	/*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
+	}
 
-        .image-container img {
-            width: 100%;
-            max-width: 300px;
-            height: auto;
-            margin: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
+	.nav i {
+		color: #000000;
+		height: 60px;
+		min-width: 50px;
+		font-size: 28px;
+		text-align: center;
+		line-height: 60px;
+	}
+
+	.nav .logo b {
+		color: #000000;
+		font-size: 20px;
+		font-weight: 600;
+	}
+
+    h1 {
+      color: #f1dbae;
+      text-align: center;
+      margin: 0;
+    }
+
+    .image-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      justify-content: center;
+      margin: 20px;
+    }
+
+    .image-container a {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .image-container img {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      transition: transform 0.2s;
+    }
+
+    .image-container img:hover {
+      transform: scale(1.05);
+    }
+
     </style>
 </head>
 <body>
-    <header>
-        <h1>Clusters</h1>
-    </header>
-    <div class="image-container">
-         {% for cluster_dir in cluster_dirs %}
-    <a href="/{{ username }}/cluster/{{ cluster_dir }}">
-        <img src="{{ url_for('static', filename='clusters/' + cluster_dir + '/face_' + cluster_dir.split('_')[1] + '.jpg') }}" alt="{{ cluster_dir }}">
-    </a>
-    {% endfor %}
+    <div class="nav">
+        <i class='bx bx-camera icon'></i>
+            <div class="logo">
+                <h2>One View</h2>
+            </div>
     </div>
-</body>
-</html>
+        <header>
+            <h1>{{ cluster_dir }}</h1>
+        </header>
+    
+        <div class="image-container">
+            {% for cluster_image in cluster_images %}
+                <img src="{{ url_for('static', filename='clusters/' + cluster_dir + '/' + cluster_image) }}" alt="{{ cluster_image }}">
+            {% endfor %}
+        </div>
+    </body>
+    </html>
+    

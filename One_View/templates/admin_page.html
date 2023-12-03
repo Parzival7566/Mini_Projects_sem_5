@@ -16,17 +16,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-        }
-        body.background1 {
-            background-image: url('https://cdn.dribbble.com/users/4981036/screenshots/11209099/media/55e0c8a5bcb4a910bfa2836e7558ed92.gif');
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-
-        body.background2 {
             background-color:#f1dbae;
-    background-size: cover;
-    background-repeat: no-repeat;
 }
 .polaroid {
             position: absolute;
@@ -215,15 +205,11 @@
         </div>
     </div>
     <script>
-        document.body.className = "background1";
-    
-        setTimeout(function() {
-            document.body.className = "background2";
-        }, 2000);
+        
         document.addEventListener("DOMContentLoaded", function() {
     setTimeout(function() {
         document.querySelector('.container').style.display = 'flex';
-    }, 2000); // Adjust the delay time as needed (in milliseconds)
+    }, 100); // Adjust the delay time as needed (in milliseconds)
 });
         
     </script>

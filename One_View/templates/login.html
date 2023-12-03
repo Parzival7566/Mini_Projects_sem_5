@@ -5,22 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
     <style>
+        @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
         body {
+            font-family: 'Poppins', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            background-color: #E67E22; /* Updated background color */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
+
+        body.background1 {
+            background-image: url('https://cdn.dribbble.com/users/4981036/screenshots/11209099/media/55e0c8a5bcb4a910bfa2836e7558ed92.gif');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+        body.background2 {
+            background-color:#f1dbae;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
 
         div {
             text-align: center;
             padding: 20px;
             border-radius: 10px;
             backdrop-filter: blur(17px); /* Reduced opacity of blur */
-            background-color: rgba(0, 0, 0, 0.8); /* Adjusted background color */
-            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 380px;
             animation: fadeIn 2s;
@@ -35,19 +51,15 @@
             }
         }
 
-        h1, h2, p, label, a {
-            color: #fff; /* Adjusted text color to white */
-            font-family: "Raleway", Arial, sans-serif;
-        }
-
         h1 {
-            text-shadow: 2px 0.5px #363636; /* Adjusted text shadow */
-            font-family: Lucida Handwriting, cursive;
+            color: black;
+            text-shadow: 2px 0.5px DarkGrey;
+            font-family: 'Poppins', sans-serif;
             font-size: 50px;
         }
 
         button {
-            background-color: #363636; /* Adjusted button background color */
+            background-color: white;
             border: none;
             padding: 20px 40px;
             margin: 5px;
@@ -55,11 +67,12 @@
             cursor: pointer;
             display: inline-block; /* Change from 'none' to 'inline-block' to make the buttons visible */
             font-size: 18px;
-            color: #fff; /* Adjusted text color to white */
+            color: #333;
+            font-family: 'Poppins', sans-serif;
         }
 
         button:hover {
-            background-color: #555; /* Adjusted button hover background color */
+            background-color: LavenderBlush;
         }
 
         label {
@@ -69,61 +82,35 @@
 
         a {
             text-decoration: none;
+            color: black;
+            font-family: Arial, sans-serif;
             font-size: 20px;
         }
 
         h2 {
-            text-shadow: 2px 0.5px #363636; /* Adjusted text shadow */
+            color: black;
+            text-shadow: 2px 0.5px DarkGrey;
         }
 
         p {
+            color: rgb(91, 68, 23);
+            font-family: 'Poppins', sans-serif;
+            /*text-shadow: 2px 0.5px DarkGrey;*/
             font-size: 30px;
         }
 
         img {
-            max-width: 100%; /* Adjusted the maximum width to fit into the box */
-            max-height: 100%; /* Adjusted the maximum height to fit into the box */
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeOutAndFadeIn {
-            0% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-        }
-
-        /* Add a short animation for the background image */
-        @keyframes backgroundAnimation {
-            from {
-                background-position: 50% 50%; /* Center the background image */
-            }
-            to {
-                background-position: 100% 100%;
-            }
-        }
-
-        body {
-            background: url('https://cdn.dribbble.com/users/1321525/screenshots/6636950/gif_export.gif') center/cover no-repeat;
-            animation: backgroundAnimation 5s linear forwards; /* Background animation for 5 seconds */
+            max-width: 100%; /* Adjust the maximum width to fit into the box */
+            max-height: 100%; /* Adjust the maximum height to fit into the box */
         }
     </style>
 </head>
 <body>
 
-<div id="initialDiv">
-    <img src="/One_View/static/images/OneView_Logo_30.11.23-03.png" alt="One View Logo">
+<!--<img id="logo" src="/New_OV/OneView_Logo_30.11.23-03.png" style="display: none; z-index: 9999; position: relative;">-->
+
+<div id="initialDiv"style="display: none; z-index: 9999; position: relative;">
+    <img src="/One_View/static/images/ovlogo.png" alt="One View Logo">
 </div>
 
 <div id="optionsDiv" style="display: none;">
@@ -133,6 +120,12 @@
 </div>
 
 <script>
+    document.body.className = "background1";
+
+    setTimeout(function() {
+        document.body.className = "background2";
+    }, 2000);
+
     setTimeout(function () {
         var initialDiv = document.getElementById("initialDiv");
         var optionsDiv = document.getElementById("optionsDiv");
@@ -141,7 +134,9 @@
             initialDiv.style.display = "none";
             optionsDiv.style.display = "block";
         }
-    }, 2000); // Adjust the delay as needed
+    }, 4000); // Adjust the delay as needed
+
 </script>
 </body>
 </html>
+

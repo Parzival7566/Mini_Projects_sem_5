@@ -32,14 +32,12 @@
 
         div {
             text-align: center;
-            padding: 20px;
-            border-radius: 10px;
-            backdrop-filter: blur(17px); /* Reduced opacity of blur */
-            background-color: rgba(255, 255, 255, 0.8);
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 2s;
             width: 100%;
             max-width: 380px;
-            animation: fadeIn 2s;
+            padding: 20px;
+            border-radius: 10px;
+
         }
 
         @keyframes fadeIn {
@@ -107,10 +105,8 @@
 </head>
 <body>
 
-<!--<img id="logo" src="/One_View/static/images/ovlogo.png" style="display: none; z-index: 9999; position: relative;">-->
-
-<div id="initialDiv"style="display: none; z-index: 9999; position: relative;">
-    <img id="logo" src="/One_View/static/images/ovlogo.png" style="display: none; z-index: 9999; position: relative;">
+<div id="initialDiv"style="display: none;">
+    <a href="https://ibb.co/nchhJqQ"><img src="https://i.ibb.co/G2ggSfC/ovlogo.png" alt="ovlogo" border="0"></a>
 </div>
 
 <div id="optionsDiv" style="display: none;">
@@ -124,21 +120,22 @@
 
     setTimeout(function() {
         document.body.className = "background2";
-        var initialDiv = document.getElementById("initialDiv");
-    if (initialDiv) {
-        initialDiv.style.display = "block";
-    }
     }, 2000);
 
-    setTimeout(function () {
-        //var initialDiv = document.getElementById("initialDiv");
-        var optionsDiv = document.getElementById("optionsDiv");
+    setTimeout(function() {
+    var initialDiv = document.getElementById("initialDiv");
+    if (initialDiv) {
+       initialDiv.style.display = "block";
+    }
+    }, 2000); // Adjust the delay as needed
 
+
+    setTimeout(function () {
+        var optionsDiv = document.getElementById("optionsDiv");
         if (optionsDiv) {
-            //initialDiv.style.display = "none";
             optionsDiv.style.display = "block";
         }
-    }, 4000); // Adjust the delay as needed
+    }, 2000); // Adjust the delay as needed
 
 </script>
 </body>

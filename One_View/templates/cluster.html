@@ -82,6 +82,12 @@
       transition: transform 0.2s;
     }
 
+    #image-gallery {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
     .image-container img:hover {
       transform: scale(1.05);
     }
@@ -125,12 +131,14 @@
         <div class="content-container">
             <div class="content">
                 <div class="image-container">
+                    <div id="image-gallery">
                     {% for cluster_image in cluster_images %}
                         <img src="{{ url_for('static', filename='clusters/' + cluster_dir + '/' + cluster_image) }}" alt="{{ cluster_image }}">
                     {% endfor %}
                 </div>
             </div>
         </div>
+    </div>
 
     </body>
     </html>

@@ -34,7 +34,7 @@
 	display: flex;
 	align-items: center;
 	padding: 10px 0;
-	/*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
+	
 	}
 
 	.nav i {
@@ -86,6 +86,28 @@
       transform: scale(1.05);
     }
 
+    .content-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .container {
+        max-width: 1500px;
+        margin: 0 auto;
+        padding: 15px 50px;
+    }
+
+    .content {
+        background-color: rgba(255, 255, 255, 0.9);
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        width: 100%;
+        max-width: 600px;
+        padding: 20px;
+    }
+
     </style>
 </head>
 <body>
@@ -99,11 +121,16 @@
             <h1>{{ cluster_dir }}</h1>
         </header>
     
-        <div class="image-container">
-            {% for cluster_image in cluster_images %}
-                <img src="{{ url_for('static', filename='clusters/' + cluster_dir + '/' + cluster_image) }}" alt="{{ cluster_image }}">
-            {% endfor %}
+        <div class="content-container">
+            <div class="content">
+                <div class="image-container">
+                    {% for cluster_image in cluster_images %}
+                        <img src="{{ url_for('static', filename='clusters/' + cluster_dir + '/' + cluster_image) }}" alt="{{ cluster_image }}">
+                    {% endfor %}
+                </div>
+            </div>
         </div>
+
     </body>
     </html>
     

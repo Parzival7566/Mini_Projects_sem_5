@@ -100,7 +100,7 @@ body{
 }
 .form-content .input-box i{
   position: absolute;
-  color: #737373;
+  color: #ff4d4d;
   font-size: 17px;
 }
 .forms .form-content .text{
@@ -115,7 +115,7 @@ body{
   text-decoration: underline;
 }
 .forms .form-content .button{
-  color: #737373;
+  color: #ff4d4d;
   margin-top: 40px;
 }
 .forms .form-content .button input{
@@ -127,7 +127,7 @@ body{
   transition: all 0.4s ease;
 }
 .forms .form-content .button input:hover{
-  background: #737373;
+  background: #ff4d4d;
 }
 .forms .form-content label{
   color: #737373;

@@ -32,6 +32,7 @@ event_data = mongo.db["events"]
 event_gallery = mongo.db["gallery"]
 
 event_data.drop()
+event_gallery.drop()
 
 @app.route('/')
 def login_page():
@@ -202,7 +203,10 @@ def gallery(username):
         event = event_data.find_one({'eventName':event_name })
         if user and event:
             images = event_gallery.find({'username': session_username, 'eventName': event_name})
-            return render_template("gallery.html", gallery=images, user_type=user_type,username=session_username)
+            if images!= []:
+                return render_template("gallery.html", gallery=images, user_type=user_type,username=session_username, event=event)
+            else:
+                return render_template("gallery.html", user_type=user_type,username=session_username, event=event)
         else:
             flash('Unauthorized access', 'danger')
             return redirect('/')
@@ -373,6 +377,16 @@ if __name__ == '__main__':
     # Delete encodings.pickle file
     if os.path.exists('encodings.pickle'):
         os.remove('encodings.pickle')
+
+    # Delete static/uploads directory if it exists
+    uploads_dir = 'static/uploads'
+    if os.path.exists(uploads_dir):
+        # Delete all files and subdirectories within uploads_dir
+        for root, dirs, files in os.walk(uploads_dir, topdown=False):
+            for file in files:
+                os.remove(os.path.join(root, file))
+
+
     
     # Delete static/clusters directory if it exists
     clusters_dir = 'static/clusters'

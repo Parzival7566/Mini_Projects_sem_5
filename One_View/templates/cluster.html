@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.0/css/boxicons.min.css">
     <title>Face Clusters</title>
     <style>
         @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
@@ -27,87 +28,86 @@
             text-align: center;
             margin: 0;
         }
-
 	
-	.nav {
-	width: 100%;
-	display: flex;
-	align-items: center;
-	padding: 10px 0;
-	
-	}
+        .nav {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
+        }
 
-	.nav i {
-		color: #000000;
-		height: 60px;
-		min-width: 50px;
-		font-size: 28px;
-		text-align: center;
-		line-height: 60px;
-	}
+        .nav i {
+            color: #000000;
+            height: 60px;
+            min-width: 50px;
+            font-size: 28px;
+            text-align: center;
+            line-height: 60px;
+        }
 
-	.nav .logo b {
-		color: #000000;
-		font-size: 20px;
-		font-weight: 600;
-	}
+        .nav .logo b {
+            color: #000000;
+            font-size: 20px;
+            font-weight: 600;
+        }
 
-    h1 {
-      color: #f1dbae;
-      text-align: center;
-      margin: 0;
-    }
+        h1 {
+        color: #f1dbae;
+        text-align: center;
+        margin: 0;
+        }
 
-    .image-container {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      justify-content: center;
-      margin: 20px;
-    }
-
-    .image-container a {
-      display: block;
-      text-align: center;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .image-container img {
-      width: 100%;
-      max-width: 100%;
-      height: auto;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      transition: transform 0.2s;
-    }
-
-    .image-container img:hover {
-      transform: scale(1.05);
-    }
-
-    .content-container {
-        display: flex;
+        .image-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
         justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin-top: -200px
-    }
+        margin: 20px;
+        }
 
-    .container {
-        max-width: 1500px;
-        margin: 0 auto;
-        padding: 15px 50px;
-    }
+        .image-container a {
+        display: block;
+        text-align: center;
+        text-decoration: none;
+        color: inherit;
+        }
 
-    .content {
-        background-color: rgba(255, 255, 255, 0.9);
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
+        .image-container img {
         width: 100%;
-        max-width: 600px;
-        padding: 20px;
-    }
+        max-width: 100%;
+        height: auto;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        transition: transform 0.2s;
+        }
+
+        .image-container img:hover {
+        transform: scale(1.05);
+        }
+
+        .content-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin-top: -200px
+        }
+
+        .container {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 15px 50px;
+        }
+
+        .content {
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+        }
 
     </style>
 </head>
@@ -122,15 +122,15 @@
             <h1>{{ cluster_dir }}</h1>
         </header>
     
-        <div class="content-container">
-            <div class="content">
-                <div class="image-container">
-                    {% for cluster_image in cluster_images %}
-                        <img src="{{ url_for('static', filename='clusters/' + cluster_dir + '/' + cluster_image) }}" alt="{{ cluster_image }}">
-                    {% endfor %}
-                </div>
+    <div class="content-container">
+        <div class="content">
+            <div class="image-container">
+                {% for cluster_image in cluster_images %}
+                    <img src="{{ url_for('static', filename='clusters/' + cluster_dir + '/' + cluster_image) }}" alt="{{ cluster_image }}">
+                {% endfor %}
             </div>
         </div>
+    </div>
 
     </body>
     </html>

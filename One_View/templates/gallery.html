@@ -9,14 +9,13 @@
     <style>
         /* Google Font Link */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
+
 body {
     background-color: #f1dbae; /* Replace with your desired color */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
 }
 
 .nav {
@@ -49,11 +48,11 @@ body {
 }
 
 .image-card {
-	max-width: 300px;
-	background-color: #fff;
-	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-	border-radius: 10px;
-	overflow: hidden;
+    max-width: 450px;
+    background-color: #fff;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 .image-card img {
@@ -78,11 +77,6 @@ body {
 
 .delete-button:hover {
 	background-color: #ff6666;
-}
-
-.container {
-  max-width: 600px;
-  margin: 20px auto;
 }
 
 form {
@@ -123,18 +117,26 @@ button:hover {
   }
 }
 
-/* Extra for Ongoing Event */
-
 .content-container {
-  max-width: 800px;
-  margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 15px 50px;
 }
 
 .content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
 }
 
 .header-title {
@@ -177,8 +179,8 @@ button:hover {
 		</div>
 </div>
     
-    <div class="content">
-        <div class="container">
+    <div class="content-container">
+        <div class="content">
             <div id="image-gallery">
                 {% for image in gallery %}
                     {% if image %}

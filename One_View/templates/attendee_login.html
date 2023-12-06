@@ -5,54 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendee Login</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
     <style>
          @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
         body {
+            font-family: "Raleway", Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            background-color: #f1dbae;
+            background: url('https://i.etsystatic.com/23552885/r/il/8ed571/4133979418/il_1588xN.4133979418_5f66.jpg') center/cover no-repeat;
             overflow: hidden;
             position: relative;
-        }
-
-        /* Polaroid pictures in the background */
-        .polaroid {
-            position: absolute;
-            width: 120px;
-            height: 160px;
-            background-color: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transform: rotate(-5deg);
-        }
-
-        .polaroid:nth-child(1) {
-            top: 10%;
-            left: 10%;
-        }
-
-        .polaroid:nth-child(2) {
-            top: 60%;
-            left: 10%;
-        }
-
-        .polaroid:nth-child(3) {
-            top: 10%;
-            left: 70%;
-        }
-
-        .polaroid:nth-child(4) {
-            top: 60%;
-            left: 70%;
         }
 
         div {
             text-align: center;
             padding: 50px;
             border-radius: 10px;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(5px);
             background-color: rgba(0, 0, 0, 0.5);
             color: white;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
@@ -64,13 +36,13 @@
         }
 
         h1 {
-            font-family: 'Poppins', sans-serif;
+            font-family: "Raleway", Arial, sans-serif;
             font-size: 30px;
         }
 
         button#loginButton {
-            background-color: #102770; 
-            color: #ffeba7;
+            background-color: black; /* Adjusted background color for the button */
+            color: #fff;
             border: none;
             padding: 10px 30px;
             margin: 20px 0;
@@ -78,11 +50,12 @@
             cursor: pointer;
             display: inline-block;
             font-size: 16px;
-            font-family: 'Poppins', sans-serif;
+            font-family: "Raleway", Arial, sans-serif;
+            transition: background-color 0.3s ease;
         }
 
         button#loginButton:hover {
-            background-color: #34495e; /* Slightly lighter blue-gray on hover */
+            background-color: #CFC0C0;
         }
 
         label {
@@ -91,18 +64,18 @@
             font-size: 17px;
             margin-top: 20px;
             color: white;
-            font-family: 'Poppins', sans-serif;
+            font-family: "Raleway", Arial, sans-serif;
         }
 
         input[type="text"],
-        input[type="password"] {
+        input[type="number"] {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ccc;
+            margin-bottom: 15px;
+            border: 1px solid #fff; /* Adjusted border color for text boxes */
             border-radius: 5px;
-            font-size: 20px;
-            color: #2c3e50; /* Dark blue-gray text */
-            background-color: #ecf0f1; /* Light gray background */
+            background-color: rgba(255, 255, 255, 0.2); /* Adjusted background color for text boxes */
+            color: #fff; /* Adjusted text color for text boxes */
         }
 
         a {
@@ -112,28 +85,18 @@
             font-size: 20px;
         }
 
-        /* Small polaroid near the box */
-        .polaroid-near-box {
-            position: absolute;
-            width: 80px;
-            height: 100px;
-            background-color: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transform: rotate(-5deg);
-            top: 30%;
-            left: 23%;
-        }
     </style>
 </head>
 <body>
-    <!-- Polaroid pictures in the background -->
+    <!-- Polaroid pictures in the background 
     <div class="polaroid"></div>
     <div class="polaroid"></div>
     <div class="polaroid"></div>
     <div class="polaroid"></div>
-
-    <!-- Small polaroid near the box -->
+    -->
+    <!-- Small polaroid near the box 
     <div class="polaroid-near-box"></div>
+    -->
 
     <div id="hostLoginForm">
         <h1>Attendee Login</h1>

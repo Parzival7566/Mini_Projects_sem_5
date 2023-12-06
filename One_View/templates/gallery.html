@@ -19,35 +19,6 @@ body {
     background-color: #f1dbae; /* Replace with your desired color */
 }
 
-.polaroid {
-            position: absolute;
-            width: 120px;
-            height: 160px;
-            background-color: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transform: rotate(-5deg);
-        }
-
-        .polaroid:nth-child(1) {
-            top: 10%;
-            left: 10%;
-        }
-
-        .polaroid:nth-child(2) {
-            top: 60%;
-            left: 10%;
-        }
-
-        .polaroid:nth-child(3) {
-            top: 10%;
-            left: 70%;
-        }
-
-        .polaroid:nth-child(4) {
-            top: 60%;
-            left: 70%;
-        }
-
 .nav {
 	width: 100%;
 	display: flex;
@@ -207,7 +178,6 @@ button:hover {
 </div>
     
     <div class="content">
-        
         <div class="container">
             <div id="image-gallery">
                 {% for image in gallery %}

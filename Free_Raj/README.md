@@ -41,7 +41,8 @@ python app.py
 
 This will start the Flask server and the application will be accessible at ```http://127.0.0.1:5000/``` in your web browser.
 ## Output Screenshots
-
+### Student Login
+<img src="https://github.com/Parzival7566/Mini_Projects_sem_5/blob/kanishk_testing/Free_Raj/screenshots/student_login.png">
 
 ## Contributing
 

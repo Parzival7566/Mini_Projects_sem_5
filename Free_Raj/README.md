@@ -40,9 +40,40 @@ python app.py
 
 
 This will start the Flask server and the application will be accessible at ```http://127.0.0.1:5000/``` in your web browser.
-## Output Screenshots
+## Output Screenshots (Student)
 ### Student Login
 <img src="https://github.com/Parzival7566/Mini_Projects_sem_5/blob/kanishk_testing/Free_Raj/screenshots/student_login.png">
+
+### Student Dashboard
+<img src="https://github.com/Parzival7566/Mini_Projects_sem_5/blob/kanishk_testing/Free_Raj/screenshots/student_menu.png">
+
+### Student Recommendations
+<img src="https://github.com/Parzival7566/Mini_Projects_sem_5/blob/kanishk_testing/Free_Raj/screenshots/student_recommendation.png">
+
+### Student Past Orders
+<img src="https://github.com/Parzival7566/Mini_Projects_sem_5/blob/kanishk_testing/Free_Raj/screenshots/student_past_orders.png">
+
+### Student Cart
+<img src="https://github.com/Parzival7566/Mini_Projects_sem_5/blob/kanishk_testing/Free_Raj/screenshots/student_cart.png">
+
+### Student Collect Notification
+<img src="https://github.com/Parzival7566/Mini_Projects_sem_5/blob/kanishk_testing/Free_Raj/screenshots/student_collect.png">
+
+## Output Screenshots (Vendor)
+### Vendor Login
+<img src="https://github.com/Parzival7566/Mini_Projects_sem_5/blob/kanishk_testing/Free_Raj/screenshots/vendor_login.png">
+
+### Vendor Orders
+<img src="https://github.com/Parzival7566/Mini_Projects_sem_5/blob/kanishk_testing/Free_Raj/screenshots/vendor_orders.png">
+
+### Vendor Menu
+<img src="https://github.com/Parzival7566/Mini_Projects_sem_5/blob/kanishk_testing/Free_Raj/screenshots/vendor_menu.png">
+
+### Vendor Analytics (Item-Based)
+<img src="https://github.com/Parzival7566/Mini_Projects_sem_5/blob/kanishk_testing/Free_Raj/screenshots/vendor_analytics_chart.png">
+
+### Vendor Analytics (Time-Based)
+<img src="https://github.com/Parzival7566/Mini_Projects_sem_5/blob/kanishk_testing/Free_Raj/screenshots/vendor_analytics_bar.png">
 
 ## Contributing
 
